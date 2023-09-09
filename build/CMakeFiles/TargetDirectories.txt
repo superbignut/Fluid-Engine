@@ -1,3 +1,0 @@
-/home/bignut/big-fluid-engine/build/CMakeFiles/big.dir
-/home/bignut/big-fluid-engine/build/CMakeFiles/edit_cache.dir
-/home/bignut/big-fluid-engine/build/CMakeFiles/rebuild_cache.dir

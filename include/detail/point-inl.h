@@ -10,9 +10,6 @@ Point<T, N>::Point(){
     }
 }
 
-
-
 }
-
 
 #endif
