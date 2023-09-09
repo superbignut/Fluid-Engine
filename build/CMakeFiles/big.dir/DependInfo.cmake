@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/bignut/big-fluid-engine/src/big_print.cpp" "CMakeFiles/big-project.dir/src/big_print.cpp.o" "gcc" "CMakeFiles/big-project.dir/src/big_print.cpp.o.d"
-  "/home/bignut/big-fluid-engine/src/main.cpp" "CMakeFiles/big-project.dir/src/main.cpp.o" "gcc" "CMakeFiles/big-project.dir/src/main.cpp.o.d"
+  "/home/bignut/big-fluid-engine/src/big_print.cpp" "CMakeFiles/big.dir/src/big_print.cpp.o" "gcc" "CMakeFiles/big.dir/src/big_print.cpp.o.d"
+  "/home/bignut/big-fluid-engine/src/main.cpp" "CMakeFiles/big.dir/src/main.cpp.o" "gcc" "CMakeFiles/big.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links.

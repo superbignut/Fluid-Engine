@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/bignut/Desktop/big-folder
+CMAKE_SOURCE_DIR = /home/bignut/big-fluid-engine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/bignut/Desktop/big-folder/build
+CMAKE_BINARY_DIR = /home/bignut/big-fluid-engine/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bignut/Desktop/big-folder/build/CMakeFiles /home/bignut/Desktop/big-folder/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bignut/big-fluid-engine/build/CMakeFiles /home/bignut/big-fluid-engine/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bignut/Desktop/big-folder/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bignut/big-fluid-engine/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named big-project
+# Target rules for targets named big
 
 # Build rule for target.
-big-project: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 big-project
-.PHONY : big-project
+big: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 big
+.PHONY : big
 
 # fast build rule for target.
-big-project/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/build
-.PHONY : big-project/fast
+big/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/build
+.PHONY : big/fast
 
 src/big_print.o: src/big_print.cpp.o
 .PHONY : src/big_print.o
 
 # target to build an object file
 src/big_print.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/src/big_print.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/src/big_print.cpp.o
 .PHONY : src/big_print.cpp.o
 
 src/big_print.i: src/big_print.cpp.i
@@ -142,7 +142,7 @@ src/big_print.i: src/big_print.cpp.i
 
 # target to preprocess a source file
 src/big_print.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/src/big_print.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/src/big_print.cpp.i
 .PHONY : src/big_print.cpp.i
 
 src/big_print.s: src/big_print.cpp.s
@@ -150,7 +150,7 @@ src/big_print.s: src/big_print.cpp.s
 
 # target to generate assembly for a file
 src/big_print.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/src/big_print.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/src/big_print.cpp.s
 .PHONY : src/big_print.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -158,7 +158,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -166,7 +166,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -174,7 +174,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/big-project.dir/build.make CMakeFiles/big-project.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/big.dir/build.make CMakeFiles/big.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -185,7 +185,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... big-project"
+	@echo "... big"
 	@echo "... src/big_print.o"
 	@echo "... src/big_print.i"
 	@echo "... src/big_print.s"
