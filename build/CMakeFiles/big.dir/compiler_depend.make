@@ -425,7 +425,8 @@ CMakeFiles/big.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/std_thread.h \
   /usr/include/c++/11/bits/unique_ptr.h \
   /usr/include/c++/11/bits/this_thread_sleep.h \
-  ../include/point.h
+  ../include/point.h \
+  ../include/detail/point-inl.h
 
 
 ../include/point.h:
@@ -677,6 +678,8 @@ CMakeFiles/big.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+
+../include/detail/point-inl.h:
 
 /usr/include/c++/11/pstl/execution_defs.h:
 

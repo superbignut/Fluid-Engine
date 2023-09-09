@@ -195,4 +195,5 @@ CMakeFiles/big.dir/src/main.cpp.o: \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
- /home/bignut/big-fluid-engine/./include/point.h
+ /home/bignut/big-fluid-engine/./include/point.h \
+ /home/bignut/big-fluid-engine/./include/detail/point-inl.h

@@ -1,10 +1,14 @@
 #ifndef INCLUDE_BIG_ARRAY_H
 #define INCLUDE_BIG_ARRAY_H
-#include<point.h>
-
+#include <point.h>
 
 namespace big {
-
+//!
+//! \brief Generic N-dimensional array class interface.
+//!
+//! \param T - Real number type.
+//! \param N - Dimension.
+//!
 template <typename T, std::size_t N>
 class Array final {
  public:
@@ -12,4 +16,5 @@ class Array final {
                 "Not implement - N should be either 1, 2 and 3,");
 };
 }  // namespace big
+
 #endif
