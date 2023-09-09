@@ -17,12 +17,16 @@ class Point final {
   static_assert(std::is_arithmetic<T>::value,
                 "point only can be instantiated with  arithmetic types.");
 
-  //! construct 
+  //! construct with zero parameters
   Point();
 
   //! construct instance with parameters
-  template <typename... Params>
-  explicit Point(Params... param);
+  //! ... Params 表示接受可变数量的参数
+  //! explicit 表示不能被隐式转换和拷贝初始化
+  template <typename... Params> 
+  explicit Point(Params... param); 
+
+
 };
 
 }  // namespace big
