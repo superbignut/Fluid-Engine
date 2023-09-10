@@ -7,9 +7,11 @@
 #include <string>
 #include <thread>
 #include <point.h>
+#include <array1.h>
 
 int main() { 
-    big::Point<int, 3> points3;
+    big::Array<int ,1> tempA;
+    std::cout << tempA.test<<std::endl;
     
     return 0; 
 }
