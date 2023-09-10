@@ -1,5 +1,5 @@
-#ifndef INCLUDE_BIG_POINT_INL_H
-#define INCLUDE_BIG_POINT_INL_H
+#ifndef INCLUDE_BIG_POINT_INL_H_
+#define INCLUDE_BIG_POINT_INL_H_
 
 namespace big{
 

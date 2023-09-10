@@ -1,5 +1,5 @@
-#ifndef CONSTANT_HH
-#define CONSTANT_HH
+#ifndef CONSTANT_H_
+#define CONSTANT_H_
 
 
 

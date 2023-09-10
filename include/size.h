@@ -1,8 +1,9 @@
-#ifndef INCLUDE_BIG_SIZE_H
-#define INCLUDE_BIG_SIZE_H
+#ifndef INCLUDE_BIG_SIZE_H_
+#define INCLUDE_BIG_SIZE_H_
 #include <point.h>
-    namespace{
-    template <std::size_t N> using Size = Point<std::size_t, N>;
-    }
+namespace big
+{
+template <std::size_t N> using Size = Point<std::size_t, N>;
+}
 
 #endif

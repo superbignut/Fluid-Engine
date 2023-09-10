@@ -1,5 +1,5 @@
-#ifndef INCLUDE_BIG_ARRAY_H
-#define INCLUDE_BIG_ARRAY_H
+#ifndef INCLUDE_BIG_ARRAY_H_
+#define INCLUDE_BIG_ARRAY_H_
 #include <point.h>
 
 namespace big {

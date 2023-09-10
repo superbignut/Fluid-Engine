@@ -1,62 +1,42 @@
-#ifndef INCLUDE_BIG_ARRAY1_H
-#define INCLUDE_BIG_ARRAY1_H
+#ifndef INCLUDE_BIG_ARRAY1_H_
+#define INCLUDE_BIG_ARRAY1_H_
 
 #include <array.h>
 #include <point.h>
 
+#include <iostream>
 #include <vector>
 namespace big {
-//!
-//! \brief This class represent the 1-D data structure;
-//!
-//! \param T - Real number type.
-//! \param N - Dimension.
-//!
-template <typename T>
-class Array<T, 1> final {
- public:
-  typedef std::vector<T> ContainterType; // 容器类型
-  typedef typename ContainterType::iterator Iterator; // 迭代器
+
+template <typename T> class Array<T, 1> final {
+public:
+  typedef std::vector<T> ContainterType;                         // 容器类型
+  typedef typename ContainterType::iterator Iterator;            // 迭代器
   typedef typename ContainterType::const_iterator ConstIterator; // 常量迭代器
 
-  //! construct
-  Array();
+  Array() { std::cout << "default constrcut." << std::endl; };
 
-  //! \brief 1-D array with given \p size and fill it with \p interval.
-  //! \param size Initial size of the array.
-  //! \param interval Initial value of each array element.
-  //! \attention if interval is not given, it's default value is T(),which uses
-  //! the T's construct.
-  explicit Array(std::size_t size, const T& interval = T());
+  explicit Array(std::size_t size, const T &interval = T()) {
+    std::cout << "interval constrcut." << std::endl;
+  };
 
-  //! \brief
-  //! \param
-  //! \param
-  //! \attention
-  //!
+  Array(const std::initializer_list<T> &lst) {
+    std::cout << "initializer_list constrcut." << std::endl;
+  };
 
-  //! \brief construct with initializer_list
-  //! \param lst initializer_list
-  //! \param
-  //! \attention
-  //!
-  Array(const std::initializer_list<T>& lst);
+  Array(const Array &other) { std::cout << "copy constrcut." << std::endl; };
 
-  //! \brief copy construct
-  //! \param
-  //! \param
-  //! \attention
-  //!
-  Array(const Array& other);
+  Array(Array &&other) { std::cout << "move constrcut." << std::endl; };
 
-  //! \brief Move constructor.
-  //! \param
-  //! \param
-  //! \attention
-  //!
-  Array(Array&& other);
+  Iterator begin();
+
+  ConstIterator begin() const;
+
+  Iterator end();
+
+  ConstIterator end() const;
 };
 
-}  // namespace big
+} // namespace big
 
 #endif

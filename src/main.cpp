@@ -1,3 +1,5 @@
+#include <array1.h>
+#include <point.h>
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -6,12 +8,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <point.h>
-#include <array1.h>
+#include <utility>
 
-int main() { 
-    big::Array<int ,1> tempA;
-    std::cout << tempA.test<<std::endl;
-    
-    return 0; 
-}
+int main() { return 0; }
