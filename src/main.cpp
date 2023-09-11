@@ -1,13 +1,14 @@
 #include <array1.h>
-#include <point.h>
-#include <algorithm>
-#include <array>
-#include <chrono>
-#include <cmath>
 #include <cstdio>
 #include <iostream>
-#include <string>
-#include <thread>
 #include <utility>
+#include <vector>
 
-int main() { return 0; }
+
+// A a() A a;
+int main()
+{
+
+
+    return 0;
+}
