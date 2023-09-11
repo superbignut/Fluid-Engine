@@ -5,10 +5,8 @@
 #include <vector>
 
 
-// A a() A a;
 int main()
 {
-
 
     return 0;
 }

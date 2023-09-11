@@ -93,6 +93,11 @@ namespace big
         assert(i < size());
         return _data[i];
     }
+    template <typename T>
+    void Array<T, 1>::clear()
+    {
+        _data.clear();
+    }
 
     template <typename T>
     void Array<T, 1>::set(const std::initializer_list<T> &lst)

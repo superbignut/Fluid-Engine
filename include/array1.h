@@ -51,7 +51,7 @@ namespace big
 
     const T &at(std::size_t i) const;
 
-    
+    void clear();
 
     // void test(void) const;
 
