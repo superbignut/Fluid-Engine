@@ -13,9 +13,31 @@ namespace big
   public:
     ArrayAccessor();
 
-    ArrayAccessor(std::size_t size, T *const data);
+    ArrayAccessor(std::size_t size, T *const data); //no check for size > 0
 
     ArrayAccessor(const ArrayAccessor &other);
+
+    void reset(std::size_t size, T* const data);
+
+    void set(const ArrayAccessor &other);
+
+    T &at(std::size_t i);
+
+    const T &at(std::size_t i) const;
+
+    T *begin();
+
+    T *end();
+
+    const T *begin() const;
+
+    const T *end() const;
+
+    std::size_t size() const;
+
+    T *const data() const;
+
+    void swap(ArrayAccessor &other);
 
     template <typename Callback>
     void forEach(Callback func) const;
@@ -29,7 +51,7 @@ namespace big
     template <typename Callback>
     void parallelForEachIndex(Callback func) const;
 
-    T &operator[](std::size_t i) const;
+    T &operator[](std::size_t i);
 
     const T &operator[](std::size_t i) const;
 
@@ -43,7 +65,7 @@ namespace big
   };
 
   template <typename T>
-  using ArrayAccessor1 = ArrayAccessor1<T, 1>;
+  using ArrayAccessor1 = ArrayAccessor<T, 1>;
 
   template <typename T>
   class ConstArrayAccessor<T, 1>
@@ -55,5 +77,5 @@ namespace big
   };
 
 } // namespace big
-
+#include "detail/array_accessor1-inl.h"
 #endif

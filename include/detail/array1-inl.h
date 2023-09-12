@@ -9,28 +9,28 @@ namespace big
 {
 
     template <typename T>
-    Array<T, 1>::Array() {}
+    Array<T, 1>::Array() {}/*Array()*/
 
     template <typename T>
-    Array<T, 1>::Array(std::size_t size, const T &initial_val)
+    Array<T, 1>::Array(std::size_t size, const T &initial_val)/*Array()*/
     {
         resize(size, initial_val);
     }
 
     template <typename T>
-    Array<T, 1>::Array(const std::initializer_list<T> &lst)
+    Array<T, 1>::Array(const std::initializer_list<T> &lst)/*Array()*/
     {
         set(lst);
     }
 
     template <typename T>
-    Array<T, 1>::Array(const Array &other)
+    Array<T, 1>::Array(const Array &other)/*Array(Array &)*/
     {
         set(other);
     }
 
     template <typename T>
-    Array<T, 1>::Array(Array &&other) // move construct
+    Array<T, 1>::Array(Array &&other) /*Array(Array &&)*/
     {
         (*this) = std::move(other); // call move assign func
     }
@@ -45,12 +45,14 @@ namespace big
     template <typename T>
     typename Array<T, 1>::Iterator Array<T, 1>::begin()
     {
+        // std::cout << "begin used" << std::endl;
         return _data.begin();
     }
 
     template <typename T>
     typename Array<T, 1>::ConstIterator Array<T, 1>::begin() const
     {
+        // std::cout << "cbegin used" << std::endl;
         return _data.cbegin();
     }
 
@@ -107,6 +109,24 @@ namespace big
     const T *const Array<T, 1>::data() const
     {
         return _data.data();
+    }
+
+    template <typename T>
+    void Array<T, 1>::swap(Array& other)
+    {
+        std::swap(other._data, _data);
+    }
+
+    template <typename T>
+    void Array<T, 1>::append(const T& newVal)
+    {
+        _data.push_back(newVal);
+    }
+
+    template <typename T>
+    void Array<T, 1>::append(const Array &other)
+    {
+        _data.insert(_data.begin(), other._data.begin(), other._data.end());
     }
 
     template <typename T>

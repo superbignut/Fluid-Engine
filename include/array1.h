@@ -3,7 +3,7 @@
 
 #include <array.h>
 #include <point.h>
-
+#include <array_accessor1.h>
 #include <iostream>
 #include <vector>
 namespace big
@@ -57,12 +57,17 @@ namespace big
 
     const T* const data() const;
 
-    // void test(void) const;
+    void swap(Array& newVal);
 
-    //! Return the reference to ith value.
+    void append(const T& newVal);
+
+    void append(const Array &other);
+
+    template <typename Callback>
+    void forEach(Callback func) const;
+
     T &operator[](std::size_t i);
 
-    //! Return the const reference to ith value.
     const T &operator[](std::size_t i) const;
 
     Array &operator=(Array &&other);
