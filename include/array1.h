@@ -53,6 +53,10 @@ namespace big
 
     void clear();
 
+    T* data();
+
+    const T* const data() const;
+
     // void test(void) const;
 
     //! Return the reference to ith value.

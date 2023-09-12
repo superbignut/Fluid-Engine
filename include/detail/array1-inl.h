@@ -29,8 +29,6 @@ namespace big
         set(other);
     }
 
-
-
     template <typename T>
     Array<T, 1>::Array(Array &&other) // move construct
     {
@@ -83,7 +81,7 @@ namespace big
     template <typename T>
     T &Array<T, 1>::at(std::size_t i)
     {
-        assert(i < size()); //这里为什么不用static_assert
+        assert(i < size()); // 这里为什么不用static_assert
         return _data[i];
     }
 
@@ -97,6 +95,18 @@ namespace big
     void Array<T, 1>::clear()
     {
         _data.clear();
+    }
+
+    template <typename T>
+    T *Array<T, 1>::data()
+    {
+        return _data.data();
+    }
+
+    template <typename T>
+    const T *const Array<T, 1>::data() const
+    {
+        return _data.data();
     }
 
     template <typename T>
