@@ -5,4 +5,4 @@
 
 ## Book's Code Repository:
 ---
-### Fluid Engine Dev - Jet [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
+### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
