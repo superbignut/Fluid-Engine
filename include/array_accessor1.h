@@ -13,11 +13,11 @@ namespace big
   public:
     ArrayAccessor();
 
-    ArrayAccessor(std::size_t size, T *const data); //no check for size > 0
+    ArrayAccessor(std::size_t size, T *const data); // no check for size > 0
 
     ArrayAccessor(const ArrayAccessor &other);
 
-    void reset(std::size_t size, T* const data);
+    void reset(std::size_t size, T *const data);
 
     void set(const ArrayAccessor &other);
 
@@ -57,7 +57,7 @@ namespace big
 
     ArrayAccessor &operator=(const ArrayAccessor &other);
 
-    operator int() const;
+    explicit operator ConstArrayAccessor<T, 1>() const;
 
   private:
     std::size_t _size;
@@ -74,7 +74,34 @@ namespace big
     ConstArrayAccessor();
 
     ConstArrayAccessor(std::size_t size, const T *const data);
+
+    explicit ConstArrayAccessor(const ConstArrayAccessor &other);
+
+    const T &at(std::size_t i) const;
+
+    const T *begin() const;
+
+    const T *end() const;
+
+    std::size_t size() const;
+
+    const T *const data() const;
+
+    template <typename Callback>
+    void forEach(Callback func) const;
+
+    template <typename Callback>
+    void forEachIndex(Callback func) const;
+
+    const T &operator[](std::size_t i) const;
+
+  private:
+    std::size_t _size;
+    const T *_data;
   };
+
+  template <typename T>
+  using ConstArrayAccessor1 = ConstArrayAccessor<T, 1>;
 
 } // namespace big
 #include "detail/array_accessor1-inl.h"

@@ -9,22 +9,22 @@ namespace big
 {
 
     template <typename T>
-    Array<T, 1>::Array() {}/*Array()*/
+    Array<T, 1>::Array() : _data() {} /*Array()*/  //default construct 
 
     template <typename T>
-    Array<T, 1>::Array(std::size_t size, const T &initial_val)/*Array()*/
+    Array<T, 1>::Array(std::size_t size, const T &initial_val) /*Array()*/
     {
         resize(size, initial_val);
     }
 
     template <typename T>
-    Array<T, 1>::Array(const std::initializer_list<T> &lst)/*Array()*/
+    Array<T, 1>::Array(const std::initializer_list<T> &lst) /*Array()*/
     {
         set(lst);
     }
 
     template <typename T>
-    Array<T, 1>::Array(const Array &other)/*Array(Array &)*/
+    Array<T, 1>::Array(const Array &other) /*Array(Array &)*/
     {
         set(other);
     }
@@ -42,6 +42,26 @@ namespace big
         return *this;
     }
 
+    template <typename T>
+    Array<T, 1> &Array<T, 1>::operator=(const Array<T, 1> &other)
+    {
+        _data = other._data;
+        return *this;
+    }
+
+    template <typename T>
+    Array<T, 1> &Array<T, 1>::operator=(const T &value)
+    {
+        set(value);
+        return *this;
+    }
+
+    template <typename T>
+    Array<T, 1> &Array<T, 1>::operator=(const std::initializer_list<T> &lst)
+    {
+        set(lst);
+        return *this;
+    }
     template <typename T>
     typename Array<T, 1>::Iterator Array<T, 1>::begin()
     {
@@ -66,6 +86,18 @@ namespace big
     typename Array<T, 1>::ConstIterator Array<T, 1>::end() const
     {
         return _data.cend();
+    }
+
+    template <typename T>
+    ArrayAccessor<T, 1> Array<T, 1>::accessor()
+    {
+        return ArrayAccessor<T, 1>(size(), data());
+    }
+
+    template <typename T>
+    ConstArrayAccessor<T, 1> Array<T, 1>::constAccessor() const
+    {
+        return ConstArrayAccessor<T, 1>(size(), data());
     }
 
     template <typename T>
@@ -112,13 +144,13 @@ namespace big
     }
 
     template <typename T>
-    void Array<T, 1>::swap(Array& other)
+    void Array<T, 1>::swap(Array &other)
     {
         std::swap(other._data, _data);
     }
 
     template <typename T>
-    void Array<T, 1>::append(const T& newVal)
+    void Array<T, 1>::append(const T &newVal)
     {
         _data.push_back(newVal);
     }
@@ -170,5 +202,32 @@ namespace big
     {
         return _data[i];
     }
+
+    template <typename T>
+    template <typename Callback>
+    void Array<T, 1>::forEach(Callback func) const
+    {
+        constAccessor().forEach(func);
+    }
+
+    template <typename T>
+    template <typename Callback>
+    void Array<T, 1>::forEachIndex(Callback func) const
+    {
+        constAccessor().forEachIndex(func);
+    }
+
+    template <typename T>
+    Array<T, 1>::operator ArrayAccessor<T, 1>()
+    {
+        return accessor();
+    }
+
+    template <typename T>
+    Array<T, 1>::operator ConstArrayAccessor<T, 1>()
+    {
+        return constAccessor();
+    }
+
 }
 #endif

@@ -21,7 +21,7 @@ namespace big
 
     Array();
 
-    explicit Array(std::size_t size, const T &initial_val = T());
+    explicit Array(std::size_t size, const T &initial_val = T()); // forbid a = 1
 
     Array(const std::initializer_list<T> &lst);
 
@@ -37,6 +37,10 @@ namespace big
 
     ConstIterator end() const;
 
+    ArrayAccessor<T, 1> accessor();
+
+    ConstArrayAccessor<T, 1> constAccessor() const;
+
     std::size_t size() const;
 
     void resize(std::size_t size, const T &initial_val = T());
@@ -46,31 +50,44 @@ namespace big
     void set(const std::initializer_list<T> &lst);
 
     void set(const Array &other);
-    
+
     T &at(std::size_t i);
 
     const T &at(std::size_t i) const;
 
     void clear();
 
-    T* data();
+    T *data();
 
-    const T* const data() const;
+    const T *const data() const;
 
-    void swap(Array& newVal);
+    void swap(Array &newVal);
 
-    void append(const T& newVal);
+    void append(const T &newVal);
 
     void append(const Array &other);
-
-    template <typename Callback>
-    void forEach(Callback func) const;
 
     T &operator[](std::size_t i);
 
     const T &operator[](std::size_t i) const;
 
-    Array &operator=(Array &&other);
+    Array &operator=(const Array &other); // copy
+
+    Array &operator=(Array &&other); // move
+
+    Array &operator=(const T &value);
+
+    Array &operator=(const std::initializer_list<T> &lst);
+
+    template <typename Callback>
+    void forEach(Callback func) const;    
+
+    template <typename Callback>
+    void forEachIndex(Callback func) const;
+
+    explicit operator ArrayAccessor<T, 1>();
+
+    explicit operator ConstArrayAccessor<T, 1>();
 
   private:
     ContainterType _data;
