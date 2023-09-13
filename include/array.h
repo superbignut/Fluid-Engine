@@ -5,10 +5,6 @@
 namespace big {
 //!
 //! \brief Generic N-dimensional array class interface.
-//!
-//! \param T - Real number type.
-//! \param N - Dimension.
-//!
 template <typename T, std::size_t N>
 class Array final {
  public:

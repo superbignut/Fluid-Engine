@@ -2,13 +2,16 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <point.h>
-
-
+#include <size.h>
+#include <size2.h>
+// #include <cas
 int main()
 {   
-    big::Point<int, 3> point(1.1, 2.2 ,3.3333);
-    big::Point<int, 3> point1(point);
+    big::Size2 aaa(1,2), bbb;
+    int a = 10;
+    big::Size2 ccc = + aaa;
 
+// std::initializer_list<int> lst = {1,2,3};
+// std::cout<<lst.;
     return 0;
 }
