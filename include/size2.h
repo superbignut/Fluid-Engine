@@ -48,6 +48,8 @@ namespace big
 
         Size2 rsub(std::size_t &val) const;
 
+        Size2 rsub(std::size_t &&val) const;
+
         Size2 rsub(const Size2 &other) const;
 
         Size2 rdiv(std::size_t &val) const;
@@ -80,9 +82,9 @@ namespace big
 
         std::size_t max() const;
 
-        std::size_t absmin() const;
+        // std::size_t absmin() const;
 
-        std::size_t absmax() const;
+        // std::size_t absmax() const;
 
         std::size_t domintAxis() const;
 

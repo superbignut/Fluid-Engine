@@ -72,6 +72,11 @@ namespace big
         return Size2(val - x, val - y);
     }
 
+    inline Size2 Size2::rsub(std::size_t &&val) const
+    {
+        return Size2(val - x, val - y);
+    }
+
     inline Size2 Size2::rsub(const Size2 &other) const
     {
         return Size2(other.x - x, other.y - y);
@@ -309,7 +314,7 @@ namespace big
 
     inline Size2 operator-(const Size2 &other)
     {
-        // return other.rsub(0);
+        return other.rsub(0);
     }
 
     inline Size2 operator*(const Size2 &other1, const Size2 &other2)
@@ -352,13 +357,13 @@ namespace big
         return Size2(std::max(other1.x, other2.x), std::max(other1.y, other2.y));
     }
 
-    // Size2 clamp(const Size2 &s, const Size2 &low, const Size2 &high)
-    // {
-    //     return Size2(clamp(s.x, low.x, high.x), clamp(s.y, low.y, high.y));
-    // }
+    Size2 clamp(const Size2 &s, const Size2 &low, const Size2 &high)
+    {
+        return Size2(std::clamp(s.x, low.x, high.x), std::clamp(s.y, low.y, high.y));
+    }
 
-    inline Size2 ceil(const Size2 &other);
+    // inline Size2 ceil(const Size2 &other);
 
-    inline Size2 floor(const Size2 &other);
+    // inline Size2 floor(const Size2 &other);
 }
 #endif
