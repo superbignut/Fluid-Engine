@@ -27,6 +27,8 @@ namespace big
 
         void set(std::size_t newX, std::size_t newY, std::size_t newZ);
 
+        void set(const Size2 &other, std::size_t z_);
+
         template <typename U>
         void set(const std::initializer_list<U> &lst);
 
@@ -162,9 +164,9 @@ namespace big
 
     Size3 clamp(const Size3 &s, const Size3 &low, const Size3 &high);
 
-    Size3 ceil(const Size3 &other);
+    // Size3 ceil(const Size3 &other);
 
-    Size3 floor(const Size3 &other);
+    // Size3 floor(const Size3 &other);
 
 }
 

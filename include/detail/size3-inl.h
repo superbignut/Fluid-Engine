@@ -18,6 +18,13 @@ namespace big
         z = newZ;
     }
 
+    inline void Size3::set(const Size2 &other, std::size_t z_)
+    {
+        x = other.x;
+        y = other.y;
+        z = z_;
+    }
+
     inline void Size3::set(const Size3 &other)
     {
         x = other.x;
