@@ -10,9 +10,9 @@ namespace big
     Array<T, 2>::Array() : _data(), _size() {} /*Array()*/ // default construct
 
     template <typename T>
-    Array<T, 2>::Array(const Size2& size, const T &initial_val) /*Array()*/
+    Array<T, 2>::Array(const Size2 &size, const T &initial_val) /*Array()*/
     {
-        resize(size, initial_val);//这时_size.x 和 _size.y的值汉没有呢 resize里面咋用的？？？
+        resize(size, initial_val); // 这时_size.x 和 _size.y的值汉没有呢 resize里面咋用的？？？
     }
 
     template <typename T>
@@ -22,19 +22,27 @@ namespace big
     }
 
     template <typename T>
-    void Array<T, 2>::set(const std::initializer_list<std::initializer_list<T> > &lst)
+    Array<T, 2>::Array(std::size_t width, std::size_t height, const T &initial_val)
     {
-        std::size_t height = lst.size(); // outer size // can equals 0.
+        resize(Size2(width, height), initial_val);
+    }
 
-        std::size_t weight = (height != 0) ? lst->begin()->size() : 0;
+    template <typename T>
+    void Array<T, 2>::set(const std::initializer_list<std::initializer_list<T>> &lst)
+    {
+        std::size_t height = lst.size(); // outer size
 
-        resize(Size2(weight, height), T());
+        std::size_t width = (height != 0) ? lst.begin()->size() : 0; // can equals 0.
+
+        resize(Size2(width, height), T());
 
         auto rowIter = lst.begin();
         for (std::size_t j = 0; j < height; ++j)
         {
             auto colIter = rowIter->begin();
-            for (std::size_t i = 0; i < weight; ++i)
+            assert(width == rowIter->size() && "Error width size in iniitalizer_list."); // because each inner initialize_list can have diff size.
+
+            for (std::size_t i = 0; i < width; ++i)
             {
                 (*this)(i, j) = *colIter;
                 ++colIter;
@@ -44,7 +52,6 @@ namespace big
         // std::size_t height = size;
     }
 
-    //! change size with smallest change
     template <typename T>
     void Array<T, 2>::resize(const Size2 &size, const T &initial_val)
     {
@@ -70,70 +77,82 @@ namespace big
         std::swap(other._data, _data);
         std::swap(other._size, _size);
     }
-    // template <typename T>
-    // Array<T, 2>::Array(const Array &other) /*Array(Array &)*/
-    // {
-    //     set(other);
-    // }
 
-    // template <typename T>
-    // Array<T, 2>::Array(Array &&other) /*Array(Array &&)*/
-    // {
-    //     (*this) = std::move(other); // call move assign func
-    // }
+    template <typename T>
+    Array<T, 2>::Array(const Array &other)
+    {
+        set(other);
+    }
 
-    // template <typename T>
-    // Array<T, 2> &Array<T, 2>::operator=(Array &&other) // move assign
-    // {
-    //     _data = std::move(other._data);
-    //     return *this;
-    // }
+    template <typename T>
+    void Array<T, 2>::set(const Array &other)
+    {
+        _data.resize(other._data.size());
+        // resize(other.size());
+        std::copy(other.begin(), other.end(), _data.begin());
+        _size = other._size; // Size2's copy assign function
+    }
 
-    // template <typename T>
-    // Array<T, 2> &Array<T, 2>::operator=(const Array<T, 2> &other)
-    // {
-    //     _data = other._data;
-    //     return *this;
-    // }
+    template <typename T>
+    Array<T, 2>::Array(Array &&other) /*Array(Array &&)*/
+    {
+        (*this) = std::move(other); // call move assign func
+    }
 
-    // template <typename T>
-    // Array<T, 2> &Array<T, 2>::operator=(const T &value)
-    // {
-    //     set(value);
-    //     return *this;
-    // }
+    template <typename T>
+    Array<T, 2> &Array<T, 2>::operator=(Array &&other) // move assign
+    {
+        _data = std::move(other._data);
+        _size = other._size;
+        return *this;
+    }
 
-    // template <typename T>
-    // Array<T, 2> &Array<T, 2>::operator=(const std::initializer_list<T> &lst)
-    // {
-    //     set(lst);
-    //     return *this;
-    // }
-    // template <typename T>
-    // typename Array<T, 2>::Iterator Array<T, 2>::begin()
-    // {
-    //     // std::cout << "begin used" << std::endl;
-    //     return _data.begin();
-    // }
+    template <typename T>
+    Array<T, 2> &Array<T, 2>::operator=(const Array<T, 2> &other) // copy assign
+    {
+        set(other);
+        return *this;
+    }
 
-    // template <typename T>
-    // typename Array<T, 2>::ConstIterator Array<T, 2>::begin() const
-    // {
-    //     // std::cout << "cbegin used" << std::endl;
-    //     return _data.cbegin();
-    // }
+    template <typename T>
+    Array<T, 2> &Array<T, 2>::operator=(const T &value)
+    {
+        set(value);
+        return *this;
+    }
 
-    // template <typename T>
-    // typename Array<T, 2>::Iterator Array<T, 2>::end()
-    // {
-    //     return _data.end();
-    // }
+    template <typename T>
+    Array<T, 2> &Array<T, 2>::operator=(const std::initializer_list<std::initializer_list<T> > &lst)
+    {
+        set(lst);
+        return *this;
+    }
 
-    // template <typename T>
-    // typename Array<T, 2>::ConstIterator Array<T, 2>::end() const
-    // {
-    //     return _data.cend();
-    // }
+    template <typename T>
+    typename Array<T, 2>::Iterator Array<T, 2>::begin()
+    {
+        // std::cout << "begin used" << std::endl;
+        return _data.begin();
+    }
+
+    template <typename T>
+    typename Array<T, 2>::ConstIterator Array<T, 2>::begin() const
+    {
+        // std::cout << "cbegin used" << std::endl;
+        return _data.cbegin();
+    }
+
+    template <typename T>
+    typename Array<T, 2>::Iterator Array<T, 2>::end()
+    {
+        return _data.end();
+    }
+
+    template <typename T>
+    typename Array<T, 2>::ConstIterator Array<T, 2>::end() const
+    {
+        return _data.cend();
+    }
 
     // template <typename T>
     // ArrayAccessor<T, 1> Array<T, 2>::accessor()
@@ -147,16 +166,28 @@ namespace big
     //     return ConstArrayAccessor<T, 1>(size(), data());
     // }
 
-    // template <typename T>
-    // std::size_t Array<T, 2>::size() const
-    // {
-    //     return _data.size();
-    // }
+    template <typename T>
+    Size2 Array<T, 2>::size() const
+    {
+        return _size;
+    }
 
     template <typename T>
-    void Array<T, 2>::resize(std::size_t weight, std::size_t height, const T &initial_val)
+    void Array<T, 2>::resize(std::size_t width, std::size_t height, const T &initial_val)
     {
-        resize(Size2(weight, height), initial_val);
+        resize(Size2(width, height), initial_val);
+    }
+
+    template <typename T>
+    T &Array<T, 2>::at(std::size_t i)
+    {
+        return _data[i];
+    }
+
+    template <typename T>
+    const T &Array<T, 2>::at(std::size_t i) const
+    {
+        return _data[i];
     }
 
     template <typename T>
@@ -171,23 +202,34 @@ namespace big
     {
         return _data[i + j * _size.x];
     }
-    // template <typename T>
-    // void Array<T, 2>::clear()
-    // {
-    //     _data.clear();
-    // }
+    template <typename T>
+    void Array<T, 2>::clear()
+    {
+        _data.clear();
+        _size.setZero();
+    }
 
-    // template <typename T>
-    // T *Array<T, 2>::data()
-    // {
-    //     return _data.data();
-    // }
+    template <typename T>
+    std::size_t Array<T, 2>::width()const
+    {
+        return _size.x;
+    }
+    template <typename T>
+    std::size_t Array<T, 2>::height()const
+    {
+        return _size.y;
+    }
+    template <typename T>
+    T *Array<T, 2>::data()
+    {
+        return _data.data();
+    }
 
-    // template <typename T>
-    // const T *const Array<T, 2>::data() const
-    // {
-    //     return _data.data();
-    // }
+    template <typename T>
+    const T *const Array<T, 2>::data() const
+    {
+        return _data.data();
+    }
 
     // template <typename T>
     // void Array<T, 2>::swap(Array &other)
@@ -207,34 +249,26 @@ namespace big
     //     _data.insert(_data.begin(), other._data.begin(), other._data.end());
     // }
 
-    // template <typename T>
-    // void Array<T, 2>::set(const T &value)
-    // {
-    //     for (auto &v : _data)
-    //     {
-    //         v = value;
-    //     }
-    // }
+    template <typename T>
+    void Array<T, 2>::set(const T &value)
+    {
+        for (auto &v : _data)
+        {
+            v = value;
+        }
+    }
 
-    // template <typename T>
-    // void Array<T, 2>::set(const Array &other)
-    // {
-    //     //_data = other._data;
-    //     _data.resize(other.size());
-    //     std::copy(other.begin(), other.end(), _data.begin());
-    // }
+    template <typename T>
+    T &Array<T, 2>::operator[](std::size_t i)
+    {
+        return _data[i];
+    }
 
-    // template <typename T>
-    // T &Array<T, 2>::operator[](std::size_t i)
-    // {
-    //     return _data[i];
-    // }
-
-    // template <typename T>
-    // const T &Array<T, 2>::operator[](std::size_t i) const
-    // {
-    //     return _data[i];
-    // }
+    template <typename T>
+    const T &Array<T, 2>::operator[](std::size_t i) const
+    {
+        return _data[i];
+    }
 
     template <typename T>
     T &Array<T, 2>::operator()(std::size_t i, std::size_t j)
