@@ -140,13 +140,13 @@ namespace big
         y /= other.y;
     }
 
-    std::size_t &Size2::at(std::size_t i)
+    inline std::size_t &Size2::at(std::size_t i)
     {
         assert(i < 2);
         return (&x)[i];
     }
 
-    const std::size_t &Size2::at(std::size_t i) const
+    inline const std::size_t &Size2::at(std::size_t i) const
     {
         assert(i < 2);
         return (&x)[i];
