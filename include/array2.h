@@ -6,6 +6,7 @@
 #include <size2.h>
 #include <iostream>
 #include <vector>
+#include <point2.h>
 namespace big
 {
   //! datas were stored in an array i + width * j =(i, j)
@@ -41,13 +42,11 @@ namespace big
 
     ConstIterator end() const;
 
-    // ArrayAccessor<T, 1> accessor();
+    ArrayAccessor<T, 2> accessor();
 
-    // ConstArrayAccessor<T, 1> constAccessor() const;
+    ConstArrayAccessor<T, 2> constAccessor() const;
 
     void swap(Array &other);
-
-    Size2 size() const;
 
     //! resize the array with \p size and fill the new element with \p initial_val.
     void resize(const Size2 &size, const T &initial_val = T());
@@ -68,7 +67,13 @@ namespace big
 
     const T &at(std::size_t i, std::size_t j) const;
 
+    T &at(Point2UI &pt);
+
+    const T &at(Point2UI &pt) const;
+
     void clear();
+
+    Size2 size() const;
 
     std::size_t width() const;
 
@@ -78,7 +83,6 @@ namespace big
 
     const T *const data() const;
 
-    // void swap(Array &newVal);
 
     // void append(const T &newVal);
 
@@ -92,6 +96,10 @@ namespace big
 
     const T &operator()(std::size_t i, std::size_t j) const;
 
+    T &operator()(const Point2UI &pt);
+
+    const T &operator()(const Point2UI &pt) const;
+
     Array &operator=(const Array &other); // copy
 
     Array &operator=(Array &&other); // move
@@ -100,15 +108,15 @@ namespace big
 
     Array &operator=(const std::initializer_list<std::initializer_list<T> > &lst);
 
-    // template <typename Callback>
-    // void forEach(Callback func) const;
+    template <typename Callback>
+    void forEach(Callback func) const;
 
-    // template <typename Callback>
-    // void forEachIndex(Callback func) const;
+    template <typename Callback>
+    void forEachIndex(Callback func) const;
 
-    // explicit operator ArrayAccessor<T, 2>();
+    explicit operator ArrayAccessor<T, 2>();
 
-    // explicit operator ConstArrayAccessor<T, 2>();
+    explicit operator ConstArrayAccessor<T, 2>();
 
   private:
     ContainterType _data;

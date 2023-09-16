@@ -154,23 +154,18 @@ namespace big
         return _data.cend();
     }
 
-    // template <typename T>
-    // ArrayAccessor<T, 1> Array<T, 2>::accessor()
-    // {
-    //     return ArrayAccessor<T, 1>(size(), data());
-    // }
-
-    // template <typename T>
-    // ConstArrayAccessor<T, 1> Array<T, 2>::constAccessor() const
-    // {
-    //     return ConstArrayAccessor<T, 1>(size(), data());
-    // }
+    template <typename T>
+    ArrayAccessor<T, 2> Array<T, 2>::accessor()
+    {
+        return ArrayAccessor<T, 2>(size(), data());
+    }
 
     template <typename T>
-    Size2 Array<T, 2>::size() const
+    ConstArrayAccessor<T, 2> Array<T, 2>::constAccessor() const
     {
-        return _size;
+        return ConstArrayAccessor<T, 2>(size(), data());
     }
+
 
     template <typename T>
     void Array<T, 2>::resize(std::size_t width, std::size_t height, const T &initial_val)
@@ -193,20 +188,41 @@ namespace big
     template <typename T>
     T &Array<T, 2>::at(std::size_t i, std::size_t j)
     {
-
+        assert(i <= _size.x && j <= _size.y);
         return _data[i + j * _size.x];
     }
 
     template <typename T>
     const T &Array<T, 2>::at(std::size_t i, std::size_t j) const
     {
+        assert(i <= _size.x && j <= _size.y);
         return _data[i + j * _size.x];
     }
+
+    template <typename T>
+    T &Array<T, 2>::at(Point2UI &pt)
+    {
+
+        return _data[pt.x + pt.y * _size.x];
+    }
+
+    template <typename T>
+    const T &Array<T, 2>::at(Point2UI &pt) const
+    {
+        return _data[pt.x + pt.y * _size.x];
+    }
+
     template <typename T>
     void Array<T, 2>::clear()
     {
         _data.clear();
         _size.setZero();
+    }
+
+    template <typename T>
+    Size2 Array<T, 2>::size()const
+    {
+        return _size;
     }
 
     template <typename T>
@@ -231,11 +247,6 @@ namespace big
         return _data.data();
     }
 
-    // template <typename T>
-    // void Array<T, 2>::swap(Array &other)
-    // {
-    //     std::swap(other._data, _data);
-    // }
 
     // template <typename T>
     // void Array<T, 2>::append(const T &newVal)
@@ -272,40 +283,56 @@ namespace big
 
     template <typename T>
     T &Array<T, 2>::operator()(std::size_t i, std::size_t j)
-    {
+    {   
+        assert(i <= _size.x && j <= _size.y);
         return _data[i + _size.x * j];
     }
 
     template <typename T>
     const T &Array<T, 2>::operator()(std::size_t i, std::size_t j) const
     {
+        assert(i <= _size.x && j <= _size.y);
         return _data[i + _size.x * j];
     }
-    // template <typename T>
-    // template <typename Callback>
-    // void Array<T, 2>::forEach(Callback func) const
-    // {
-    //     constAccessor().forEach(func);
-    // }
 
-    // template <typename T>
-    // template <typename Callback>
-    // void Array<T, 2>::forEachIndex(Callback func) const
-    // {
-    //     constAccessor().forEachIndex(func);
-    // }
+    template <typename T>
+    T &Array<T, 2>::operator()(const Point2UI &pt)
+    {
+        return _data[pt.x + _size.x * pt.y];
+    }
 
-    // template <typename T>
-    // Array<T, 2>::operator ArrayAccessor<T, 1>()
-    // {
-    //     return accessor();
-    // }
+    template <typename T>
+    const T &Array<T, 2>::operator()(const Point2UI &pt) const
+    {
+        return _data[pt.x + _size.x * pt.y];
+    }
 
-    // template <typename T>
-    // Array<T, 2>::operator ConstArrayAccessor<T, 1>()
-    // {
-    //     return constAccessor();
-    // }
+
+    template <typename T>
+    template <typename Callback>
+    void Array<T, 2>::forEach(Callback func) const
+    {
+        constAccessor().forEach(func);
+    }
+
+    template <typename T>
+    template <typename Callback>
+    void Array<T, 2>::forEachIndex(Callback func) const
+    {
+        constAccessor().forEachIndex(func);
+    }
+
+    template <typename T>
+    Array<T, 2>::operator ArrayAccessor<T, 2>()
+    {
+        return accessor();
+    }
+
+    template <typename T>
+    Array<T, 2>::operator ConstArrayAccessor<T, 2>()
+    {
+        return constAccessor();
+    }
 
 }
 #endif
