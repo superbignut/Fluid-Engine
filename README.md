@@ -7,7 +7,11 @@
 ### By 👀reading the 😱excellent 📖book "💦Fluid 🤖Engine 💻Development" and 😮studying its 🥰concise 😍code 🤩structure💩,  the "🤪big" 🚀engine is ⏳being 🤠developed 🥱completely 🧐from 🥶scratch.🤓
 ---
 ## To Do:
-### Finish array2.h and its include file.
+### Complete the  array2.h and its corresponding include file.
++ ~~point2.h and point2-inl.h~~
++ ~~size2.h and size2-inl.h~~
++ ~~array_accessor2.h and array_accerssor2-inl.h~~
+
 ---
 ## Reference :
 ---

@@ -2,7 +2,6 @@
 #define INCLUDE_BIG_ARRAY2_H_
 
 #include <array.h>
-#include <point.h>
 #include <array_accessor2.h>
 #include <size2.h>
 #include <iostream>
