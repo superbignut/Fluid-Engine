@@ -9,8 +9,8 @@
 ## To Do:
 
 ### 3. Complete the array3.h and its corresponding include files.
-+ point3.h and point3-inl.h
-+ size3.h and size3-inl.h
++ ~~point3.h and point3-inl.h~~
++ ~~size3.h and size3-inl.h~~
 + array_accessor3.h and array_accerssor3-inl.h
 ---
 ### ~~2. Complete the  array2.h and its corresponding include files.~~

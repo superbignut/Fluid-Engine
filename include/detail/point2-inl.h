@@ -221,13 +221,13 @@ namespace big
     template <typename T>
     T Point<T, 2>::domintAxis() const
     {
-        return (x > y) ? 0 : 1;
+        return (std::abs(x) > std::abs(y)) ? 0 : 1;
     }
 
     template <typename T>
     T Point<T, 2>::subminanAxis() const
     {
-        return (x < y) ? 0 : 1;
+        return (std::abs(x) < std::abs(y)) ? 0 : 1;
     }
 
     template <typename T>
