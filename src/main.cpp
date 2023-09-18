@@ -2,19 +2,17 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <array2.h>
-#include <size2.h>
-#include <point2.h>
+#include <array3.h>
+#include <gtest/gtest.h>
 
-void func(int a){
-    std::cout << a << std::endl;
-}
-
-int main()
+// TEST(Array3Test, Context)
+// {
+//     big::Array<int, 3> arr(4,3,2,10);
+//     EXPECT_EQ(arr.depth(), 3);
+// }
+int main(int argc, char** argv)
 {   
-    big::Array<int, 2> aaa(3, 2, 1);
-    std::cout<< aaa(2, 3) << aaa.accessor().at(2,3)<<std::endl;
-    aaa.forEach(func);
-    
+
+    //TEST();
     return 0;
 }

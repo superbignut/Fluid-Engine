@@ -7,7 +7,7 @@ find_package(OpenCV REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-include_directories(/usr/local/include ./include) 
+include_directories(/usr/local/include ./include ./external/googletest/googletest/include) 
 aux_source_directory(./src source_list)
 
 add_executable(big ${source_list})
