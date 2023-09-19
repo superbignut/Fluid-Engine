@@ -77,6 +77,64 @@ namespace big
         return VectorAdd(a(), b());//operator()
     }
 
+    template <typename T, typename E>
+    VectorScalarAdd<T, E> operator+(const VectorExpression<T, E> &a, const T &b)
+    {
+        return VectorScalarAdd(a(), b);// constructor(operator(), T).
+    }
+
+    template <typename T, typename E1, typename E2>
+    VectorSub<T, E1, E2> operator-(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
+    {
+        return VectorSub(a(), b());
+    }
+
+    template <typename T, typename E>
+    VectorScalarSub<T, E> operator-(const VectorExpression<T, E> &a, const T &b)
+    {
+        return VectorScalarSub(a(), b);
+    }
+
+    template <typename T, typename E>
+    VectorScalarRSub<T, E> operator-(const T &a, const VectorExpression<T, E> &b)
+    {
+        return VectorScalarSub(b(), a);
+    }
+
+    template <typename T, typename E1, typename E2>
+    VectorMul<T, E1, E2> operator*(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
+    {
+        return VectorMul(a(), b());
+    }
+
+    template <typename T, typename E>
+    VectorScalarMul<T, E> operator*(const VectorExpression<T, E> &a, const T &b)
+    {
+        return VectorScalarMul(a(), b);
+    }
+
+    template <typename T, typename E>
+    VectorScalarMul<T, E> operator*(const T &a, const VectorExpression<T, E> &b)
+    {
+        return VectorScalarMul(b(), a);
+    }
+    template <typename T, typename E1, typename E2>
+    VectorDiv<T, E1, E2> operator/(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
+    {
+        return VectorDiv(a(), b());
+    }
+
+    template <typename T, typename E>
+    VectorScalarDiv<T, E> operator/(const VectorExpression<T, E> &a, const T &b)
+    {
+        return VectorScalarDiv(a(), b);
+    }
+
+    template <typename T, typename E>
+    VectorScalarRDiv<T, E> operator/(const T &a, const VectorExpression<T, E> &b)
+    {
+        return VectorScalarRDiv(b(), a);
+    }
 
 } // namespace big
 

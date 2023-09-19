@@ -8,7 +8,7 @@
 ---
 ## To Do:
 ### 4. Complete the vector.h and its corresponding include files.
-+ vector_expression.h and vector_expression-inl.h
++ ~~vector_expression.h and vector_expression-inl.h~~
 + type_helpers.h and googletest
 + vector.h and vector-inl.h
 ---

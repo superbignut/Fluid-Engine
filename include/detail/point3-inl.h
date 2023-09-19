@@ -246,7 +246,7 @@ namespace big
     template <typename T>
     T Point<T, 3>::subminanAxis() const
     {
-        return (std::abs(x) > std::abs(y)) ? (std::abs(x) > std::abs(z) ? 0 : 2) : (std::abs(y) > std::abs(z) ? 1 : 2);
+        return (std::abs(x) < std::abs(y)) ? (std::abs(x) < std::abs(z) ? 0 : 2) : (std::abs(y) < std::abs(z) ? 1 : 2);
     }
 
     template <typename T>
