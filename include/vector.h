@@ -32,6 +32,12 @@ namespace big
         template<typename U>
         void set(std::initializer_list<U>& lst);
 
+        template<typename E>
+        Vector(const VectorExpression<T, E> &other);
+
+        template<typename E>
+        void set(const VectorExpression<T, E> &other);
+
     private:
         ContainerType _elements;
 

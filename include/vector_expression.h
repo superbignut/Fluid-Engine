@@ -4,7 +4,13 @@
 #include <functors.h>
 namespace big
 {
+    ////////////////////////////////////////////
+    //// Curiously Recurring Template Pattern///
+    ////////////////////////////////////////////
+    //！
     //! \brief base class for vector expression.
+    //! \param T Real number type.
+    //! \param E Subclass type.
     template <typename T, typename E>
     class VectorExpression
     {
@@ -13,14 +19,17 @@ namespace big
         const E &operator()() const;
     };
 
-    //! vector expression for unary operations.
+    //! \brief expression for unary operations.
+    //! \param T Real number type.
+    //! \param E Input expression type.
+    //! \param Op Unary operation.
     template <typename T, typename E, typename Op>
     class VectorUnaryOp : public VectorExpression<T, VectorUnaryOp<T, E, Op>>
     {
     public:
         VectorUnaryOp(const E &other);
 
-        std::size_t size();
+        std::size_t size() const;
 
         T operator[](std::size_t i) const;
 
@@ -34,6 +43,10 @@ namespace big
     using VectorTypeCast = VectorUnaryOp<T, E, TypeCast<T, U>>;
 
     //! \brief Vector expression for binary operations.
+    //! \param T Real number type.
+    //! \param E1 First input expression type.
+    //! \param E2 Second input expression type.
+    //! \param Op Binary operation.
     template <typename T, typename E1, typename E2, typename Op>
     class VectorBinaryOp : public VectorExpression<T, VectorBinaryOp<T, E1, E2, Op>>
     {
@@ -51,6 +64,9 @@ namespace big
     };
 
     //! \brief vector expression for matrix -scalar binary operations.
+    //! \param T Real number type.
+    //! \param E Input expression type.
+    //! \param Op Binary operation.
     template <typename T, typename E, typename Op>
     class VectorScalarBinaryOp : public VectorExpression<T, VectorScalarBinaryOp<T, E, Op>>
     {
@@ -97,6 +113,7 @@ namespace big
     template <typename T, typename E>
     using VectorScalarRDiv = VectorScalarBinaryOp<T, E, RDivides<T>>;
 
+// in order to use static Polymorphism,  all the params use VectorExpression<>. 
     template <typename T, typename E1, typename E2>
     VectorAdd<T, E1, E2> operator+(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b);
 

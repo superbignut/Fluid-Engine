@@ -5,16 +5,30 @@
 #include <array3.h>
 #include <gtest/gtest.h>
 
-int main(int argc, char** argv)
-{   
-
-
-    std::initializer_list<int> lst = {1,2,3};
-
-    for(auto & ele : lst)
+template <typename T>
+class A
+{
+public:
+    void interface()
     {
-        std::cout<< ele <<std::endl;
+        static_cast<T *>(this)->implementation();
     }
-    //TEST();
+};
+
+class B : public A<B>
+{
+public:
+    void implementation()
+    {
+        std::cout << "!!!" << std::endl;
+    }
+};
+
+int main(int argc, char **argv)
+{
+    B bbb;
+    bbb.interface();
+
+    // TEST();
     return 0;
 }

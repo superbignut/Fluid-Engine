@@ -51,6 +51,20 @@ namespace big
     }
 
     template <typename T, std::size_t N>
+    template<typename E>
+    Vector<T, N>::Vector(const VectorExpression<T, E> &other)
+    {
+        set(other);
+    }
+
+    template <typename T, std::size_t N>
+    template<typename E>
+    void Vector<T, N>::set(const VectorExpression<T, E> &other)
+    {
+        
+    }
+
+    template <typename T, std::size_t N>
     template <typename... Params>
     void Vector<T, N>::setAt(std::size_t i, T v, Params... params)
     {
