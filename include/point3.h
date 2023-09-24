@@ -100,9 +100,9 @@ namespace big
 
         bool isEqual(const Point &other) const;
 
-        T &operator[](T i);
+        T &operator[](std::size_t i);
 
-        const T &operator[](T i) const;
+        const T &operator[](std::size_t i) const;
 
         Point &operator=(const Point &other);
 

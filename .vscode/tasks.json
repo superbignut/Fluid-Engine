@@ -9,8 +9,8 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-I../include"
+                "${workspaceFolder}/build/big",
+                "-I${workspaceFolder}/include"
                 
             ],
             "options": {

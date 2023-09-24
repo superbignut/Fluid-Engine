@@ -7,7 +7,7 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/src/main",
+        "program": "${workspaceFolder}/build/big",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

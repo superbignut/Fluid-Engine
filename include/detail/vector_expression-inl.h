@@ -8,6 +8,7 @@ namespace big
     std::size_t VectorExpression<T, E>::size()
     {
         return static_cast<const E &>(*this).size();
+        std::cout << "father size\n"<<std::endl;
         // 这里实现了静态多态，看上去是使用基类的size()实际上使用的是子类的size()
     }
 
@@ -68,19 +69,19 @@ namespace big
     template <typename T, typename E>
     VectorScalarAdd<T, E> operator+(const T &a, const VectorExpression<T, E> &b)
     {
-        return VectorScalarAdd(b(), a);// constructor(operator(), T).
+        return VectorScalarAdd(b(), a); // constructor(operator(), T).
     }
 
     template <typename T, typename E1, typename E2>
     VectorAdd<T, E1, E2> operator+(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
     {
-        return VectorAdd(a(), b());//operator()
+        return VectorAdd(a(), b()); // operator()
     }
 
     template <typename T, typename E>
     VectorScalarAdd<T, E> operator+(const VectorExpression<T, E> &a, const T &b)
     {
-        return VectorScalarAdd(a(), b);// constructor(operator(), T).
+        return VectorScalarAdd(a(), b); // constructor(operator(), T).
     }
 
     template <typename T, typename E1, typename E2>

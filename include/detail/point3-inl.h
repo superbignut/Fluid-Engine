@@ -263,13 +263,13 @@ namespace big
     }
 
     template <typename T>
-    T &Point<T, 3>::operator[](T i)
+    T &Point<T, 3>::operator[](std::size_t i)
     {
         assert(i < 3);
         return (&x)[i];
     }
     template <typename T>
-    const T &Point<T, 3>::operator[](T i) const
+    const T &Point<T, 3>::operator[](std::size_t i) const
     {
         assert(i < 3);
         return (&x)[i];
