@@ -10,7 +10,8 @@
                 "${file}",
                 "-o",
                 "${workspaceFolder}/build/big",
-                "-I${workspaceFolder}/include"
+                "-I${workspaceFolder}/include",
+                "-std=c++20"
                 
             ],
             "options": {

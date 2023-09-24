@@ -5,10 +5,9 @@ namespace big
 {
 
     template <typename T, typename E>
-    std::size_t VectorExpression<T, E>::size()
+    std::size_t VectorExpression<T, E>::size()const
     {
         return static_cast<const E &>(*this).size();
-        std::cout << "father size\n"<<std::endl;
         // 这里实现了静态多态，看上去是使用基类的size()实际上使用的是子类的size()
     }
 
@@ -19,7 +18,7 @@ namespace big
     }
 
     template <typename T, typename E, typename Op>
-    VectorUnaryOp<T, E, Op>::VectorUnaryOp(const E &other) : _u(other._u), _op() {}
+    VectorUnaryOp<T, E, Op>::VectorUnaryOp(const E &other) : _u(other), _op() {}
 
     template <typename T, typename E, typename Op>
     std::size_t VectorUnaryOp<T, E, Op>::size() const
@@ -42,7 +41,7 @@ namespace big
     template <typename T, typename E1, typename E2, typename Op>
     std::size_t VectorBinaryOp<T, E1, E2, Op>::size() const
     {
-        return _u.size();
+        return _v.size();// _v i different with _u 
     }
 
     template <typename T, typename E1, typename E2, typename Op>
@@ -69,43 +68,43 @@ namespace big
     template <typename T, typename E>
     VectorScalarAdd<T, E> operator+(const T &a, const VectorExpression<T, E> &b)
     {
-        return VectorScalarAdd(b(), a); // constructor(operator(), T).
+        return VectorScalarAdd<T, E>(b(), a); // constructor(operator(), T).
     }
 
     template <typename T, typename E1, typename E2>
     VectorAdd<T, E1, E2> operator+(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
     {
-        return VectorAdd(a(), b()); // operator()
+        return VectorAdd<T, E1, E2>(a(), b()); // operator()
     }
 
     template <typename T, typename E>
     VectorScalarAdd<T, E> operator+(const VectorExpression<T, E> &a, const T &b)
     {
-        return VectorScalarAdd(a(), b); // constructor(operator(), T).
+        return VectorScalarAdd<T, E>(a(), b); // constructor(operator(), T).
     }
 
     template <typename T, typename E1, typename E2>
     VectorSub<T, E1, E2> operator-(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
     {
-        return VectorSub(a(), b());
+        return VectorSub<T, E1, E2>(a(), b());
     }
 
     template <typename T, typename E>
     VectorScalarSub<T, E> operator-(const VectorExpression<T, E> &a, const T &b)
     {
-        return VectorScalarSub(a(), b);
+        return VectorScalarSub<T, E>(a(), b);
     }
 
     template <typename T, typename E>
     VectorScalarRSub<T, E> operator-(const T &a, const VectorExpression<T, E> &b)
     {
-        return VectorScalarSub(b(), a);
+        return VectorScalarRSub<T, E>(b(), a);
     }
 
     template <typename T, typename E1, typename E2>
     VectorMul<T, E1, E2> operator*(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
     {
-        return VectorMul(a(), b());
+        return VectorMul<T, E1, E2>(a(), b());
     }
 
     template <typename T, typename E>
@@ -117,24 +116,24 @@ namespace big
     template <typename T, typename E>
     VectorScalarMul<T, E> operator*(const T &a, const VectorExpression<T, E> &b)
     {
-        return VectorScalarMul(b(), a);
+        return VectorScalarMul<T, E>(b(), a);
     }
     template <typename T, typename E1, typename E2>
     VectorDiv<T, E1, E2> operator/(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
     {
-        return VectorDiv(a(), b());
+        return VectorDiv<T, E1, E2>(a(), b());
     }
 
     template <typename T, typename E>
     VectorScalarDiv<T, E> operator/(const VectorExpression<T, E> &a, const T &b)
     {
-        return VectorScalarDiv(a(), b);
+        return VectorScalarDiv<T, E>(a(), b);
     }
 
     template <typename T, typename E>
     VectorScalarRDiv<T, E> operator/(const T &a, const VectorExpression<T, E> &b)
     {
-        return VectorScalarRDiv(b(), a);
+        return VectorScalarRDiv<T, E>(b(), a);
     }
 
 } // namespace big

@@ -89,13 +89,14 @@ namespace big
         T length() const;
 
         T lengthSquared() const;
-        
+
+        // U is the type convert to, T is origin
         template <typename U>
         VectorTypeCast<U, Vector<T, N>, T> castTo() const;
 
         template <typename E>
         bool isEqual(const E &other) const;
-    
+
         template <typename E>
         bool isSimilar(const E &other, T epsilon = std::numeric_limits<T>::epsilon()) const;
 
@@ -206,6 +207,13 @@ namespace big
         void setAt(std::size_t i, T v, Params... params);
 
         void setAt(std::size_t i, T v);
+    };
+
+    
+    template <typename T, std::size_t N>
+    struct ScalarType<Vector<T, N>>
+    {
+        typedef T value;
     };
 
 } // namespace big

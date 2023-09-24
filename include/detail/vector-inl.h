@@ -59,11 +59,11 @@ namespace big
 
     template <typename T, std::size_t N>
     template <typename E>
-    void Vector<T, N>::set(const VectorExpression<T, E> &other)
+    void Vector<T, N>::set(const VectorExpression<T, E> &other) // other can be VectorExpression and his son.
     {
-        assert(size() == other.size()); // N == other.size()
+        assert(size() == other.size()); // call VectorExpression's size() const
 
-        const E &expression = other(); // 调用()之后，返回的是子类？
+        const E &expression = other(); // call ()(), return CRTP's son class
 
         forEachIndex([&](std::size_t i)
                      { _elements[i] = expression[i]; });
@@ -72,8 +72,8 @@ namespace big
     template <typename T, std::size_t N>
     constexpr std::size_t Vector<T, N>::size() const
     {
-        std::cout << "son size\n"
-                  << std::endl;
+        // std::cout << "son size\n"
+                //   << std::endl;
         return N;
     }
 
@@ -94,6 +94,7 @@ namespace big
     template <typename T, std::size_t N>
     void Vector<T, N>::normalize()
     {
+        idiv(length());
     }
 
     template <typename T, std::size_t N>
@@ -155,7 +156,7 @@ namespace big
     template <typename T, std::size_t N>
     VectorScalarRSub<T, Vector<T, N>> Vector<T, N>::rsub(const T &s) const
     {
-        return VectorScalarSub<T, Vector>(*this, s);
+        return VectorScalarRSub<T, Vector>(*this, s);
     }
     template <typename T, std::size_t N>
     template <typename E>
@@ -520,7 +521,7 @@ namespace big
     template <typename U>
     VectorTypeCast<U, Vector<T, N>, T> Vector<T, N>::castTo() const
     {
-        return VectorTypeCast<U, Vector<T, N>, T>(*this);
+        return VectorTypeCast<U, Vector, T>(*this);
     }
 
     template <typename T, std::size_t N>
