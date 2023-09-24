@@ -19,10 +19,10 @@ int main(int argc, char **argv)
     float tmp=10;
     auto ddd = aaa + bbb;
     // // aaa.set(bbb);
-    big::ScalarType<int> aa; 
+    big::ScalarType<big::Vector<float, 3>>::value a;
     // auto ccc = aaa.castTo<int>();
 
-    std::cout << ddd[0] << " " << ddd[3] << std::endl;
+    std::cout << ddd[0] << " " << std::endl;
 
     return 0;
 }
