@@ -92,7 +92,7 @@ namespace big
 
         // U is the type convert to, T is origin
         template <typename U>
-        VectorTypeCast<U, Vector<T, N>, T> castTo() const;
+        VectorTypeCast<U, Vector, T> castTo() const;
 
         template <typename E>
         bool isEqual(const E &other) const;

@@ -1,0 +1,4 @@
+#ifndef INCLUDE_BIG_VECTOR4_INL_H_
+#define INCLUDE_BIG_VCETOR4_INL_H_
+
+#endif

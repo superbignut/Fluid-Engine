@@ -1,0 +1,4 @@
+#ifndef INCLUDE_BIG_VECTOR3_INL_H_
+#define INCLUDE_BIG_VCETOR3_INL_H_
+
+#endif

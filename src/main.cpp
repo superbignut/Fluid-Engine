@@ -4,25 +4,18 @@
 #include <vector>
 #include <array3.h>
 #include <vector_expression.h>
-#include "vector.h"
-
+#include "vector2.h"
 
 
 
 int main(int argc, char **argv)
 {
 
-    big::Vector<float, 4> aaa(1.1, 2.1, 3.1, 4.1);
+    big::Vector<float, 2> aaa(1.0, 1.0);
+    big::Vector<float, 2> normal(0,1);
+    auto refl = aaa.reflect(normal);
 
-    big::Vector<float, 4> bbb(1, 2, 3, 4);
 
-    float tmp=10;
-    auto ddd = aaa + bbb;
-    // // aaa.set(bbb);
-    big::ScalarType<big::Vector<float, 3>>::value a;
-    // auto ccc = aaa.castTo<int>();
-
-    std::cout << ddd[0] << " " << std::endl;
-
+    std::cout << refl.at(0)<<refl.at(1)<<std::endl;
     return 0;
 }

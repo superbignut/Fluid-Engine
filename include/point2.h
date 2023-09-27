@@ -72,9 +72,9 @@ namespace big
 
         void idiv(const Point &other);
 
-        T &at(T i);
+        T &at(std::size_t i);
 
-        const T &at(T i) const;
+        const T &at(std::size_t i) const;
 
         T sum() const;
 
@@ -86,9 +86,9 @@ namespace big
 
         T absmax() const;
 
-        T domintAxis() const;
+        std::size_t domintAxis() const;
 
-        T subminanAxis() const;
+        std::size_t subminanAxis() const;
 
         template <typename U>
         Point<U, 2> castTo() const;

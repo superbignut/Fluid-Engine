@@ -176,14 +176,14 @@ namespace big
     }
 
     template <typename T>
-    T &Point<T, 2>::at(T i)
+    T &Point<T, 2>::at(std::size_t i)
     {
         assert(i < 2);
         return (&x)[i];
     }
 
     template <typename T>
-    const T &Point<T, 2>::at(T i) const
+    const T &Point<T, 2>::at(std::size_t i) const
     {
         assert(i < 2);
         return (&x)[i];
@@ -219,13 +219,13 @@ namespace big
     }
 
     template <typename T>
-    T Point<T, 2>::domintAxis() const
+    std::size_t Point<T, 2>::domintAxis() const
     {
         return (std::abs(x) > std::abs(y)) ? 0 : 1;
     }
 
     template <typename T>
-    T Point<T, 2>::subminanAxis() const
+    std::size_t Point<T, 2>::subminanAxis() const
     {
         return (std::abs(x) < std::abs(y)) ? 0 : 1;
     }

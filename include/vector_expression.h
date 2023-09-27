@@ -81,7 +81,7 @@ namespace big
         T operator[](std::size_t i) const;
 
     private:
-        const E &_u;
+        const E &_u; // use template type E as its member_var's type
         T _v;
         Op _op;
     };
