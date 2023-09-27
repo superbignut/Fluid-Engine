@@ -13,7 +13,7 @@
 + xxx
 ---
 ### 5. Complete the vector2.h, vector3.h and vector4.h.
-+ vector2.h, vector3.h, vector4.h， vectorn.h
++ vector2.h, vector3.h, vector4.h, vectorn.h
 ---
 ### ~~4. Complete the vector.h and its corresponding include files.~~
 + ~~vector_expression.h and vector_expression-inl.h~~

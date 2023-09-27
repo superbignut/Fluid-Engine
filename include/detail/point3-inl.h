@@ -217,12 +217,12 @@ namespace big
     template <typename T>
     T Point<T, 3>::min() const
     {
-        return std::min(x, y, z);
+        return std::min(std::min(x, y), z);
     }
     template <typename T>
     T Point<T, 3>::max() const
     {
-        return std::max(x, y, z);
+        return std::max(std::max(x, y), z);
     }
 
     template <typename T>
@@ -358,9 +358,6 @@ namespace big
         return !isEqual(other);
     }
 
-
-
-
     template <typename T>
     Point<T, 3> operator+(const Point<T, 3> &other1, const Point<T, 3> &other2)
     {
@@ -447,17 +444,17 @@ namespace big
     template <typename T>
     Point<T, 3> min(const Point<T, 3> &other1, const Point<T, 3> &other2)
     {
-        return Point<T, 3>(std::min(other1.x, other2.x), std::min(other1.y, other2.y),std::min(other1.z, other2.z));
+        return Point<T, 3>(std::min(other1.x, other2.x), std::min(other1.y, other2.y), std::min(other1.z, other2.z));
     }
     template <typename T>
     Point<T, 3> max(const Point<T, 3> &other1, const Point<T, 3> &other2)
     {
-        return Point<T, 3>(std::max(other1.x, other2.x), std::max(other1.y, other2.y),std::max(other1.z, other2.z));
+        return Point<T, 3>(std::max(other1.x, other2.x), std::max(other1.y, other2.y), std::max(other1.z, other2.z));
     }
     template <typename T>
     Point<T, 3> clamp(const Point<T, 3> &s, const Point<T, 3> &low, const Point<T, 3> &high)
     {
-        return Point<T, 3>(std::clamp(s.x, low.x, high.x), std::clamp(s.y, low.y, high.y),std::clamp(s.z, low.z, high.z));
+        return Point<T, 3>(std::clamp(s.x, low.x, high.x), std::clamp(s.y, low.y, high.y), std::clamp(s.z, low.z, high.z));
     }
     template <typename T>
     Point<T, 3> ceil(const Point<T, 3> &other)

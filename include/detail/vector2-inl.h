@@ -272,15 +272,13 @@ namespace big
     template <typename T>
     T Vector<T, 2>::distanceTo(const Vector &other) const
     {
-        return std::sqrt(distanceSquaredTo());
+        return sub(other).length()
     }
 
     template <typename T>
     T Vector<T, 2>::distanceSquaredTo(const Vector &other) const
     {
-        T diffx = x - other.x;
-        T diffy = y = other.y;
-        return diffx * diffx + diffy * diffy;
+        return sub(other).lengthSquared();
     }
     template <typename T>
     Vector<T, 2> Vector<T, 2>::reflect(const Vector &normal) const
