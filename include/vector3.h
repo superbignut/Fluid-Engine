@@ -14,9 +14,9 @@ namespace big
         T y;
         T z;
 
-        constexpr Vector() : x(0), y(0),z(0) {}
+        constexpr Vector() : x(0), y(0), z(0) {}
 
-        constexpr Vector(T x_, T y_, T z_) : x(x_), y(y_),z(z_) {}
+        constexpr Vector(T x_, T y_, T z_) : x(x_), y(y_), z(z_) {}
 
         template <typename U>
         Vector(const std::initializer_list<U> &lst);
@@ -26,7 +26,7 @@ namespace big
 
         constexpr Vector(const Vector &v) : x(v.x), y(v.y), z(v.z) {} // copy construct.
 
-        constexpr Vector(const Vector<T, 2> &other, T z_) : x(other.x), y(other.y), z(z_){}
+        constexpr Vector(const Vector<T, 2> &other, T z_) : x(other.x), y(other.y), z(z_) {}
 
         void set(const Vector<T, 2> &other, T z_);
 
@@ -240,9 +240,9 @@ namespace big
         typedef T value;
     };
     template <typename T>
-    Vector<T, 3> monotonicCatmullRom(const Vector<T, 3>& v0, const Vector<T, 3>& v1,
-                                     const Vector<T, 3>& v2, const Vector<T, 3>& v3, T f);
-    
+    Vector<T, 3> CatmullRom(const Vector<T, 3> &v0, const Vector<T, 3> &v1,
+                            const Vector<T, 3> &v2, const Vector<T, 3> &v3, T f);
+
 }
 
 #include "detail/vector3-inl.h"

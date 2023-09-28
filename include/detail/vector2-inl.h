@@ -238,6 +238,11 @@ namespace big
     {
         return std::max(x, y);
     }
+    template <typename T>
+    T Vector<T, 2>::avg() const
+    {
+        return (x + y) / 2;
+    }
 
     template <typename T>
     T Vector<T, 2>::absmin() const
@@ -272,7 +277,7 @@ namespace big
     template <typename T>
     T Vector<T, 2>::distanceTo(const Vector &other) const
     {
-        return sub(other).length()
+        return sub(other).length();
     }
 
     template <typename T>

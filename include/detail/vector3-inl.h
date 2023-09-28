@@ -247,6 +247,12 @@ namespace big
     }
 
     template <typename T>
+    T Vector<T, 3>::avg() const
+    {
+        return (x + y + z) / 3;
+    }
+
+    template <typename T>
     T Vector<T, 3>::min() const
     {
         return std::min(std::min(x, y), z);
@@ -332,7 +338,7 @@ namespace big
     {
         return (std::abs(x - other.x) < epsilon) &&
                (std::abs(y - other.y) < epsilon) &&
-               (std::abs(y - other.y) < epsilon);
+               (std::abs(z - other.z) < epsilon);
     }
 
     template <typename T>
@@ -538,6 +544,24 @@ namespace big
     Vector<T, 3> floor(const Vector<T, 3> &other)
     {
         return Vector<T, 3>(std::floor(other.x), std::floor(other.y), std::floor(other.z));
+    }
+    template <typename T>
+    Vector<T, 3> CatmullRom(const Vector<T, 3> &v0, const Vector<T, 3> &v1,
+                            const Vector<T, 3> &v2, const Vector<T, 3> &v3, T f)
+    {
+        static const T two = static_cast<T>(2);
+        static const T three = static_cast<T>(3);
+
+        Vector<T, 3> d1 = (v2 - v0) / two;
+        Vector<T, 3> d2 = (v3 - v1) / two;
+        Vector<T, 3> D1 = v2 - v1;
+
+        Vector<T, 3> a3 = d1 - two * D1, + d2;
+        Vector<T, 3> a2 = - two * d1 + three * D1 - d2;
+        Vector<T ,3> a1 = d1;
+        Vector<T, 3> a0 = v1;
+
+        return a3 * cubic(f) + a2 * square(f) + a1 * f + a0;
     }
 }
 #endif

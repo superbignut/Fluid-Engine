@@ -23,6 +23,17 @@ namespace big
     {
         return (x * x >= y * y) ? (x * x >= z * z ? x : z) : (y * y >= z * z ? y : z);
     }
+    template <typename T>
+    T cubic(T x)
+    {
+        return x * x * x;
+    }
+
+    template <typename T>
+    T square(T x)
+    {
+        return x * x;
+    }
     
 }
 
