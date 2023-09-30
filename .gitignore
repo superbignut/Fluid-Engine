@@ -2,3 +2,5 @@
 /src/main
 /external/googletest/*
 /lua
+/render/*
+/scenes/*
