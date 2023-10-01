@@ -100,7 +100,11 @@ namespace big
     {
         return VectorScalarRSub<T, E>(b(), a);
     }
-
+    template <typename T, typename E>
+    VectorScalarRSub<T, E> operator-(const VectorExpression<T, E> &a)
+    {
+        return VectorScalarRSub<T, E>(a(), 0);
+    }
     template <typename T, typename E1, typename E2>
     VectorMul<T, E1, E2> operator*(const VectorExpression<T, E1> &a, const VectorExpression<T, E2> &b)
     {

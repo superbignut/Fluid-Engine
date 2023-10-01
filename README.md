@@ -7,10 +7,15 @@
 ### By 👀reading the 😱excellent 📖book "💦Fluid 🤖Engine 💻Development" and learning its 🥰concise 😍code 🤩structure💩,  the "🤪big" 🚀engine is ⏳being 🤠developed 🥱completely 🧐from 🥶scratch.🤓
 ---
 ## To Do:
-### 6. write someting here...
+### 7. write someting here...
 + xxx
 + xxx
 + xxx
+---
+### 6. Complete the matrix.h and its corresponding include files.
++ matrix.h, matrix_expression.h
++ matrix2x2.h, matrix3x3.h and matrix4x4.h
++ math_utils.h, vectorn.h and something else
 ---
 ### ~~5. Complete the vector2.h, vector3.h and vector4.h.~~
 + ~~vector2.h, vector3.h, vector4.h~~

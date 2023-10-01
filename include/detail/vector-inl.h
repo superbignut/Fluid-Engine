@@ -438,7 +438,7 @@ namespace big
     std::size_t Vector<T, N>::dominantAxis() const
     {
         auto iter = std::max_element(begin(), end(), [](const T &a, const T &b)
-                                     { return std::fabs(a) < std::fabs(b); });
+                                     { return fabs(a) < fabs(b); });
         return iter - begin();
     }
 
@@ -446,7 +446,7 @@ namespace big
     std::size_t Vector<T, N>::subminantAxis() const
     {
         auto iter = std::max_element(begin(), end(), [](const T &a, const T &b)
-                                     { return std::fabs(a) > std::fabs(b); });
+                                     { return fabs(a) > fabs(b); });
         return iter - begin();
     }
 
@@ -460,7 +460,7 @@ namespace big
     T Vector<T, N>::length() const
     {
 
-        return std::sqrt(lengthSquared());
+        return sqrt(lengthSquared());
     }
 
     template <typename T, std::size_t N>
@@ -502,7 +502,7 @@ namespace big
     template <typename E>
     T Vector<T, N>::distanceTo(const E &other) const
     {
-        return std::sqrt(distanceSquaredTo(other));
+        return sqrt(distanceSquaredTo(other));
     }
 
     template <typename T, std::size_t N>
