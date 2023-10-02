@@ -1,6 +1,6 @@
 /build
 /src/main
-/external/googletest/*
+/external
 /lua
 /render/*
 /scenes

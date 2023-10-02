@@ -9,7 +9,7 @@
 #include <point3.h>
 namespace big
 {
-  //! datas were stored in an array i + width * j =(i, j)
+  //! datas were stored in an array i + width * j + width * depth * k = (i, j, k)
   //! weight is the inner size
   //! height is the outer size
   template <typename T>
