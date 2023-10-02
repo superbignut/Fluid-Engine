@@ -3,4 +3,4 @@
 /external/googletest/*
 /lua
 /render/*
-/scenes/*
+/scenes

@@ -159,7 +159,7 @@ namespace big
     };
 
     template <typename T, typename ME, typename VE>
-    class MatrixVectorMul : public VectorExpression<T, MatrixVectorMul<T, ME, VE>> // Father is VectorExpression, because Matrix * Vector =VE
+    class MatrixVectorMul : public VectorExpression<T, MatrixVectorMul<T, ME, VE>> // Father is VectorExpression, because Matrix * Vector = VE
     {
     public:
         MatrixVectorMul(const ME &m, const VE &v);
@@ -174,7 +174,7 @@ namespace big
     };
 
     template <typename T, typename E1, typename E2>
-    class MatrixMul : public MatrixExpression<T, MatrixMul<T, E1, E2>> // Father is VectorExpression, because Matrix * Vector =VE
+    class MatrixMul : public MatrixExpression<T, MatrixMul<T, E1, E2>> // Father is VectorExpression, because Matrix * Vector = VE
     {
     public:
         MatrixMul(const E1 &u, const E2 &v);
