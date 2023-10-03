@@ -2,6 +2,7 @@
 #define INCLUDE_BIG_MATRIX_H_
 #include "matrix_expression.h"
 #include <limits>
+#include <cmath>
 namespace big
 {
     //! datas were stored in an array j + cols * i =(i, j)
@@ -47,16 +48,16 @@ namespace big
         void setOffDiagonal(const T &s);
 
         template <typename E>
-        void setRow(std::size_t j, const VectorExpression<T, E> &row);
+        void setRow(std::size_t i, const VectorExpression<T, E> &row);
 
         template <typename E>
         void setCol(std::size_t j, const VectorExpression<T, E> &col);
 
         template <typename E>
-        void isEqual(const MatrixExpression<T, E> &other) const;
+        bool isEqual(const MatrixExpression<T, E> &other) const;
 
         template <typename E>
-        void isSimilar(const MatrixExpression<T, E> &other, double tol = std::numeric_limits<double>::epsilon()) const;
+        bool isSimilar(const MatrixExpression<T, E> &other, double tol = std::numeric_limits<double>::epsilon()) const;
 
         constexpr bool isSquare() const;
 
@@ -101,15 +102,16 @@ namespace big
         template <typename E>
         MatrixAdd<T, Matrix, E> radd(const E &m) const;
 
-        MatrixScalarSub<T, Matrix> rsub(const T &s) const;
+        MatrixScalarRSub<T, Matrix> rsub(const T &s) const;
 
         template <typename E>
         MatrixSub<T, Matrix, E> rsub(const E &m) const;
 
         MatrixScalarMul<T, Matrix> rmul(const T &s) const;
 
+        //m * this
         template <std::size_t L>
-        MatrixMul<T, Matrix, Matrix<T, N, L>> rmul(const Matrix<T, N, L> &m) const;
+        MatrixMul<T, Matrix<T, L, M>, Matrix> rmul(const Matrix<T, L, M> &m) const;
 
         MatrixScalarDiv<T, Matrix> rdiv(const T &s) const;
 

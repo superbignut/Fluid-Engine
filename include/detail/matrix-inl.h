@@ -30,8 +30,9 @@ namespace big
     void Matrix<T, M, N>::set(const MatrixExpression<T, E> &other)
     {
         const E &expression = other();
-        //forEachIndex is const member function, but *this is still been changed.
-        forEachIndex([&](std::size_t i, std::size_t j){(*this)(i, j) = expression(i, j);});
+        // forEachIndex is const member function, but *this is still been changed.
+        forEachIndex([&](std::size_t i, std::size_t j)
+                     { (*this)(i, j) = expression(i, j); });
     }
 
     template <typename T, std::size_t M, std::size_t N>
@@ -71,7 +72,7 @@ namespace big
     template <typename T, std::size_t M, std::size_t N>
     constexpr Size2 Matrix<T, M, N>::size() const
     {
-        return Size2(M, N);
+        return Size2(rows(), cols());
     }
 
     template <typename T, std::size_t M, std::size_t N>
@@ -81,25 +82,293 @@ namespace big
     }
 
     template <typename T, std::size_t M, std::size_t N>
-    void Matrix<T, M, N>::setDiagonal(const T& s)
+    void Matrix<T, M, N>::setDiagonal(const T &s)
     {
         const std::size_t l = std::min(M, N);
-        for(int i =0;i < l;++i)
+        for (int i = 0; i < l; ++i)
         {
-            (*this)(i , i) = s;
+            (*this)(i, i) = s;
         }
     }
     template <typename T, std::size_t M, std::size_t N>
-    void Matrix<T, M, N>::setOffDiagonal(const T& s)
+    void Matrix<T, M, N>::setOffDiagonal(const T &s)
     {
-        forEachIndex([&](std::size_t i, std::size_t j){
+        forEachIndex([&](std::size_t i, std::size_t j)
+                     {
             if(i != j)
             {
                 (*this)(i, j) = s;
-            }
-        });
+            } });
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    void Matrix<T, M, N>::setRow(std::size_t i, const VectorExpression<T, E> &row)
+    {
+        const E &e = row();
+        for (int j = 0; j < cols(); ++j)
+        {
+            (*this)(i, j) = e[j];
+        }
     }
 
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    void Matrix<T, M, N>::setCol(std::size_t j, const VectorExpression<T, E> &row)
+    {
+        const E &e = row();
+        for (int i = 0; i < rows(); ++i)
+        {
+            (*this)(i, j) = e[i];
+        }
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    bool Matrix<T, M, N>::isEqual(const MatrixExpression<T, E> &other) const
+    {
+        if (size() != other.size())
+            return false;
+        for (int i = 0; i < M; ++i)
+        {
+            for (int j = 0; j < N; ++j)
+            {
+                if ((*this)(i, j) != other(i, j))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    bool Matrix<T, M, N>::isSimilar(const MatrixExpression<T, E> &other, double tol) const
+    {
+        if (size() != other.size())
+            return false;
+        for (int i = 0; i < M; ++i)
+        {
+            for (int j = 0; j < N; ++j)
+            {
+                if (std::fabs((*this)(i, j) - other(i, j)) > tol)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    constexpr bool Matrix<T, M, N>::isSquare() const
+    {
+        return M == N;
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    T *Matrix<T, M, N>::data()
+    {
+        return _elements.data();
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    const T *const Matrix<T, M, N>::data() const
+    {
+        return _elements.data();
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    typename Matrix<T, M, N>::Iterator Matrix<T, M, N>::begin()
+    {
+        return _elements.begin();
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    typename Matrix<T, M, N>::ConstIterator Matrix<T, M, N>::begin() const
+    {
+        return _elements.begin();
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    typename Matrix<T, M, N>::Iterator Matrix<T, M, N>::end()
+    {
+        return _elements.end();
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    typename Matrix<T, M, N>::ConstIterator Matrix<T, M, N>::end() const
+    {
+        return _elements.end();
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarAdd<T, Matrix<T, M, N>> Matrix<T, M, N>::add(const T &s) const
+    {
+        return MatrixScalarAdd<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    MatrixAdd<T, Matrix<T, M, N>, E> Matrix<T, M, N>::add(const E &m) const
+    {
+        return MatrixAdd<T, Matrix, E>(*this, m);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarSub<T, Matrix<T, M, N>> Matrix<T, M, N>::sub(const T &s) const
+    {
+        return MatrixScalarSub<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    MatrixSub<T, Matrix<T, M, N>, E> Matrix<T, M, N>::sub(const E &m) const
+    {
+        return MatrixSub<T, Matrix, E>(*this, m);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarMul<T, Matrix<T, M, N>> Matrix<T, M, N>::mul(const T &s) const
+    {
+        return MatrixScalarMul<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename VE>
+    MatrixVectorMul<T, Matrix<T, M, N>, VE> Matrix<T, M, N>::mul(const VectorExpression<T, VE> &v) const
+    {
+        return MatrixVectorMul<T, Matrix, VE>(*this, v);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <std::size_t L>
+    MatrixMul<T, Matrix<T, M, N>, Matrix<T, N, L>> Matrix<T, M, N>::mul(const Matrix<T, N, L> &m) const
+    {
+        return MatrixMul<T, Matrix<T, M, N>, Matrix<T, N, L>>(*this, m);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarDiv<T, Matrix<T, M, N>> Matrix<T, M, N>::div(const T &s) const
+    {
+        return MatrixScalarDiv<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarAdd<T, Matrix<T, M, N>> Matrix<T, M, N>::radd(const T &s) const
+    {
+        return MatrixScalarAdd<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    MatrixAdd<T, Matrix<T, M, N>, E> Matrix<T, M, N>::radd(const E &m) const
+    {
+        return MatrixAdd<T, Matrix, E>(*this, m);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarRSub<T, Matrix<T, M, N>> Matrix<T, M, N>::rsub(const T &s) const
+    {
+        return MatrixScalarRSub<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    MatrixSub<T, Matrix<T, M, N>, E> Matrix<T, M, N>::rsub(const E &m) const
+    {
+        return MatrixSub<T, Matrix, Matrix>(m, *this);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarMul<T, Matrix<T, M, N>> Matrix<T, M, N>::rmul(const T &s) const
+    {
+        return MatrixScalarMul<T, Matrix>(*this, s);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <std::size_t L>
+    MatrixMul<T, Matrix<T, L, M>, Matrix<T, M, N>> Matrix<T, M, N>::rmul(const Matrix<T, L, M> &m) const
+    {
+        return MatrixMul(m, *this);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixScalarDiv<T, Matrix<T, M, N>> Matrix<T, M, N>::rdiv(const T &s) const
+    {
+        return MatrixScalarRDiv<T, Matrix>(*this, s);
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::iadd(const T &s)
+    {
+        return set(add(s));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    void Matrix<T, M, N>::iadd(const E &m)
+    {
+        return set(add(m));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::isub(const T &s)
+    {
+        return set(sub(s));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    void Matrix<T, M, N>::isub(const E &m)
+    {
+        return set(sub(m));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::imul(const T &s)
+    {
+        return set(mul(s));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    void Matrix<T, M, N>::imul(const E &m)
+    {
+        return set(mul(m));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::idiv(const T &s)
+    {
+        return set(div(s));
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    void Matrix<T, M, N>::idiv(const E &m)
+    {
+        return set(div(m));
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::transpose()
+    {
+        set(transposed());
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::invert()
+    {
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::sum() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::avg() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::min() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::max() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::absmin() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::absmax() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::trace() const
+    {
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    T Matrix<T, M, N>::determinant() const
+    {
+    }
 
     template <typename T, std::size_t M, std::size_t N>
     T &Matrix<T, M, N>::operator()(std::size_t i, std::size_t j)
@@ -111,6 +380,34 @@ namespace big
     {
         return _elements[j + i * N];
     }
+
+    template <typename T, std::size_t M, std::size_t N>
+    constexpr std::size_t Matrix<T, M, N>::rows() const
+    {
+        return M;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    constexpr std::size_t Matrix<T, M, N>::cols() const
+    {
+        return N;
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, N, M> Matrix<T, M, N>::transposed() const
+    {
+        Matrix<T, N, M> temp;
+        forEachIndex([&](std::size_t i, std::size_t j)
+                     { temp(j, i) = (*this)(i, j); });
+                     return temp;
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, M, N> Matrix<T, M, N>::inverse() const
+    {
+        Matrix<T, N, M> inv;
+
+    }
+
     template <typename T, std::size_t M, std::size_t N>
     template <typename Callback>
     void Matrix<T, M, N>::forEach(Callback func) const
