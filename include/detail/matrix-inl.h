@@ -29,8 +29,9 @@ namespace big
     template <typename E>
     void Matrix<T, M, N>::set(const MatrixExpression<T, E> &other)
     {
-        const E &expression = other(); // other() call ()()
-        // 遍历foreachindex()
+        const E &expression = other();
+        //forEachIndex is const member function, but *this is still been changed.
+        forEachIndex([&](std::size_t i, std::size_t j){(*this)(i, j) = expression(i, j);});
     }
 
     template <typename T, std::size_t M, std::size_t N>
@@ -66,10 +67,6 @@ namespace big
     {
         set(other);
     }
-    template <typename T, std::size_t M, std::size_t N>
-    void Matrix<T, M, N>::set(const Matrix &other)
-    {
-    }
 
     template <typename T, std::size_t M, std::size_t N>
     constexpr Size2 Matrix<T, M, N>::size() const
@@ -84,6 +81,27 @@ namespace big
     }
 
     template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::setDiagonal(const T& s)
+    {
+        const std::size_t l = std::min(M, N);
+        for(int i =0;i < l;++i)
+        {
+            (*this)(i , i) = s;
+        }
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::setOffDiagonal(const T& s)
+    {
+        forEachIndex([&](std::size_t i, std::size_t j){
+            if(i != j)
+            {
+                (*this)(i, j) = s;
+            }
+        });
+    }
+
+
+    template <typename T, std::size_t M, std::size_t N>
     T &Matrix<T, M, N>::operator()(std::size_t i, std::size_t j)
     {
         return _elements[j + i * N];
@@ -93,7 +111,30 @@ namespace big
     {
         return _elements[j + i * N];
     }
-
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename Callback>
+    void Matrix<T, M, N>::forEach(Callback func) const
+    {
+        for (int i = 0; i < M; ++i)
+        {
+            for (int j = 0; j < N; ++j)
+            {
+                func((*this)(i, j));
+            }
+        }
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename Callback>
+    void Matrix<T, M, N>::forEachIndex(Callback func) const
+    {
+        for (int i = 0; i < M; ++i)
+        {
+            for (int j = 0; j < N; ++j)
+            {
+                func(i, j);
+            }
+        }
+    }
     template <typename T, std::size_t M, std::size_t N>
     template <typename... Params>
     void Matrix<T, M, N>::setRowAt(std::size_t i, T v, Params... params)

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BIG_MATRIX_H_
 #define INCLUDE_BIG_MATRIX_H_
 #include "matrix_expression.h"
+#include <limits>
 namespace big
 {
     //! datas were stored in an array j + cols * i =(i, j)
@@ -36,8 +37,6 @@ namespace big
         void set(const MatrixExpression<T, E> &other);
 
         Matrix(const Matrix &other);
-
-        void set(const Matrix &other);
 
         constexpr Size2 size() const;
 
