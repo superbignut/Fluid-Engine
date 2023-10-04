@@ -85,7 +85,7 @@ namespace big
     void Matrix<T, M, N>::setDiagonal(const T &s)
     {
         const std::size_t l = std::min(M, N);
-        for (int i = 0; i < l; ++i)
+        for (std::size_t i = 0; i < l; ++i)
         {
             (*this)(i, i) = s;
         }
@@ -105,7 +105,7 @@ namespace big
     void Matrix<T, M, N>::setRow(std::size_t i, const VectorExpression<T, E> &row)
     {
         const E &e = row();
-        for (int j = 0; j < cols(); ++j)
+        for (std::size_t j = 0; j < cols(); ++j)
         {
             (*this)(i, j) = e[j];
         }
@@ -116,7 +116,7 @@ namespace big
     void Matrix<T, M, N>::setCol(std::size_t j, const VectorExpression<T, E> &row)
     {
         const E &e = row();
-        for (int i = 0; i < rows(); ++i)
+        for (std::size_t i = 0; i < rows(); ++i)
         {
             (*this)(i, j) = e[i];
         }
@@ -128,11 +128,12 @@ namespace big
     {
         if (size() != other.size())
             return false;
-        for (int i = 0; i < M; ++i)
+        const E &e = other();
+        for (std::size_t i = 0; i < M; ++i)
         {
-            for (int j = 0; j < N; ++j)
+            for (std::size_t j = 0; j < N; ++j)
             {
-                if ((*this)(i, j) != other(i, j))
+                if ((*this)(i, j) != e(i, j))
                     return false;
             }
         }
@@ -145,9 +146,9 @@ namespace big
     {
         if (size() != other.size())
             return false;
-        for (int i = 0; i < M; ++i)
+        for (std::size_t i = 0; i < M; ++i)
         {
-            for (int j = 0; j < N; ++j)
+            for (std::size_t j = 0; j < N; ++j)
             {
                 if (std::fabs((*this)(i, j) - other(i, j)) > tol)
                     return false;
@@ -385,6 +386,7 @@ namespace big
         // scale
         for (std::size_t j = 0; j < n; ++j)
         {
+            assert(a(j,j) == 0 && "There is an error in Matrix inverse!!!");
             T c = 1 / a(j, j);
             for (std::size_t k = 0; k < n; ++k)
             {
@@ -408,36 +410,235 @@ namespace big
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::sum() const
     {
+        T sum = 0;
+        forEach([&](const T &s)
+                { sum += s; });
+        return sum;
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::avg() const
     {
+        return sum() / (rows() * cols());
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::min() const
     {
+        T ret = _elements.front();
+        for (auto v : _elements)
+        {
+            ret = std::min(ret, v);
+        }
+        return ret;
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::max() const
     {
+        T ret = _elements.front();
+        for (auto v : _elements)
+        {
+            ret = std::max(ret, v);
+        }
+        return ret;
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::absmin() const
     {
+        T ret = _elements.front();
+        for (auto v : _elements)
+        {
+            ret = big::absmin(ret, v);
+        }
+        return ret;
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::absmax() const
     {
+        T ret = _elements.front();
+        for (auto v : _elements)
+        {
+            ret = big::absmax(ret, v);
+        }
+        return ret;
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::trace() const
     {
+        assert(isSquare());
+        T ret = 0;
+        for (std::size_t i = 0; i < M; ++i)
+        {
+            ret += (*this)(i, i);
+        }
     }
     template <typename T, std::size_t M, std::size_t N>
     T Matrix<T, M, N>::determinant() const
     {
+        assert(isSquare());
+        T ret = 1;
+        std::size_t n = rows();
+        Matrix a = *this;
+        // Matrix rhs = makeIdentity(); // copy construct
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            // Search maxinum in column[i]
+            T maxEl = std::fabs(a(i, i));
+            std::size_t maxRow = i;
+            for (int j = i + 1; j < n; ++j)
+            {
+                if (std::fabs(a(j, i)) > maxEl)
+                {
+                    maxEl = std::fabs(a(j, i));
+                    maxRow = j;
+                }
+            }
+            // swap
+            if (maxRow != i)
+            {
+                for (std::size_t j = i; j < n; ++j)
+                {
+                    std::swap(a(maxRow, j), a(i, j));
+                }
+                ret *= -1;
+                // for (std::size_t j = 0; j < n; ++j)
+                // {
+                //     std::swap(rhs(maxRow, j), rhs(i, j));
+                // }
+            }
+            //  compute :j iterates all the rows except ith
+            for (std::size_t j = 0; j < n; ++j)
+            {
+                if (j == i)
+                    continue;
+                T c = -a(j, i) / a(i, i);
+                for (std::size_t k = 0; k < n; ++k)
+                {
+                    // rhs(j, k) += rhs(i, k) * c;
+                    if (k == i)
+                        a(j, k) = 0;
+                    else if (k > i) // just calculate k > i
+                        a(j, k) += a(i, k) * c;
+                }
+            }
+        }
+        for (std::size_t i = 0; i < M; ++i)
+        {
+            ret *= a(i, i);
+        }
+        return ret;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixDiagonal<T, Matrix<T, M, N>> Matrix<T, M, N>::diagonal() const
+    {
+        return MatrixDiagonal<T, Matrix>(*this, true);
     }
 
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixDiagonal<T, Matrix<T, M, N>> Matrix<T, M, N>::offDiagonal() const
+    {
+        return MatrixDiagonal<T, Matrix>(*this, false);
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixTriangular<T, Matrix<T, M, N>> Matrix<T, M, N>::strictLowerTri() const
+    {
+        // MatrixTriangular(const E &u, bool isUpper, bool isStrict);
+        return MatrixTriangular<T, Matrix>(*this, false, true);
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixTriangular<T, Matrix<T, M, N>> Matrix<T, M, N>::stricitUpperTri() const
+    {
+        return MatrixTriangular<T, Matrix>(*this, true, true);
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixTriangular<T, Matrix<T, M, N>> Matrix<T, M, N>::lowerTri() const
+    {
+        return MatrixTriangular<T, Matrix>(*this, false, false);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixTriangular<T, Matrix<T, M, N>> Matrix<T, M, N>::upperTri() const
+    {
+        return MatrixTriangular<T, Matrix>(*this, true, false);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename U>
+    MatrixTypeCast<T, Matrix<T, M, N>, U> Matrix<T, M, N>::castTo() const
+    {
+        return MatrixTypeCast<T, Matrix, U>(*this);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator=(const MatrixExpression<T, E> &other)
+    {
+        set(other);
+        return *this;
+    }
+
+    // template <typename T, std::size_t M, std::size_t N>
+    // Matrix<T, M, N> &Matrix<T, M, N>::operator=(const Matrix &other)
+    // {
+    //     set(other);
+    //     return *this;
+    // }
+
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator+=(T &s)
+    {
+        iadd(s);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator+=(const E &m)
+    {
+        iadd(m);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator-=(T &s)
+    {
+        isub(s);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator-=(const E &m)
+    {
+        isub(m);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator*=(T &s)
+    {
+        imul(s);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator*=(const E &m)
+    {
+        imul(m);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, M, N> &Matrix<T, M, N>::operator/=(T &s)
+    {
+        idiv(s);
+        return *this;
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    bool Matrix<T, M, N>::operator==(const MatrixExpression<T, E> &m) const
+    {
+        return isEqual(m);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    template <typename E>
+    bool Matrix<T, M, N>::operator!=(const E &other) const
+    {
+        return !isEqual(other);
+    }
     template <typename T, std::size_t M, std::size_t N>
     T &Matrix<T, M, N>::operator()(std::size_t i, std::size_t j)
     {

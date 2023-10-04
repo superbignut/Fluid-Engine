@@ -179,6 +179,7 @@ namespace big
         template <typename E>
         Matrix &operator=(const MatrixExpression<T, E> &other);
 
+        //! \brief I think the function below is same as above.
         Matrix &operator=(const Matrix &other);
 
         Matrix &operator+=(T &s);
