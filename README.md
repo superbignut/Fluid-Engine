@@ -13,7 +13,7 @@
 + xxx
 ---
 ### 6. Complete the matrix.h and its corresponding include files.
-+ matrix.h, matrix_expression.h
++ ~~matrix.h, matrix_expression.h and fix a bug in matrix inverse().~~
 + matrix2x2.h, matrix3x3.h and matrix4x4.h
 + math_utils.h, vectorn.h and something else
 ---
