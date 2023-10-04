@@ -335,6 +335,74 @@ namespace big
     template <typename T, std::size_t M, std::size_t N>
     void Matrix<T, M, N>::invert()
     {
+        // Computes inverse matrix using Gaussian elimination method.
+        // https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/
+        assert(isSquare());
+        std::size_t n = rows();
+        Matrix &a = *this;
+        Matrix rhs = makeIdentity(); // copy construct
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            // Search maxinum in column[i]
+            T maxEl = std::fabs(a(i, i));
+            std::size_t maxRow = i;
+            for (int j = i + 1; j < n; ++j)
+            {
+                if (std::fabs(a(j, i)) > maxEl)
+                {
+                    maxEl = std::fabs(a(j, i));
+                    maxRow = j;
+                }
+            }
+            // swap
+            if (maxRow != i)
+            {
+                for (std::size_t j = i; j < n; ++j)
+                {
+                    std::swap(a(maxRow, j), a(i, j));
+                }
+                for (std::size_t j = 0; j < n; ++j)
+                {
+                    std::swap(rhs(maxRow, j), rhs(i, j));
+                }
+            }
+            //  compute :j iterates all the rows except ith
+            for (std::size_t j = 0; j < n; ++j)
+            {
+                if (j == i)
+                    continue;
+                T c = -a(j, i) / a(i, i);
+                for (std::size_t k = 0; k < n; ++k)
+                {
+                    rhs(j, k) += rhs(i, k) * c;
+                    if (k == i)
+                        a(j, k) = 0;
+                    else if (k > i) // just calculate k > i
+                        a(j, k) += a(i, k) * c;
+                }
+            }
+        }
+        // scale
+        for (std::size_t j = 0; j < n; ++j)
+        {
+            T c = 1 / a(j, j);
+            for (std::size_t k = 0; k < n; ++k)
+            {
+                rhs(j, k) *= c;
+            }
+        }
+
+        set(rhs);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    void Matrix<T, M, N>::show() const
+    {
+        forEachIndex([this](std::size_t i, std::size_t j)
+                     {std::cout<< (*this)(i ,j);
+            if(j < N - 1)
+                std::cout<<"&";
+            else
+                std::cout<<std::endl; });
     }
 
     template <typename T, std::size_t M, std::size_t N>
@@ -398,14 +466,15 @@ namespace big
         Matrix<T, N, M> temp;
         forEachIndex([&](std::size_t i, std::size_t j)
                      { temp(j, i) = (*this)(i, j); });
-                     return temp;
+        return temp;
     }
 
     template <typename T, std::size_t M, std::size_t N>
     Matrix<T, M, N> Matrix<T, M, N>::inverse() const
     {
-        Matrix<T, N, M> inv;
-
+        Matrix inv(*this);
+        inv.invert();
+        return inv;
     }
 
     template <typename T, std::size_t M, std::size_t N>
@@ -432,6 +501,18 @@ namespace big
             }
         }
     }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixConstant<T> Matrix<T, M, N>::makeZero()
+    {
+        return MatrixConstant<T>(M, N, 0);
+    }
+    template <typename T, std::size_t M, std::size_t N>
+    MatrixIdentity<T> Matrix<T, M, N>::makeIdentity()
+    {
+        static_assert(M == N, "M != N.");
+        return MatrixIdentity<T>(M);
+    }
+
     template <typename T, std::size_t M, std::size_t N>
     template <typename... Params>
     void Matrix<T, M, N>::setRowAt(std::size_t i, T v, Params... params)

@@ -18,7 +18,7 @@ namespace big
     };
 
     template <typename T>
-    class MatrixConstant : MatrixExpression<T, MatrixConstant<T>>
+    class MatrixConstant : public MatrixExpression<T, MatrixConstant<T>>
     {
     public:
         MatrixConstant(std::size_t m, std::size_t n, const T &c);
@@ -38,7 +38,7 @@ namespace big
     };
 
     template <typename T>
-    class MatrixIdentity : MatrixExpression<T, MatrixIdentity<T>>
+    class MatrixIdentity : public MatrixExpression<T, MatrixIdentity<T>>
     {
     public:
         MatrixIdentity(std::size_t m);
