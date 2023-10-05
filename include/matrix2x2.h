@@ -76,19 +76,19 @@ namespace big
 
         Matrix rdiv(T val) const;
 
-        void iadd(T val) const;
+        void iadd(T val);
 
         void iadd(const Matrix &other);
 
-        void isub(T val) const;
+        void isub(T val);
 
         void isub(const Matrix &other);
 
-        void imul(T val) const;
+        void imul(T val);
 
         void imul(const Matrix &other);
 
-        void idiv(T val) const;
+        void idiv(T val);
 
         void transpose();
 
@@ -128,7 +128,9 @@ namespace big
 
         Matrix inverse() const;
 
-        template<typename U>
+        T frobeniusNorm() const;
+
+        template <typename U>
         Matrix<U, 2, 2> castTo() const;
 
         Matrix &operator=(const Matrix &other);
@@ -156,6 +158,10 @@ namespace big
 
         const T &operator()(std::size_t i, std::size_t j) const;
 
+        T &operator[](std::size_t i);
+
+        const T &operator[](std::size_t i) const;
+
         static Matrix makeZero();
 
         static Matrix makeIdentity();
@@ -169,6 +175,51 @@ namespace big
     private:
         std::array<T, 4> _elements;
     };
+
+    template <typename T>
+    using Matrix2x2 = Matrix<T, 2, 2>;
+
+    template <typename T>
+    Matrix<T, 2, 2> operator+(const Matrix<T, 2, 2> &a, const Matrix<T, 2, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator+(const Matrix<T, 2, 2> &a, T b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator+(T a, const Matrix<T, 2, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator-(const Matrix<T, 2, 2> &a, const Matrix<T, 2, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator-(const Matrix<T, 2, 2> &a, T b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator-(T a, const Matrix<T, 2, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator-(const Matrix<T, 2, 2> &a);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator*(const Matrix<T, 2, 2> &a, const Matrix<T, 2, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator*(const Matrix<T, 2, 2> &a, T b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator*(T a, const Matrix<T, 2, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator*(const Matrix<T, 2, 2> &a, const Vector<T, 2> &b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator/(const Matrix<T, 2, 2> &a, T b);
+
+    template <typename T>
+    Matrix<T, 2, 2> operator/(T a, const Matrix<T, 2, 2> &b);
+
+    typedef Matrix<float, 2, 2> Matrix2x2F;
+    typedef Matrix<double, 2, 2> Matrix2x2D;
 
 } // namespace big
 
