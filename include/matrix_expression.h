@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BIG_MATRIX_EXPRESSION_H_
 #define INCLUDE_BIG_MATRIX_EXPRESSION_H_
 #include "size2.h"
+#include "math_utils.h"
 #include "vector_expression.h"
 namespace big
 {

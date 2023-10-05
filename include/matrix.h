@@ -15,7 +15,8 @@ namespace big
     public:
         static_assert(M > 0, "row number need to be > 0.");
         static_assert(N > 0, "col number need to be > 0.");
-        // static_assert(!(M == 2 && N == 2) && !(M == 3 && N == 3) && !(M == 4 && N == 4), "Use specialized matrix.");
+        // I don't know when the assert below will be called.
+        static_assert(!(M == 2 && N == 2) && !(M == 3 && N == 3) && !(M == 4 && N == 4), "Use specialized matrix.");
         static_assert(std::is_floating_point<T>::value, "Matrix only can be instantiated with float point types.");
 
         typedef std::array<T, M * N> ContainerType;
@@ -109,7 +110,7 @@ namespace big
 
         MatrixScalarMul<T, Matrix> rmul(const T &s) const;
 
-        //m * this
+        // m * this
         template <std::size_t L>
         MatrixMul<T, Matrix<T, L, M>, Matrix> rmul(const Matrix<T, L, M> &m) const;
 
@@ -154,7 +155,7 @@ namespace big
         T trace() const;
 
         T determinant() const;
-        
+
         void show() const;
 
         MatrixDiagonal<T, Matrix> diagonal() const;
@@ -204,6 +205,9 @@ namespace big
         template <typename E>
         bool operator!=(const E &other) const;
 
+        T &operator[](std::size_t i);
+
+        const T &operator[](std::size_t i) const;
         // return is T& while matrix_expression's ()() are all T
         T &operator()(std::size_t i, std::size_t j);
 

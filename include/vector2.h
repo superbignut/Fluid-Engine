@@ -6,7 +6,7 @@ namespace big
 
     template <typename T>
     class Vector<T, 2> final
-    { // no father
+    { // no son
     public:
         static_assert(std::is_arithmetic<T>::value, "Vector only can be instantiated with arithmetic types.");
 
