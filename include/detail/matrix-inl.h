@@ -373,7 +373,7 @@ namespace big
                 if (j == i)
                     continue;
                 T c = -a(j, i) / a(i, i);
-                for (std::size_t k = 0; k < n; ++k)
+                for (std::size_t k = 0; k < n; ++k) // N * N * N = N^3
                 {
                     rhs(j, k) += rhs(i, k) * c;
                     if (k == i)

@@ -134,7 +134,7 @@ namespace big
         T operator()(std::size_t i, std::size_t j) const;
 
     private:
-        const E1 &_u;
+        const E1 &_u; // const ensure which can't be changed and & avoid copy. so as its name , it is just a expression.
         const E2 &_v;
         Op _op;
     };
