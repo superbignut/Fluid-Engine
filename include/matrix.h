@@ -16,7 +16,7 @@ namespace big
         static_assert(M > 0, "row number need to be > 0.");
         static_assert(N > 0, "col number need to be > 0.");
         // I don't know when the assert below will be called.
-        static_assert(!(M == 2 && N == 2) && !(M == 3 && N == 3) && !(M == 4 && N == 4), "Use specialized matrix.");
+        static_assert(!(M == 2 && N == 2) && !(M == 3 && N == 3), "Use specialized matrix.");
         static_assert(std::is_floating_point<T>::value, "Matrix only can be instantiated with float point types.");
 
         typedef std::array<T, M * N> ContainerType;
