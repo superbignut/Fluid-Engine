@@ -88,8 +88,8 @@ namespace big
     template <typename T>
     void Matrix<T, 2, 2>::setRow(std::size_t i, const Vector<T, 2> &row)
     {
-        _elements[2 * Matrix<T, 2, 2>::i] = row.x;
-        _elements[2 * Matrix<T, 2, 2>::i + 1] = row.y;
+        _elements[2 * i] = row.x;
+        _elements[2 * i + 1] = row.y;
     }
     template <typename T>
     void Matrix<T, 2, 2>::setCol(std::size_t i, const Vector<T, 2> &col)

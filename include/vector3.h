@@ -36,7 +36,7 @@ namespace big
 
         void setZero();
 
-        void normize();
+        void normalize();
 
         Vector add(T val) const;
 

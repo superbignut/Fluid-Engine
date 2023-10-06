@@ -43,7 +43,7 @@ namespace big
     }
 
     template <typename T>
-    void Vector<T, 2>::normize()
+    void Vector<T, 2>::normalize()
     {
         idiv(length());
     }
