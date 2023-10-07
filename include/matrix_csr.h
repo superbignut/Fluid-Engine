@@ -15,6 +15,7 @@ namespace big
     {
     public:
         MatrixCsrVectorMul(const MatrixCsr<T> &m, const VE &v);
+        //why has this copy constructor?
         MatrixCsrVectorMul(const MatrixCsrVectorMul &other);
 
         std::size_t size() const;
@@ -45,6 +46,7 @@ namespace big
     private:
         const MatrixCsr<T> &_m1; // const ensure it can't be changed and & avoid copy. so as its name, class itself is  just an expression.
         const ME &_m2;
+        // define three var below for the easyness to use
         const T *const _nnz;
         const std::size_t *const _rp;
         const std::size_t *const _ci;
@@ -80,14 +82,16 @@ namespace big
 
         MatrixCsr(const std::initializer_list<std::initializer_list<T>> &lst, T epslion = std::numeric_limits<T>::epsilon());
 
-        MatrixCsr(const MatrixCsr &other);
+        MatrixCsr(const MatrixCsr &other, T epslion = std::numeric_limits<T>::epsilon());
 
         MatrixCsr(const MatrixCsr &&other); // without const
 
         void clear();
 
+        //! \brief  Set all nonzero value to s.
         void set(T s);
-
+        
+        //! \brief  Copy all data from other.
         void set(const MatrixCsr &other);
 
         void reserve(std::size_t rows, std::size_t cols, std::size_t numNonZeros);
