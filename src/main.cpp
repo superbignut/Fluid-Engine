@@ -7,10 +7,10 @@
 
 int main(int argc, char **argv)
 {
-    std::vector<int> a = {1,2,3,4};
-
-    std::vector<int>::iterator aaa = a.begin();
-
-    std::cout<< *aaa << std::endl; 
+    big::Matrix<float, 10, 10> m;
+    m.setDiagonal(1);
+    float eps = 0.0f;
+    big::MatrixCsr<float> aaa(m, eps);
+    aaa.show();
     return 0;
 }

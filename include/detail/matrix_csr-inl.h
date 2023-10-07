@@ -94,11 +94,20 @@ namespace big
     template <typename T>
     MatrixCsr<T>::MatrixCsr(const std::initializer_list<std::initializer_list<T>> &lst, T epslion)
     {
+        compress(lst, epslion);
+    }
+
+    template <typename T>
+    template <typename E>
+    MatrixCsr<T>::MatrixCsr(const MatrixExpression<T, E> &other, T epslion)
+    {
+        compress(other, epslion);
     }
 
     template <typename T>
     MatrixCsr<T>::MatrixCsr(const MatrixCsr &other, T epslion)
     {
+        compress(other, epslion);
     }
 
     template <typename T>
@@ -130,6 +139,87 @@ namespace big
         _colIndex = other._colIndex;
         _rowPtr = other._rowPtr;
     }
+
+    template <typename T>
+    void MatrixCsr<T>::reserve(std::size_t rows, std::size_t cols, std::size_t numNonZeros)
+    {
+        _size = {rows, cols};
+        _nonZeros.resize(numNonZeros);
+        _colIndex.resize(numNonZeros);
+        _rowPtr.resize(rows + 1);
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::compress(const std::initializer_list<std::initializer_list<T>> &lst, T epslion)
+    {
+        std::size_t numRows = lst.size();
+        std::size_t numCols = numRows != 0 ? lst.begin()->size() : 0;
+
+        _size = {numRows, numCols};
+        _nonZeros.clear();
+        _colIndex.clear();
+        _rowPtr.clear();
+
+        auto rowIter = lst.begin();
+        for (std::size_t i = 0; i < numRows; ++i)
+        {
+            assert(rowIter->size() == numCols && "lst has different columns.");
+            _rowPtr.push_back(_nonZeros.size());
+            auto col_ptr = rowIter->begin();
+            for (std::size_t j = 0; j < numCols; ++j)
+            {
+                if (std::fabs(*col_ptr) > epslion)
+                {
+                    _nonZeros.push_back(*col_ptr);
+                    _colIndex.push_back(j);
+                }
+                ++col_ptr;
+            }
+            ++rowIter;
+        }
+        _rowPtr.push_back(_nonZeros.size()); // which is seted for colEnd = _rp[i + 1];
+    }
+
+    template <typename T>
+    template <typename E>
+    void MatrixCsr<T>::compress(const MatrixExpression<T, E> &other, T epslion)
+    {
+        const E &m = other();
+        std::size_t numRows = m.rows();
+        std::size_t numCols = m.cols();
+
+        _size = {numRows, numCols};
+        _nonZeros.clear();
+        _colIndex.clear();
+        _rowPtr.clear();
+        for (std::size_t i = 0; i < numRows; ++i)
+        {
+            _rowPtr.push_back(_nonZeros.size());
+            for (std::size_t j = 0; j < numCols; ++j)
+            {
+                if (std::fabs(m(i, j)) > epslion)
+                {
+                    _nonZeros.push_back(m(i, j));
+                    _colIndex.push_back(j);
+                }
+            }
+        }
+        _rowPtr.push_back(_nonZeros.size()); // which is seted for colEnd = _rp[i + 1];
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::show() const
+    {   
+        // std::cout <<_nonZeros.size()<<std::endl;
+        // for(int i =0; i< _nonZeros.size();++i)
+        //     std::cout << _nonZeros[i];
+    }
+
+
+
+
+    
+
 } // namespace big
 
 #endif

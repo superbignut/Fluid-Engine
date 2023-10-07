@@ -15,7 +15,7 @@ namespace big
     {
     public:
         MatrixCsrVectorMul(const MatrixCsr<T> &m, const VE &v);
-        //why has this copy constructor?
+        // why has this copy constructor?
         MatrixCsrVectorMul(const MatrixCsrVectorMul &other);
 
         std::size_t size() const;
@@ -78,29 +78,45 @@ namespace big
         typedef typename IndexContainterType::iterator IndexIterator;
         typedef typename IndexContainterType::const_iterator ConstIndexIterator;
 
+        //! \brief init with all zero.
         MatrixCsr();
 
+        //! \brief init with lst whose value is greater than epslion.
         MatrixCsr(const std::initializer_list<std::initializer_list<T>> &lst, T epslion = std::numeric_limits<T>::epsilon());
 
+        //! init with normal matrix.
+        template <typename E>
+        MatrixCsr(const MatrixExpression<T, E> &other, T epslion = std::numeric_limits<T>::epsilon());
+
+        //! \brief init with other whose value is greater than epslion.
         MatrixCsr(const MatrixCsr &other, T epslion = std::numeric_limits<T>::epsilon());
 
+        //! \brief init with other by std::move().
         MatrixCsr(const MatrixCsr &&other); // without const
 
+        //! \brief clear all data and row_ptr.push_back(0).
         void clear();
 
         //! \brief  Set all nonzero value to s.
         void set(T s);
-        
+
         //! \brief  Copy all data from other.
         void set(const MatrixCsr &other);
 
+        //! \brief reshape the data with new size, destory the original data.
         void reserve(std::size_t rows, std::size_t cols, std::size_t numNonZeros);
 
+        //! lst -> csr
         void compress(const std::initializer_list<std::initializer_list<T>> &lst, T epslion = std::numeric_limits<T>::epsilon());
 
+        //! matrixExpression -> csr
         template <typename E>
         void compress(const MatrixExpression<T, E> &other, T epslion = std::numeric_limits<T>::epsilon());
 
+        //! show data in csr
+        void show() const;
+
+        //! 
         void addElement(std::size_t i, std::size_t j, T value);
 
         void addElement(const Element &element);
