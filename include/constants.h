@@ -1,6 +1,6 @@
 #ifndef CONSTANT_H_
 #define CONSTANT_H_
-
+#include <cmath>
 namespace big
 {
 
@@ -21,6 +21,9 @@ namespace big
     {
         return 0.0;
     }
+
+
+    constexpr std::size_t kMaxSize = std::numeric_limits<std::size_t>::max();
 }
 
 #endif

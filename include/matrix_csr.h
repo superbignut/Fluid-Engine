@@ -114,7 +114,7 @@ namespace big
         void compress(const MatrixExpression<T, E> &other, T epslion = std::numeric_limits<T>::epsilon());
 
         //! show data in csr
-        void show() const;
+        void show(std::size_t i = 0, std::size_t j =0) const;
 
         //! add a new element, but you must ensure original (i,j) is zero or not exits.(allows bigger)
         void addElement(std::size_t i, std::size_t j, T value);
@@ -125,8 +125,10 @@ namespace big
         //! add a new row, allows cols bigger.
         void addRow(const NonZeroContainterType &nonZeros, const IndexContainterType &columnIndex);
         
+        //! judge if hasElement and add/change it.
         void setElement(std::size_t i, std::size_t j, T value);
 
+        //! judge if hasElement and add/change it.
         void setElement(const Element &element);
 
         bool isEqual(const MatrixCsr &other) const;

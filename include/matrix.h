@@ -3,6 +3,7 @@
 #include "matrix_expression.h"
 #include <limits>
 #include <cmath>
+#include <constants.h>
 namespace big
 {
     //! datas were stored in an array j + cols * i =(i, j)

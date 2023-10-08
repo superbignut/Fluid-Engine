@@ -11,6 +11,10 @@ int main(int argc, char **argv)
     m.setDiagonal(1);
     float eps = 0.0f;
     big::MatrixCsr<float> aaa(m, eps);
-    aaa.show();
+    aaa.addElement(0,1, 10);
+    // std::vector<int> vec{1};
+    // auto iter = std::lower_bound(vec.begin(), vec.end(), 1);
+    // std::cout << iter - vec.begin();
+    aaa.show(0,2);
     return 0;
 }

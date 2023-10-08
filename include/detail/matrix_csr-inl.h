@@ -208,11 +208,13 @@ namespace big
     }
 
     template <typename T>
-    void MatrixCsr<T>::show() const
+    void MatrixCsr<T>::show(std::size_t i, std::size_t j) const
     {
-        // std::cout <<_nonZeros.size()<<std::endl;
-        // for(int i =0; i< _nonZeros.size();++i)
-        //     std::cout << _nonZeros[i];
+        std::cout << _nonZeros.size() << std::endl;
+        for (int i = 0; i < _nonZeros.size(); ++i)
+            std::cout << _nonZeros[i] << " ";
+        std::cout << std::endl;
+        std::cout << (hasElement(i, j) != kMaxSize ? "have this one." : "don't have this one.");
     }
 
     template <typename T>
@@ -228,15 +230,15 @@ namespace big
         {
             for (ssize_t i = 0; i < numRowsToAdd; ++i)
             {
-                addrow({}, {});
+                addRow({}, {});
             }
         }
 
         _size.y = std::max(_size.y, element.j + 1);
-        std::size_t rowBegin = _rowPtr[element.i + 1];
+        std::size_t rowBegin = _rowPtr[element.i];
         std::size_t rowEnd = _rowPtr[element.i + 1];
 
-        auto colIndexIter = std::lower_bound(_colIndex.begin() + rowBegin, _colIndex.end() + rowEnd, element.j);
+        auto colIndexIter = std::lower_bound(_colIndex.begin() + rowBegin, _colIndex.begin() + rowEnd, element.j);
         auto offset = colIndexIter - _colIndex.begin();
         _colIndex.insert(colIndexIter, element.j);
         _nonZeros.insert(_nonZeros.begin() + offset, element.value);
@@ -265,6 +267,43 @@ namespace big
             _colIndex.push_back(zipped[i].second);
         }
         _rowPtr.push_back(_nonZeros.size());
+    }
+    template <typename T>
+    void MatrixCsr<T>::setElement(std::size_t i, std::size_t j, T value)
+    {
+        setElement({i, j, value});
+    }
+    template <typename T>
+    void MatrixCsr<T>::setElement(const Element &element)
+    {
+        std::size_t nzIndex = hasElement(element.i, element.j);
+        if (nzIndex != kMaxSize)
+        {
+            addElement(element);
+        }
+        else
+        {
+            _nonZeros[nzIndex] = element.value;
+        }
+    }
+
+    template <typename T>
+    std::size_t MatrixCsr<T>::hasElement(std::size_t i, std::size_t j) const
+    {
+        if (i >= _size.x || j >= _size.y)
+        {
+            return kMaxSize;
+        }
+
+        auto rowBegin = _rowPtr[i];
+        auto rowEnd = _rowPtr[i + 1];
+        auto colIndexIter = std::lower_bound(_colIndex.begin() + rowBegin, _colIndex.begin() + rowEnd, j);
+        if (colIndexIter != _colIndex.end() && *colIndexIter == j)
+        {
+            return static_cast<std::size_t>(colIndexIter - _colIndex.begin());
+        }
+        else
+            return kMaxSize;
     }
 
 } // namespace big
