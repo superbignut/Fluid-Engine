@@ -209,16 +209,63 @@ namespace big
 
     template <typename T>
     void MatrixCsr<T>::show() const
-    {   
+    {
         // std::cout <<_nonZeros.size()<<std::endl;
         // for(int i =0; i< _nonZeros.size();++i)
         //     std::cout << _nonZeros[i];
     }
 
+    template <typename T>
+    void MatrixCsr<T>::addElement(std::size_t i, std::size_t j, T value)
+    {
+        addElement({i, j, value});
+    }
+    template <typename T>
+    void MatrixCsr<T>::addElement(const Element &element)
+    {
+        ssize_t numRowsToAdd = (ssize_t)element.i - (ssize_t)_size.x + 1;
+        if (numRowsToAdd > 0)
+        {
+            for (ssize_t i = 0; i < numRowsToAdd; ++i)
+            {
+                addrow({}, {});
+            }
+        }
 
+        _size.y = std::max(_size.y, element.j + 1);
+        std::size_t rowBegin = _rowPtr[element.i + 1];
+        std::size_t rowEnd = _rowPtr[element.i + 1];
 
+        auto colIndexIter = std::lower_bound(_colIndex.begin() + rowBegin, _colIndex.end() + rowEnd, element.j);
+        auto offset = colIndexIter - _colIndex.begin();
+        _colIndex.insert(colIndexIter, element.j);
+        _nonZeros.insert(_nonZeros.begin() + offset, element.value);
+        for (std::size_t i = element.i + 1; i < _rowPtr.size(); ++i)
+        {
+            ++_rowPtr[i];
+        }
+    }
 
-    
+    template <typename T>
+    void MatrixCsr<T>::addRow(const NonZeroContainterType &nonZeros, const IndexContainterType &columnIndex)
+    {
+        assert(nonZeros.size() == columnIndex.size());
+        ++_size.x;
+        std::vector<std::pair<T, std::size_t>> zipped;
+        for (std::size_t i = 0; i < nonZeros.size(); ++i)
+        {
+            zipped.emplace_back(nonZeros[i], columnIndex[i]);
+            _size.y = std::max(_size.y, nonZeros.size()); //_size.y is just allowed bigger
+        }
+        std::sort(zipped.begin(), zipped.end(), [](std::pair<T, std::size_t> a, std::pair<T, std::size_t> b)
+                  { return a.second < b.second; });
+        for (std::size_t i = 0; i < zipped.size(); ++i)
+        {
+            _nonZeros.push_back(zipped[i].first);
+            _colIndex.push_back(zipped[i].second);
+        }
+        _rowPtr.push_back(_nonZeros.size());
+    }
 
 } // namespace big
 
