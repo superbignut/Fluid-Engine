@@ -4,6 +4,10 @@
 namespace big
 {
 
+    constexpr std::size_t kZeroSize = 0;
+
+    constexpr ssize_t kZeroSSize = 0;
+    
     template <typename T>
     constexpr T zero()
     {

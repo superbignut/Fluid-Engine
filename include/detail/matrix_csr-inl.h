@@ -214,7 +214,7 @@ namespace big
         for (int i = 0; i < _nonZeros.size(); ++i)
             std::cout << _nonZeros[i] << " ";
         std::cout << std::endl;
-        std::cout << (hasElement(i, j) != kMaxSize ? "have this one." : "don't have this one.");
+        std::cout << (hasElement(i, j) != kMaxSize ? "have this one." : "don't have this one.") << std::endl;
     }
 
     template <typename T>
@@ -222,6 +222,7 @@ namespace big
     {
         addElement({i, j, value});
     }
+
     template <typename T>
     void MatrixCsr<T>::addElement(const Element &element)
     {
@@ -268,6 +269,7 @@ namespace big
         }
         _rowPtr.push_back(_nonZeros.size());
     }
+
     template <typename T>
     void MatrixCsr<T>::setElement(std::size_t i, std::size_t j, T value)
     {
@@ -306,6 +308,214 @@ namespace big
             return kMaxSize;
     }
 
+    template <typename T>
+    bool MatrixCsr<T>::isEqual(const MatrixCsr &other) const
+    {
+        if (_size != other._size)
+            return false;
+        if (_nonZeros.size() != other._nonZeros.size())
+            return false;
+        if (_nonZeros != other._nonZeros)
+            return false;
+        if (_colIndex != other._colIndex)
+            return false;
+        if (_rowPtr != other._rowPtr)
+            return false;
+        return true;
+    }
+    template <typename T>
+    bool MatrixCsr<T>::isSimilar(const MatrixCsr &other, double tol) const
+    {
+        if (_size != other._size)
+            return false;
+        if (_nonZeros.size() != other._nonZeros.size())
+            return false;
+
+        for (std::size_t i = 0; i < _nonZeros.size(); ++i)
+        {
+            if (std::fabs(_nonZeros[i] - other._nonZeros[i]) > tol)
+                return false;
+            if (_colIndex[i] != other._colIndex[i])
+                return false;
+        }
+        if (_rowPtr != other._rowPtr)
+            return false;
+        return true;
+    }
+    template <typename T>
+    constexpr bool MatrixCsr<T>::isSquare() const
+    {
+        return _size.x == _size.y;
+    }
+    template <typename T>
+    constexpr std::size_t MatrixCsr<T>::rows() const
+    {
+        return _size.x;
+    }
+    template <typename T>
+    constexpr std::size_t MatrixCsr<T>::cols() const
+    {
+        return _size.y;
+    }
+
+    template <typename T>
+    Size2 MatrixCsr<T>::size() const
+    {
+        return _size;
+    }
+    template <typename T>
+    std::size_t MatrixCsr<T>::numberNonZeros() const
+    {
+        return _nonZeros.size();
+    }
+    template <typename T>
+    T &MatrixCsr<T>::nonZero(std::size_t i)
+    {
+        return _nonZeros[i];
+    }
+    template <typename T>
+    const T &MatrixCsr<T>::nonZero(std::size_t i) const
+    {
+        return _nonZeros[i];
+    }
+    template <typename T>
+    const std::size_t &MatrixCsr<T>::rowPointer(std::size_t i) const
+    {
+        return _rowPtr[i];
+    }
+    template <typename T>
+    const std::size_t &MatrixCsr<T>::colIndex(std::size_t i) const
+    {
+        return _colIndex[i];
+    }
+    template <typename T>
+    T *MatrixCsr<T>::nonZeroData()
+    {
+        return _nonZeros.data();
+    }
+    template <typename T>
+    const T *const MatrixCsr<T>::nonZeroData() const
+    {
+        return _nonZeros.data();
+    }
+    template <typename T>
+    const std::size_t *const MatrixCsr<T>::rowPointerData() const
+    {
+        return _rowPtr.data();
+    }
+    template <typename T>
+    const std::size_t *const MatrixCsr<T>::colIndexData() const
+    {
+        return _colIndex.data();
+    }
+
+    template <typename T>
+    MatrixCsr<T>::NonZeroIterator MatrixCsr<T>::nonZeroBegin()
+    {
+        return _nonZeros.begin();
+    }
+    template <typename T>
+    MatrixCsr<T>::NonZeroIterator MatrixCsr<T>::nonZeroEnd()
+    {
+        return _nonZeros.end();
+    }
+    template <typename T>
+    MatrixCsr<T>::IndexIterator MatrixCsr<T>::rowPointerBegin()
+    {
+        return _rowPtr.begin();
+    }
+    template <typename T>
+    MatrixCsr<T>::IndexIterator MatrixCsr<T>::rowPointerEnd()
+    {
+        return _rowPtr.end();
+    }
+    template <typename T>
+    MatrixCsr<T>::IndexIterator MatrixCsr<T>::colIndexBegin()
+    {
+        return _colIndex.begin();
+    }
+    template <typename T>
+    MatrixCsr<T>::IndexIterator MatrixCsr<T>::colIndexEnd()
+    {
+        return _colIndex.end();
+    }
+    template <typename T>
+    MatrixCsr<T>::ConstNonZeroIterator MatrixCsr<T>::nonZeroBegin() const
+    {
+        return _nonZeros.cbegin();
+    }
+    template <typename T>
+    MatrixCsr<T>::ConstNonZeroIterator MatrixCsr<T>::nonZeroEnd() const
+    {
+        return _nonZeros.cend();
+    }
+    template <typename T>
+    MatrixCsr<T>::ConstIndexIterator MatrixCsr<T>::rowPointerBegin() const
+    {
+        return _rowPtr.cbegin();
+    }
+    template <typename T>
+    MatrixCsr<T>::ConstIndexIterator MatrixCsr<T>::rowPointerEnd() const
+    {
+        return _rowPtr.cend();
+    }
+    template <typename T>
+    MatrixCsr<T>::ConstIndexIterator MatrixCsr<T>::colIndexBegin() const
+    {
+        return _colIndex.cbegin();
+    }
+    template <typename T>
+    MatrixCsr<T>::ConstIndexIterator MatrixCsr<T>::colIndexEnd() const
+    {
+        return _colIndex.cend();
+    }
+
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::add(const T &s) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::add(const MatrixCsr &m) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::sub(const T &s) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::sub(const MatrixCsr &m) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::mul(const T &s) const
+    {
+    }
+    template <typename T>
+    template <typename VE>
+    MatrixCsrVectorMul<T, VE> MatrixCsr<T>::mul(const VectorExpression<T, VE> &v) const
+    {
+    }
+    template <typename T>
+    template <typename ME>
+    MatrixCsrMatrixMul<T, ME> MatrixCsr<T>::mul(const MatrixExpression<T, ME> &m) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::div(const T &s) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::rsub(const T &s) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::rsub(const MatrixCsr &m) const
+    {
+    }
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::rdiv(const T &s) const
+    {
+    }
 } // namespace big
 
 #endif
