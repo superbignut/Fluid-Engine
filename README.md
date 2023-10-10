@@ -18,7 +18,7 @@
 + ~~matrix.h, matrix_expression.h and fix a bug in matrix inverse().~~
 + ~~matrix2x2.h, matrix3x3.h~~
 + ~~matrix4x4.h and matrix_mxn.h are excluded temporarily for their cubersome and repeated codes.~~
-+ matrix_csr.h, matrix_csr-inl.h
++ matrix_csr.h, matrix_csr-inl.h and parrall.h
 ---
 ### ~~5. Complete the vector2.h, vector3.h and vector4.h.~~
 + ~~vector2.h, vector3.h, vector4.h~~

@@ -2,6 +2,7 @@
 #define INCLUDE_BIG_MATRIXCSR_H_
 #include "matrix.h"
 #include "size2.h"
+#include "parallel.h"
 // #include <tuple>
 namespace big
 {
