@@ -7,7 +7,11 @@
 
 int main(int argc, char **argv)
 {
-    unsigned int numThreadsHint = std::thread::hardware_concurrency();
-    std::cout << numThreadsHint<<std::endl;
+    big::Matrix<float, 10, 10> m10;
+    m10.setDiagonal(1.2);
+    big::MatrixCsr<float> m(m10 + m10);
+    //  big::MatrixCsr<float> m2(m);
+    auto mm = m.add(1.0f);
+    mm.show();
     return 0;
 }

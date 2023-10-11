@@ -209,6 +209,7 @@ namespace big
         T &operator[](std::size_t i);
 
         const T &operator[](std::size_t i) const;
+        
         // return is T& while matrix_expression's ()() are all T
         T &operator()(std::size_t i, std::size_t j);
 

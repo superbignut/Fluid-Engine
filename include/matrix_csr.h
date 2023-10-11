@@ -186,6 +186,7 @@ namespace big
 
         ConstIndexIterator colIndexEnd() const;
 
+        //! parallelly add s for all _nonzeros and return.
         MatrixCsr add(const T &s) const;
 
         MatrixCsr add(const MatrixCsr &m) const;

@@ -473,6 +473,11 @@ namespace big
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::add(const T &s) const
     {
+        MatrixCsr ret(*this);
+        parallelFor(kZeroSize, ret._nonZeros.size(),
+                    [&](std::size_t i)
+                    { ret._nonZeros[i] += s; });
+        return ret;
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::add(const MatrixCsr &m) const
@@ -515,6 +520,20 @@ namespace big
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::rdiv(const T &s) const
     {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::operator()(std::size_t i, std::size_t j) const
+    {
+        std::size_t num = hasElement(i, j);
+        if (num == kMaxSize)
+        {
+            return kZeroSize;
+        }
+        else
+        {
+            return _nonZeros[num];
+        }
     }
 } // namespace big
 

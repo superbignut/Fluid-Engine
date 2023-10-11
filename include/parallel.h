@@ -14,6 +14,7 @@ namespace big
                       const T &value,
                       ExecutionPolicy policy = ExecutionPolicy::kParallel);
 
+    //! parallel func in [begin, end) if policy == kParallel
     template <typename IndexType, typename Function>
     void parallelFor(IndexType begin, IndexType end,
                      const Function &func,
