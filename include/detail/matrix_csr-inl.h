@@ -111,7 +111,7 @@ namespace big
     }
 
     template <typename T>
-    MatrixCsr<T>::MatrixCsr(const MatrixCsr &&other)
+    MatrixCsr<T>::MatrixCsr(MatrixCsr &&other)
     {
         *this = std::move(other);
     }
@@ -306,6 +306,58 @@ namespace big
         }
         else
             return kMaxSize;
+    }
+
+    template <typename T>
+    template <typename Op>
+    MatrixCsr<T> MatrixCsr<T>::binaryOp(const MatrixCsr &m, Op op) const
+    {
+        assert(_size == m._size);
+        MatrixCsr ret;
+
+        for (std::size_t i = 0; i < _size.x; ++i)
+        {
+            std::vector<std::size_t> col;
+            std::vector<T> nnz;
+
+            auto colIterA = _colIndex.begin() + _rowPtr[i];
+            auto colIterB = m._colIndex.begin() + m._rowPtr[i];
+
+            auto colEndA = _colIndex.end() + _rowPtr[i + 1];
+            auto colEndB = m._colIndex.end() + m._rowPtr[i + 1];
+
+            auto nnzIterA = _nonZeros.begin() + _rowPtr[i];
+            auto nnzIterB = m._nonZeros.begin() + m._rowPtr[i];
+
+            while (colIterA != colEndA || colIterB != colEndB) // any col exits will loop
+            {
+                if ((*colIterA < *colIterB || colIterB == colEndB) && colIterA != colEndA)
+                {
+                    nnz.push_back(op(*nnzIterA, 0));
+                    col.push_back(*colIterA);
+                    ++nnzIterA;
+                    ++colIterA;
+                }
+                else if ((*colIterB < *colIterA || colIterA == colEndA) && colIterB != colEndB)
+                {
+                    nnz.push_back(op(0, *nnzIterB));
+                    col.push_back(*colIterB);
+                    ++nnzIterB;
+                    ++colIterB;
+                }
+                else
+                {
+                    assert(*colIterA == *colIterB);
+                    nnz.push_back(op(*nnzIterA, *nnzIterB));
+                    col.push_back(*colIterA);
+                    ++nnzIterA;
+                    ++colIterA;
+                    ++nnzIterB;
+                    ++colIterB;
+                }
+            }
+            ret.addRow(nnz, col);
+        }
     }
 
     template <typename T>

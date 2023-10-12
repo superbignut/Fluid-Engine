@@ -93,7 +93,7 @@ namespace big
         MatrixCsr(const MatrixCsr &other, T epslion = std::numeric_limits<T>::epsilon());
 
         //! \brief init with other by std::move().
-        MatrixCsr(const MatrixCsr &&other); // without const
+        MatrixCsr(MatrixCsr &&other); 
 
         //! \brief clear all data and row_ptr.push_back(0).
         void clear();
