@@ -274,13 +274,15 @@ namespace big
 
         static MatrixCsr<T> makeIdentity();
 
+        std::size_t hasElement(std::size_t i, std::size_t j) const;
+
     private:
         big::Size2 _size;
         NonZeroContainterType _nonZeros;
         IndexContainterType _colIndex;
         IndexContainterType _rowPtr;
 
-        std::size_t hasElement(std::size_t i, std::size_t j) const;
+        
 
         template <typename Op>
         MatrixCsr binaryOp(const MatrixCsr &m, Op op) const;

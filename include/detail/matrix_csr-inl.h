@@ -300,7 +300,7 @@ namespace big
         auto rowBegin = _rowPtr[i];
         auto rowEnd = _rowPtr[i + 1];
         auto colIndexIter = std::lower_bound(_colIndex.begin() + rowBegin, _colIndex.begin() + rowEnd, j);
-        if (colIndexIter != _colIndex.end() && *colIndexIter == j)
+        if (colIndexIter != (rowBegin, _colIndex.begin() + rowEnd) && *colIndexIter == j)
         {
             return static_cast<std::size_t>(colIndexIter - _colIndex.begin());
         }
@@ -534,6 +534,7 @@ namespace big
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::add(const MatrixCsr &m) const
     {
+        return binaryOp(m, std::plus<T>());
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::sub(const T &s) const
