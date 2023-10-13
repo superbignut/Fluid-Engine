@@ -8,7 +8,49 @@
 ---
 ![sphere](https://github.com/superbignut/Fluid-Engine/blob/master/render/render.jpg)
 ---
+## Features:
++ ### CRTP 
+    The results of most operations related to Matrices and Vectors are defined as a new agent type.All these types use [CRTP][1] and derive fron Matrix_Expression or Vector_Expression.
+
+        // CRTP base
+        template <typename T, typename E>
+        class MatrixExpression
+        {
+            ...
+            const E &operator()() const{
+                return static_cast<const E &>(*this);
+            }
+        };
+        
+        template <...>
+        class Matrix final : public MatrixExpression<T, Matrix<...>>
+
+    By using CRTP, we can simplify calculation and storage until a specific value is needed.
+
+        template <...>
+        class MatrixBinaryOp : public MatrixExpression<T, MatrixBinaryOp<...>>
+        {
+            ...
+            T operator()(std::size_t i, std::size_t j) const{
+                return _op(_u(i, j), _v(i, j));} //  <-- calculate
+            ...
+            const E1 &_u; 
+            const E2 &_v;
+            Op _op;
+        };
++ ### CSR
+    The compressed sparse row ([CSR][2]) represents a matrix M by three (one-dimensional) arrays, that respectively contain nonzero values, the extents of rows, and column indices. 
+
+        template <typename T>
+        class MatrixCsr final : public MatrixExpression<T, MatrixCsr<T>>
+        {
+            ...
+            NonZeroContainterType _nonZeros;
+            IndexContainterType _colIndex;
+            IndexContainterType _rowPtr;
+        }
 ## To Do:
+
 ### 7. write someting here...
 + xxx
 + xxx
@@ -53,3 +95,5 @@
 ### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
 ---
 <!-- 知我者谓我心忧，不知者谓我何求 -->
+[1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
+[2]: https://en.wikipedia.org/wiki/Sparse_matrix
