@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(/usr/local/include) 
 include_directories(include)
-include_directories(external/googletest/googletest/include)
+# include_directories(external/googletest/googletest/include)
 
 aux_source_directory(src source_list)
 

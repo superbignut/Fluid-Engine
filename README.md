@@ -10,7 +10,7 @@
 ---
 ## Features:
 + ### CRTP 
-    The results of most operations related to Matrices and Vectors are defined as a new agent type.All these types use [CRTP][1] and derive fron Matrix_Expression or Vector_Expression.
+    The results of most operations related to Matrices and Vectors are defined as a new agent type.All these types use [CRTP][1] and derive from Matrix_Expression or Vector_Expression.
 
         // CRTP base
         template <typename T, typename E>

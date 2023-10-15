@@ -211,10 +211,12 @@ namespace big
     void MatrixCsr<T>::show(std::size_t i, std::size_t j) const
     {
         std::cout << _nonZeros.size() << std::endl;
+        std::cout << _size.x << _size.y << std::endl;
         for (int i = 0; i < _nonZeros.size(); ++i)
             std::cout << _nonZeros[i] << " ";
         std::cout << std::endl;
         std::cout << (hasElement(i, j) != kMaxSize ? "have this one." : "don't have this one.") << std::endl;
+        std::cout << _rowPtr.size() << std::endl;
     }
 
     template <typename T>
@@ -258,7 +260,7 @@ namespace big
         for (std::size_t i = 0; i < nonZeros.size(); ++i)
         {
             zipped.emplace_back(nonZeros[i], columnIndex[i]);
-            _size.y = std::max(_size.y, nonZeros.size()); //_size.y is just allowed bigger
+            _size.y = std::max(_size.y, columnIndex[i] + 1); // columnIndex[i] + 1 represent the max ColunmIndex
         }
         std::sort(zipped.begin(), zipped.end(), [](std::pair<T, std::size_t> a, std::pair<T, std::size_t> b)
                   { return a.second < b.second; });
@@ -279,7 +281,7 @@ namespace big
     void MatrixCsr<T>::setElement(const Element &element)
     {
         std::size_t nzIndex = hasElement(element.i, element.j);
-        if (nzIndex != kMaxSize)
+        if (nzIndex == kMaxSize)
         {
             addElement(element);
         }
@@ -323,8 +325,8 @@ namespace big
             auto colIterA = _colIndex.begin() + _rowPtr[i];
             auto colIterB = m._colIndex.begin() + m._rowPtr[i];
 
-            auto colEndA = _colIndex.end() + _rowPtr[i + 1];
-            auto colEndB = m._colIndex.end() + m._rowPtr[i + 1];
+            auto colEndA = _colIndex.begin() + _rowPtr[i + 1];
+            auto colEndB = m._colIndex.begin() + m._rowPtr[i + 1];
 
             auto nnzIterA = _nonZeros.begin() + _rowPtr[i];
             auto nnzIterB = m._nonZeros.begin() + m._rowPtr[i];
@@ -358,6 +360,7 @@ namespace big
             }
             ret.addRow(nnz, col);
         }
+        return ret;
     }
 
     template <typename T>
@@ -534,37 +537,62 @@ namespace big
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::add(const MatrixCsr &m) const
     {
-        return binaryOp(m, std::plus<T>());
+        return binaryOp(m, std::plus<T>()); // std::plus<T>() is a constructor.
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::sub(const T &s) const
     {
+        MatrixCsr ret(*this);
+        parallelFor(kZeroSize, ret._nonZeros.size(),
+                    [&](std::size_t i)
+                    { ret._nonZeros[i] -= s; });
+        return ret;
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::sub(const MatrixCsr &m) const
     {
+        return binaryOp(m, std::plus<T>());
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::mul(const T &s) const
     {
+        MatrixCsr ret(*this);
+        parallelFor(kZeroSize, ret._nonZeros.size(),
+                    [&](std::size_t i)
+                    { ret._nonZeros[i] *= s; });
+        return ret;
     }
     template <typename T>
     template <typename VE>
     MatrixCsrVectorMul<T, VE> MatrixCsr<T>::mul(const VectorExpression<T, VE> &v) const
     {
+        const VE& true_v = v();
+        return MatrixCsrVectorMul<T, VE>(*this, true_v);
     }
     template <typename T>
     template <typename ME>
     MatrixCsrMatrixMul<T, ME> MatrixCsr<T>::mul(const MatrixExpression<T, ME> &m) const
     {
+        const ME& true_m = m();
+        return MatrixCsrMatrixMul<T, ME>(*this, m);
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::div(const T &s) const
     {
+        MatrixCsr ret(*this);
+        parallelFor(kZeroSize, ret._nonZeros.size(),
+                    [&](std::size_t i)
+                    { ret._nonZeros[i] /= s; });
+        return ret;
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::rsub(const T &s) const
     {
+        MatrixCsr ret(*this);
+        parallelFor(kZeroSize, ret._nonZeros.size(),
+                    [&](std::size_t i)
+                    { ret._nonZeros[i] -= s; });
+        return ret;
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::rsub(const MatrixCsr &m) const
