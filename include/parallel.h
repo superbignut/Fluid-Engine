@@ -20,6 +20,11 @@ namespace big
                      const Function &func,
                      ExecutionPolicy policy = ExecutionPolicy::kParallel);
 
+    template <typename IndexType, typename Value, typename Function, typename Reduce>
+    Value parallelReduce(IndexType beginIndex, IndexType endIndex,
+                         const Value& identity, const Function& func,
+                         const Reduce& reduce,
+                         ExecutionPolicy policy = ExecutionPolicy::kParallel);
 }
 
 #include "detail/parallel-inl.h"

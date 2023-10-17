@@ -105,9 +105,9 @@ namespace big
     }
 
     template <typename T>
-    MatrixCsr<T>::MatrixCsr(const MatrixCsr &other, T epslion)
+    MatrixCsr<T>::MatrixCsr(const MatrixCsr &other)
     {
-        compress(other, epslion);
+        set(other);
     }
 
     template <typename T>
@@ -566,14 +566,14 @@ namespace big
     template <typename VE>
     MatrixCsrVectorMul<T, VE> MatrixCsr<T>::mul(const VectorExpression<T, VE> &v) const
     {
-        const VE& true_v = v();
+        const VE &true_v = v();
         return MatrixCsrVectorMul<T, VE>(*this, true_v);
     }
     template <typename T>
     template <typename ME>
     MatrixCsrMatrixMul<T, ME> MatrixCsr<T>::mul(const MatrixExpression<T, ME> &m) const
     {
-        const ME& true_m = m();
+        const ME &true_m = m();
         return MatrixCsrMatrixMul<T, ME>(*this, m);
     }
     template <typename T>
@@ -591,16 +591,23 @@ namespace big
         MatrixCsr ret(*this);
         parallelFor(kZeroSize, ret._nonZeros.size(),
                     [&](std::size_t i)
-                    { ret._nonZeros[i] -= s; });
+                    { ret._nonZeros[i] = s - ret._nonZeros[i]; });
         return ret;
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::rsub(const MatrixCsr &m) const
     {
+        // return binaryOp(m, big::RMinus<T>());
+        return m.sub(*this);
     }
     template <typename T>
     MatrixCsr<T> MatrixCsr<T>::rdiv(const T &s) const
     {
+        MatrixCsr ret(*this);
+        parallelFor(kZeroSize, ret._nonZeros.size(),
+                    [&](std::size_t i)
+                    { ret._nonZeros[i] = s / ret._nonZeros[i]; });
+        return ret;
     }
 
     template <typename T>
@@ -615,6 +622,91 @@ namespace big
         {
             return _nonZeros[num];
         }
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::iadd(const T &s)
+    {
+        parallelFor(kZeroSize, this->_nonZeros.size(),
+                    [&](std::size_t i)
+                    { this->_nonZeros[i] += s; });
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::iadd(const MatrixCsr &m)
+    {
+        set(add(m));
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::isub(const T &s)
+    {
+        parallelFor(kZeroSize, this->_nonZeros.size(),
+                    [&](std::size_t i)
+                    { this->_nonZeros[i] -= s; });
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::isub(const MatrixCsr &m)
+    {
+        set(m.sub(*this));
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::imul(const T &s)
+    {
+        parallelFor(kZeroSize, this->_nonZeros.size(),
+                    [&](std::size_t i)
+                    { this->_nonZeros[i] *= s; });
+    }
+    template <typename T>
+    template <typename ME>
+    void MatrixCsr<T>::imul(const MatrixExpression<T, ME> &m)
+    {
+        set(mul(m)); // change to move
+    }
+
+    template <typename T>
+    void MatrixCsr<T>::idiv(const T &s)
+    {
+        parallelFor(kZeroSize, this->_nonZeros.size(),
+                    [&](std::size_t i)
+                    { this->_nonZeros[i] /= s; });
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::sum() const
+    {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::avg() const
+    {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::min() const
+    {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::max() const
+    {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::absmin() const
+    {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::absmax() const
+    {
+    }
+
+    template <typename T>
+    T MatrixCsr<T>::trace() const
+    {
     }
 } // namespace big
 

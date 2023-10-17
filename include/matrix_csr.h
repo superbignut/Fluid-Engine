@@ -89,8 +89,8 @@ namespace big
         template <typename E>
         MatrixCsr(const MatrixExpression<T, E> &other, T epslion = std::numeric_limits<T>::epsilon());
 
-        //! \brief init with other whose value is greater than epslion.
-        MatrixCsr(const MatrixCsr &other, T epslion = std::numeric_limits<T>::epsilon());
+        //! \brief copy constructor
+        MatrixCsr(const MatrixCsr &other);
 
         //! \brief init with other by std::move().
         MatrixCsr(MatrixCsr &&other); 
