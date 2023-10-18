@@ -8,13 +8,13 @@
 
 <!-- ### By 👀reading the 😱excellent 📖book "💦Fluid 🤖Engine 💻Development" and learning its 🥰concise 😍code 🤩structure💩,  the "🤪big" 🚀engine is ⏳being 🤠developed 🥱completely 🧐from 🥶scratch.🤓 -->
 #### "Fluid Engine Development" is actually a compensation for your exam-oriented education. 
-#### By reading the code, you will realize that writing a pyhsics or math formula on pape fluently is still far from truly understanding it, but rather becoming familiar with its appearance. 
+#### By reading the code, you will realize that writing a pyhsics or math formula on paper fluently is still far from truly understanding it, but rather becoming familiar with its appearance. 
 #### Everyone who loves physics can't afford to miss this wonderful book. If only I had come across this book earlier.
 ---
-<div align="center">
+<!-- <div align="center">
 	<img src="render/render.jpg" alt="Editor" width="700">
-</div>
-
+</div> -->
+![render](render/render.jpg)
 ---
 ## Features:
 + ### CRTP 

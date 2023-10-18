@@ -33,19 +33,19 @@ namespace small
         return future;
     };
 }
-// int main(int argc, char **argv)
-// {
-//     std::vector<std::future<void>> pool;
-//     for (int i = 0; i < 10; ++i)
-//     {
-//         pool.emplace_back(std::async([i = i]()
-//                                      { std::cout << i << " "; }));
-//     }
-//     for (auto &f : pool)
-//     {
-//         if (f.valid())
-//         {
-//             f.wait();
-//         }
-//     }
-// }
+int main(int argc, char **argv)
+{
+    std::vector<std::future<void>> pool;
+    for (int i = 0; i < 10; ++i)
+    {
+        pool.emplace_back(small::async([i = i]()
+                                     { std::cout << i << " "; }));
+    }
+    for (auto &f : pool)
+    {
+        if (f.valid())
+        {
+            f.wait();
+        }
+    }
+}

@@ -25,10 +25,10 @@ void inter(const A<U> &other)
 {
     other.size();
 }
-// int main(int argc, char **argv)
-// {
-//     B bbb;
-//     inter(bbb);
+int main(int argc, char **argv)
+{
+    B bbb;
+    inter(bbb);
 
-//     return 0;
-// }
+    return 0;
+}
