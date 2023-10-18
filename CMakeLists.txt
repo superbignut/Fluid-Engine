@@ -11,7 +11,8 @@ include_directories(/usr/local/include)
 include_directories(include)
 # include_directories(external/googletest/googletest/include)
 
-aux_source_directory(src source_list)
+# aux_source_directory(src source_list)
 
-add_executable(big ${source_list})
+# add_executable(big ${source_list})
+add_executable(big src/main.cpp)
 # target_link_libraries(big ${OpenCV_LIBRARIES})
