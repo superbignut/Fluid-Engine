@@ -249,7 +249,7 @@ namespace big
         //! \brief I think the function below is same as above.
         MatrixCsr &operator=(const MatrixCsr &other);
 
-        MatrixCsr &operator=(const MatrixCsr &&other);
+        MatrixCsr &operator=(MatrixCsr &&other);
 
         MatrixCsr &operator+=(T s);
 
@@ -272,7 +272,7 @@ namespace big
 
         bool operator!=(const MatrixCsr &other) const;
 
-        static MatrixCsr<T> makeIdentity();
+        static MatrixCsr<T> makeIdentity(std::size_t m);
 
         std::size_t hasElement(std::size_t i, std::size_t j) const;
 

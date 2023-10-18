@@ -1,5 +1,6 @@
 #ifndef INCLUDE_BIG_MATRIXCSR_INL_H_
 #define INCLUDE_BIG_MATRIXCSR_INL_H_
+#include <numeric>//iota
 namespace big
 {
     template <typename T, typename VE>
@@ -113,7 +114,7 @@ namespace big
     template <typename T>
     MatrixCsr<T>::MatrixCsr(MatrixCsr &&other)
     {
-        *this = std::move(other);
+        *this = std::move(other); // call move assignment operator.
     }
 
     template <typename T>
@@ -677,36 +678,237 @@ namespace big
     template <typename T>
     T MatrixCsr<T>::sum() const
     {
+        return parallelReduce(
+            kZeroSize, this->_nonZeros.size(),
+            T(0), [&](std::size_t begin, std::size_t end, T init)
+            {
+                T result = init;
+                for(std::size_t i = begin; i< end; ++i)
+                {
+                    result += _nonZeros[i];
+                }
+                return result; },
+            std::plus<T>());
     }
 
     template <typename T>
     T MatrixCsr<T>::avg() const
     {
+        return sum() / numberNonZeros();
     }
 
     template <typename T>
     T MatrixCsr<T>::min() const
     {
+        const T &(*_min)(const T &, const T &) = std::min<T>;
+        return parallelReduce(
+            kZeroSize, this->_nonZeros.size(),
+            std::numeric_limits<T>::max(),
+            [&](std::size_t begin, std::size_t end, T init)
+            {
+                T result = init;
+                for(std::size_t i = begin; i< end; ++i)
+                {
+                    result = std::min(_nonZeros[i], result);
+                }
+                return result; },
+            _min);
     }
 
     template <typename T>
     T MatrixCsr<T>::max() const
     {
+        const T &(*_max)(const T &, const T &) = std::max<T>;
+        return parallelReduce(
+            kZeroSize, this->_nonZeros.size(),
+            std::numeric_limits<T>::min(),
+            [&](std::size_t begin, std::size_t end, T init)
+            {
+                T result = init;
+                for(std::size_t i = begin; i< end; ++i)
+                {
+                    result = std::max(_nonZeros[i], result);
+                }
+                return result; },
+            _max);
     }
 
     template <typename T>
     T MatrixCsr<T>::absmin() const
     {
+        T(*_absmin)
+        (T, T) = big::absmin<T>;
+        return parallelReduce(
+            kZeroSize, this->_nonZeros.size(),
+            std::numeric_limits<T>::max(),
+            [&](std::size_t begin, std::size_t end, T init)
+            {
+                T result = init;
+                for(std::size_t i = begin; i< end; ++i)
+                {
+                    result = big::absmin(_nonZeros[i], result);
+                }
+                return result; },
+            _absmin);
     }
 
     template <typename T>
     T MatrixCsr<T>::absmax() const
     {
+
+        const T &(*_absmax)(const T &, const T &) = big::absmax<T>;
+        return parallelReduce(
+            kZeroSize, this->_nonZeros.size(),
+            std::numeric_limits<T>::min(),
+            [&](std::size_t begin, std::size_t end, T init)
+            {
+                T result = init;
+                for(std::size_t i = begin; i< end; ++i)
+                {
+                    result = big::absmax(_nonZeros[i], result);
+                }
+                return result; },
+            _absmax);
     }
 
     template <typename T>
     T MatrixCsr<T>::trace() const
     {
+        assert(isSquare() && "CSRMatrix is not square.");
+        return parallelReduce(
+            kZeroSize, rows(),
+            T(0), [&](std::size_t begin, std::size_t end, T init)
+            {
+                T result = init;
+                for(std::size_t i = begin; i< end; ++i)
+                {
+                    result += (*this)(i, i);
+                }
+                return result; },
+            std::plus<T>());
+    }
+
+    template <typename T>
+    template <typename U>
+    MatrixCsr<U> MatrixCsr<T>::castTo() const
+    {
+        MatrixCsr<U> ret;
+        ret.reserve(rows(), cols(), numberNonZeros());
+
+        auto nnz = ret.nonZeroBegin();
+        auto coi = ret.colIndexBegin();
+        auto rpt = ret.rowPointerBegin();
+
+        parallelFor(kZeroSize, numberNonZeros(), [&](int i)
+                    {
+            nnz[i] = static_cast<U>(_nonZeros[i]);
+            coi[i] = _colIndex[i]; });
+
+        parallelFor(kZeroSize, rows() + 1, [&](int i)
+                    { rpt[i] = _rowPtr[i]; });
+        return ret;
+    }
+
+    template <typename T>
+    template <typename E>
+    MatrixCsr<T> &MatrixCsr<T>::operator=(const MatrixExpression<T, E> &other)
+    {
+        compress(other);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator=(const MatrixCsr &other)
+    {
+        set(other);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator=(MatrixCsr &&other)
+    {
+        _size = other._size;
+        other._size = Size2();
+        _nonZeros = std::move(other._nonZeros);
+        _colIndex = std::move(other._colIndex);
+        _rowPtr = std::move(other._rowPtr);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator+=(T s)
+    {
+        iadd(s);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator+=(const MatrixCsr &m)
+    {
+        iadd(m);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator-=(T s)
+    {
+        isub(s);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator-=(const MatrixCsr &m)
+    {
+        isub(m);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator*=(T s)
+    {
+        imul(s);
+        return *this;
+    }
+
+    template <typename T>
+    template <typename ME>
+    MatrixCsr<T> &MatrixCsr<T>::operator*=(const MatrixExpression<T, ME> &m)
+    {
+        imul(m);
+        return *this;
+    }
+
+    template <typename T>
+    MatrixCsr<T> &MatrixCsr<T>::operator/=(T s)
+    {
+        idiv(s);
+        return *this;
+    }
+
+    template <typename T>
+    bool MatrixCsr<T>::operator==(const MatrixCsr &m) const
+    {
+        return isEqual(m);
+    }
+
+    template <typename T>
+    bool MatrixCsr<T>::operator!=(const MatrixCsr &other) const
+    {
+        return !isEqual(other);
+    }
+
+    template <typename T>
+    MatrixCsr<T> MatrixCsr<T>::makeIdentity(std::size_t m)
+    {
+        MatrixCsr ret;
+        ret._size = Size2(m, m);
+        ret._nonZeros.resize(m, 1.0f);
+        ret._colIndex.resize(m);
+        ret._rowPtr.resize(m + 1);
+
+        std::iota(ret.colIndexBegin(), ret.colIndexEnd(), kZeroSize);
+        std::iota(ret.rowPointerBegin(), ret.rowPointerEnd(), kZeroSize);
+        return ret;
     }
 } // namespace big
 

@@ -24,8 +24,8 @@ namespace big
 
             auto task = new package_t(std::forward<TASK_T>(fcn)); // 封装成一个可调用对象, 可以通过getfuture获得结果
             auto future = task->get_future();
-
-            schedule([=]() 
+            // add std::move(task)?
+            schedule([task=task]() 
                      { //值传递 
                 (*task)(); // 开始执行
                 delete task; // 删除new的空间
@@ -66,6 +66,7 @@ namespace big
             for (IndexType k = k1; k < k2; ++k)
             {
                 func(k);
+                std::cout << k << " ";
             }
         };
 
@@ -117,9 +118,10 @@ namespace big
         slice = std::max(slice, IndexType(1));
 
         std::vector<Value> results(numThreads, identity);
-        auto launchRange = [&](IndexType k1, IndexType k2, unsigned int tid)
+        auto launchRange = [&func, &results, &identity](IndexType k1, IndexType k2, unsigned int tid)
         {
             results[tid] = func(k1, k2, identity);
+            // std::cout << results[tid]<<" ";
         };
 
         std::vector<std::future<void>> pool;
@@ -131,14 +133,14 @@ namespace big
         unsigned int tid = 0;
         for (; tid < numThreads - 1 && i1 < end; ++tid)
         {
-            pool.emplace_back(internal::async([=]()
+            pool.emplace_back(internal::async([i1, i2, tid, &launchRange]()
                                               { launchRange(i1, i2, tid); }));
             i1 = i2;
             i2 = std::min(end, i2 + slice);
         }
         if (i1 < end)
         {
-            pool.emplace_back(internal::async([=]()
+            pool.emplace_back(internal::async([i1, end, tid, &launchRange]()
                                               { launchRange(i1, end, tid); }));
         }
         for (auto &f : pool)
