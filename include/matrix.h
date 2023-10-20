@@ -175,6 +175,8 @@ namespace big
 
         Matrix inverse() const;
 
+        static Matrix random(bool if_inverse = true);
+
         template <typename U>
         MatrixTypeCast<T, Matrix, U> castTo() const;
 

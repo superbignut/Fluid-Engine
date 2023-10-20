@@ -386,7 +386,7 @@ namespace big
         // scale
         for (std::size_t j = 0; j < n; ++j)
         {
-            assert(a(j,j) == 0 && "There is an error in Matrix inverse!!!");
+            assert(a(j, j) == 0 && "There is an error in Matrix inverse!!!");
             T c = 1 / a(j, j);
             for (std::size_t k = 0; k < n; ++k)
             {
@@ -402,9 +402,10 @@ namespace big
         forEachIndex([this](std::size_t i, std::size_t j)
                      {std::cout<< (*this)(i ,j);
             if(j < N - 1)
-                std::cout<<"&";
+                std::cout<<" ";
             else
                 std::cout<<std::endl; });
+        std::cout << "det is :"<< determinant()<<std::endl; 
     }
 
     template <typename T, std::size_t M, std::size_t N>
@@ -676,6 +677,30 @@ namespace big
         Matrix inv(*this);
         inv.invert();
         return inv;
+    }
+
+    template <typename T, std::size_t M, std::size_t N>
+    Matrix<T, M, N> Matrix<T, M, N>::random(bool if_inverse)
+    {
+        assert(M == N);
+        Matrix<T, N, M> temp;
+        for (std::size_t i = 0; i < M; ++i)
+        {
+            for (std::size_t j = 0; j < N; ++j)
+            {
+               if(i == j || i + j == M - 1){
+                temp(i, j) = j + 1; }
+                if(std::abs(static_cast<int>(i-j))<= 3)
+                {
+                    temp(i, j) = (i+j) % 5 + 1;
+                }
+            }
+            if(i % 3 == 0){
+
+                temp(i, M-1) = std::abs(static_cast<int>(i - i % 2));
+            }
+        }
+        return temp;
     }
 
     template <typename T, std::size_t M, std::size_t N>

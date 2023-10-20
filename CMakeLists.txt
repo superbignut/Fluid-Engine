@@ -17,6 +17,7 @@ include_directories(include)
 # add_executable(big ${source_list})
 add_subdirectory(src/examples/async)
 add_subdirectory(src/examples/CRTP)
+add_subdirectory(src/test/blastest)
 
 add_executable(big src/main.cpp)
 # target_link_libraries(big ${OpenCV_LIBRARIES})

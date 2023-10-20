@@ -80,6 +80,10 @@ namespace big
 
         T absmax() const;
 
+        static Vector random();
+
+        void show();
+
         std::size_t dominantAxis() const;
 
         std::size_t subminantAxis() const;

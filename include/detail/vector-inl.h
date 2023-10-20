@@ -73,7 +73,7 @@ namespace big
     constexpr std::size_t Vector<T, N>::size() const
     {
         // std::cout << "son size\n"
-                //   << std::endl;
+        //   << std::endl;
         return N;
     }
 
@@ -432,6 +432,26 @@ namespace big
             temp = absmax(temp, ele);
         }
         return temp;
+    }
+
+    template <typename T, std::size_t N>
+    Vector<T, N> Vector<T, N>::random()
+    {
+        Vector temp;
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            temp[i] = (i * 7 + 13) % 3 + 1;
+        }
+        return temp;
+    }
+    template <typename T, std::size_t N>
+    void Vector<T, N>::show()
+    {
+        for(std::size_t i =0 ;i < N; ++i)
+        {
+            std::cout << at(i) << " ";
+        }
+        std::cout << std::endl;
     }
 
     template <typename T, std::size_t N>
