@@ -1,6 +1,6 @@
 #ifndef INCLUDE_BIG_BLAS_H_
 #define INCLUDE_BIG_BLAS_H_
-
+#include <cmath>
 namespace big
 {
     //! Basic Linear Algebra Subprograms

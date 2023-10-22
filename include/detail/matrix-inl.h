@@ -399,6 +399,7 @@ namespace big
     template <typename T, std::size_t M, std::size_t N>
     void Matrix<T, M, N>::show() const
     {
+        std::cout <<"Matrix:" << std::endl;
         forEachIndex([this](std::size_t i, std::size_t j)
                      {std::cout<< (*this)(i ,j);
             if(j < N - 1)

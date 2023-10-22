@@ -291,7 +291,7 @@ namespace big
     {
         return MatrixAdd<T, E1, E2>(a(), b());
     }
-        template <typename T, typename E>
+    template <typename T, typename E>
     MatrixScalarAdd<T, E> operator+(const MatrixExpression<T, E> &a, const T &b)
     {
         return MatrixScalarAdd<T, E>(a(), b);
@@ -332,6 +332,12 @@ namespace big
         return MatrixMul<T, E1, E2>(a(), b());
     }
 
+    template <typename T, typename E1, typename E2>
+    MatrixVectorMul<T, E1, E2> operator*(const MatrixExpression<T, E1> &m, const VectorExpression<T, E2> &v)
+    {
+        return MatrixVectorMul<T, E1, E2>(m(), v());
+    }
+
     template <typename T, typename E>
     MatrixScalarMul<T, E> operator*(const MatrixExpression<T, E> &a, const T &b)
     {
@@ -353,7 +359,6 @@ namespace big
     {
         return MatrixScalarRDiv<T, E>(b(), a);
     }
-    
 
 }
 

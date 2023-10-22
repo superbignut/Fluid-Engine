@@ -241,6 +241,9 @@ namespace big
     template <typename T, typename E1, typename E2>
     MatrixMul<T, E1, E2> operator*(const MatrixExpression<T, E1> &a, const MatrixExpression<T, E2> &b);
 
+    template <typename T, typename E1, typename E2>
+    MatrixVectorMul<T, E1, E2> operator*(const MatrixExpression<T, E1> &m, const VectorExpression<T, E2> &v);
+
     template <typename T, typename E>
     MatrixScalarMul<T, E> operator*(const MatrixExpression<T, E> &a, const T &b);
 
