@@ -63,7 +63,7 @@ namespace big
         const VectorType &b,
         VectorType *result)
     {
-        *result = b - a * x;
+        *result = a * x - b;
     }
 
     template <typename ScalarType, typename VectorType, typename MatrixType>

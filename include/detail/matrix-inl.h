@@ -386,7 +386,8 @@ namespace big
         // scale
         for (std::size_t j = 0; j < n; ++j)
         {
-            assert(a(j, j) == 0 && "There is an error in Matrix inverse!!!");
+            // auto debug =  a(j, j);
+            assert(a(j, j) != 0 && "There is an error in Matrix inverse!!!");
             T c = 1 / a(j, j);
             for (std::size_t k = 0; k < n; ++k)
             {

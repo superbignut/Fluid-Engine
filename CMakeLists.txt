@@ -18,6 +18,6 @@ include_directories(include)
 add_subdirectory(src/examples/async)
 add_subdirectory(src/examples/CRTP)
 add_subdirectory(src/test/blastest)
-
-add_executable(big src/main.cpp)
+add_subdirectory(src/test/cgtest)
+# add_executable(big src/main.cpp)
 # target_link_libraries(big ${OpenCV_LIBRARIES})

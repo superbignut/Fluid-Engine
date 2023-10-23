@@ -33,7 +33,7 @@ namespace big
             const MatrixType &m,
             const VectorType &v,
             VectorType *result);
-        //! b-a*x
+        //! a*x - b
         static void residual(
             const MatrixType &a,
             const VectorType &x,

@@ -9,7 +9,7 @@ int main()
     auto m = big::Matrix<double, 5, 5>::random();
 
     auto v = big::Vector<double, 5>::random();
-
+    
     typedef big::Blas<double, big::Vector<double, 5>, big::Matrix<double, 5, 5>> BlasType;
 
     BlasType::set(2.5, &v);
