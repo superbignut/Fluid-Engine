@@ -80,16 +80,47 @@
                 delete task;});
             return future;
         }
++ ### CG
+    Our interest in the conjugate gradient method is twofold. It is one of the most useful tecnniques for solving large linear systems  of equations, and it can also be adapted to solve nolinear optimization problems.
 
+        BlasType::residual(A, *x, b, r);                           //r = A * x - b
+        
+        *p = -*r;                                                  //p = -r
+        
+        typename BlasType::ScalarType rr = BlasType::dot(*r, *r);  //rr = r * r
+        
+        unsigned int k = 0;
+        while (rr > tolerance && k <= maxNumberOfIterations)
+        {
+            BlasType::mvm(A, *p, q);                               //q = A * p
+
+            typename BlasType::ScalarType alpha = rr / BlasType::dot(*p, *q);
+
+            BlasType::axpy(alpha, *p, *x, x);                      //x = x + alpha * p
+
+            BlasType::axpy(alpha, *q, *r, r);                      //r = r + alpha * q 
+
+            typename BlasType::ScalarType old_rr = rr;
+
+            rr = BlasType::dot(*r, *r);
+
+            typename BlasType::ScalarType beta = rr / old_rr;      //beta = rr / rr
+
+            BlasType::axpy(beta, *p, -*r, p);                      //p = beta * p - r
+
+            ++k;
+        }
 ## To Do :
 
 <!-- #### 8. write someting here... -->
+---
+#### 8. Complete the surface.h and its corresponding files.
 
 ---
-#### 7. Complete the Field, scalar_field, vector_field and conjugate gradient parts.
+#### ~~7. Complete the Field, scalar_field, vector_field and conjugate gradient parts.~~
 
 ---
-#### ~~6. Complete the matrix.h and its corresponding include files.~~
+#### ~~6. Complete the matrix.h and its corresponding files.~~
 <!-- + ~~matrix.h, matrix_expression.h and fix a bug in matrix inverse().~~
 + ~~matrix2x2.h, matrix3x3.h~~
 + ~~matrix4x4.h and matrix_mxn.h are excluded temporarily for their cubersome and repeated codes.~~
@@ -99,22 +130,22 @@
 <!-- + ~~vector2.h, vector3.h, vector4.h~~
 + ~~Jet::VectorN has a dynamic size. We don't add it now.~~ -->
 ---
-#### ~~4. Complete the vector.h and its corresponding include files.~~
+#### ~~4. Complete the vector.h and its corresponding files.~~
 <!-- + ~~vector_expression.h and vector_expression-inl.h~~
 + ~~type_helpers.h~~
 + ~~vector.h and vector-inl.h~~ -->
 ---
-#### ~~3. Complete the array3.h and its corresponding include files.~~
+#### ~~3. Complete the array3.h and its corresponding files.~~
 <!-- + ~~point3.h and point3-inl.h~~
 + ~~size3.h and size3-inl.h~~
 + ~~array_accessor3.h and array_accerssor3-inl.h~~ -->
 ---
-#### ~~2. Complete the  array2.h and its corresponding include files.~~
+#### ~~2. Complete the  array2.h and its corresponding files.~~
 <!-- + ~~point2.h and point2-inl.h~~
 + ~~size2.h and size2-inl.h~~
 + ~~array_accessor2.h and array_accerssor2-inl.h~~ -->
 ---
-#### ~~1. Complete the  array1.h and its corresponding include files.~~
+#### ~~1. Complete the  array1.h and its corresponding files.~~
 <!-- + ~~point.h~~
 + ~~size.h~~ 
 + ~~array_accessor.h~~ -->

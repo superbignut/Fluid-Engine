@@ -17,7 +17,7 @@ namespace big
         unsigned int *lastNumberOfIterations,
         typename BlasType::ScalarType *lastResidualNorm)
     {
-        BlasType::set(0, r); // r = 0
+        // BlasType::set(0, r); // r = 0
 
         BlasType::residual(A, *x, b, r); // r = A * x - b
 
@@ -26,6 +26,7 @@ namespace big
         typename BlasType::ScalarType rr = BlasType::dot(*r, *r);
 
         unsigned int k = 0;
+
         while (rr > tolerance && k <= maxNumberOfIterations)
         {
             BlasType::mvm(A, *p, q); // q = A * p
@@ -47,7 +48,6 @@ namespace big
             ++k;
 
             std::cout << "rr is :" << rr << std::endl;
-            // break;
         }
         *lastNumberOfIterations = k;
         *lastResidualNorm = rr;

@@ -79,6 +79,12 @@ namespace big
         return ret;
     }
 
+    template <typename T>
+    inline T square(T x, T y)
+    {
+        return x * x + y * y;
+    }
+
 }
 
 #endif
