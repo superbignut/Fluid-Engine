@@ -157,9 +157,11 @@
 ---
 ## Reference :
 ---
-### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
+### [1 https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
+### [2 https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf](https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf)
 ---
 <!-- 知我者谓我心忧，不知者谓我何求 -->
 [1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
+[4]:https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf

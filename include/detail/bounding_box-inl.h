@@ -6,6 +6,7 @@ namespace big
     template <typename T, std::size_t N>
     BoundingBox<T, N>::BoundingBox()
     {
+        reset();
     }
     template <typename T, std::size_t N>
     BoundingBox<T, N>::BoundingBox(const VectorType &point1, const VectorType &point2)
@@ -107,7 +108,7 @@ namespace big
     template <typename T, std::size_t N>
     void BoundingBox<T, N>::expand(T delta)
     {
-        for(std::size_t i=0; i<N;++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             lowerCorner -= delta;
             upperCorner += delta;
