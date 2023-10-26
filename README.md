@@ -127,7 +127,11 @@
 
     We only need to consider the first two cases. The third case is assessed as 'contained within the bounding box', and the last two cases are deemed as non-intersecting. Naturally We can draw a conclusion that: $$Intersect : max(t_1, t_3, 0) < min(t_2, t_4 ,\infty)$$ 
 
-    What a elegant idea it is, alought there are some edge cases need to be considered.
+    Alought there are some edge cases need to be considered.
+
+    If we raise the dimension to three-dimensional space，the positional relationship between straight line and cube will become unimaginable.  However, just remember that, the straight line will pass through three planes first, and then the remaining three planes.(As before, we just consider the cases that the straight line does not parallel to any plane.)
+
+    Therefore, the only difference between 2-D and 3-D is that we have 4 parameters $(t_1,t_2,t_3,t_4)$ in 2-D space while 6 paramters $(t_1,t_2,t_3,t_4,t_5,t_6)$ in 3-D space.
 
 ## To Do :
 
