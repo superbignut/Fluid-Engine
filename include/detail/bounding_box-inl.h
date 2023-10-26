@@ -81,7 +81,7 @@ namespace big
     template <typename T, std::size_t N>
     void BoundingBox<T, N>::reset()
     {
-        for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             lowerCorner[i] = std::numeric_limits<T>::max();
             upperCorner[i] = -std::numeric_limits<T>::max();
@@ -90,7 +90,7 @@ namespace big
     template <typename T, std::size_t N>
     void BoundingBox<T, N>::merge(const VectorType &point)
     {
-        for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             lowerCorner[i] = std::min(lowerCorner[i], point[i]);
             upperCorner[i] = std::max(upperCorner[i], point[i]);
@@ -99,7 +99,7 @@ namespace big
     template <typename T, std::size_t N>
     void BoundingBox<T, N>::merge(const BoundingBox &other)
     {
-        for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             lowerCorner[i] = std::min(lowerCorner[i], other.lowerCorner[i]);
             upperCorner[i] = std::max(upperCorner[i], other.upperCorner[i]);

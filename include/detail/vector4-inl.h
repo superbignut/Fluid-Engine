@@ -155,7 +155,7 @@ namespace big
     }
 
     template <typename T>
-    Vector<T, 4> Vector<T, 4>::rdiv(T &val) const
+    Vector<T, 4> Vector<T, 4>::rdiv(const T &val) const
     {
         return Vector(val / x, val / y, val / z, val / w);
     }
@@ -365,13 +365,13 @@ namespace big
     }
 
     template <typename T>
-    T &Vector<T, 4>::operator[](T i)
+    T &Vector<T, 4>::operator[](std::size_t i)
     {
         assert(i < 4);
         return (&x)[i];
     }
     template <typename T>
-    const T &Vector<T, 4>::operator[](T i) const
+    const T &Vector<T, 4>::operator[](std::size_t i) const
     {
         assert(i < 4);
         return (&x)[i];

@@ -75,7 +75,35 @@ namespace big
 
         const Vector<T, 2> &rayInvDirection = ray.direction.rdiv(1);
 
-        for (int i = 0; i < 2; ++i)
+        for (std::size_t i = 0; i < 2; ++i)
+        {
+            T t_small = (lowerCorner[i] - ray.origin[i]) * rayInvDirection[i];
+            T t_big = (upperCorner[i] - ray.origin[i]) * rayInvDirection[i];
+
+            if (t_small > t_big)
+            {
+                std::swap(t_small, t_big); // ensure t_small < t_big
+            }
+            max_1_3 = std::max(max_1_3, t_small);
+            min_2_4 = std::min(min_2_4, t_big);
+            if (max_1_3 > min_2_4)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    template <typename T>
+    BoundingBoxRayIntersection2<T> BoundingBox<T, 2>::closestIntersection(const Ray<T, 2> &ray) const
+    {
+        BoundingBoxRayIntersection2<T> intersection;
+        T max_1_3 = 0;
+        T min_2_4 = std::numeric_limits<T>::max();
+
+        const Vector<T, 2> &rayInvDirection = ray.direction.rdiv(1);
+
+        for (std::size_t i = 0; i < 2; ++i)
         {
             T t_small = (lowerCorner[i] - ray.origin[i]) * rayInvDirection[i];
             T t_big = (upperCorner[i] - ray.origin[i]) * rayInvDirection[i];
@@ -88,11 +116,43 @@ namespace big
             min_2_4 = std::min(min_2_4, t_big);
             if (max_1_3 > min_2_4)
             {
-                return false;
+                intersection.isIntersection = false;
+                return intersection;
             }
         }
-        return true;
+
+        if (contains(ray.origin))
+        {
+            intersection.tNear = min_2_4;                      // core of algorithm
+            intersection.tFar = std::numeric_limits<T>::max(); // means no tFar
+        }
+        else
+        {
+            intersection.tNear = max_1_3; // core of algorithm
+            intersection.tFar = min_2_4;  // core of algorithm
+        }
+
+        return intersection;
     }
+    template <typename T>
+    Vector<T, 2> BoundingBox<T, 2>::midPoint() const
+    {
+        return (lowerCorner + upperCorner) / static_cast<T>(2);
+    }
+
+    template <typename T>
+    T BoundingBox<T, 2>::diagonalLength() const
+    {
+        return (upperCorner - lowerCorner).length();
+    }
+
+    //!
+    template <typename T>
+    T BoundingBox<T, 2>::diagonalLengthSquared() const
+    {
+        return (upperCorner - lowerCorner).lengthSquared();
+    }
+
     template <typename T>
     void BoundingBox<T, 2>::reset()
     {
@@ -100,6 +160,52 @@ namespace big
         lowerCorner.y = std::numeric_limits<T>::max();
         upperCorner.x = -std::numeric_limits<T>::max();
         upperCorner.y = -std::numeric_limits<T>::max();
+    }
+
+    template <typename T>
+    void BoundingBox<T, 2>::merge(const Vector<T, 2> &point)
+    {
+        lowerCorner.x = std::min(lowerCorner.x, point.x);
+        lowerCorner.y = std::min(lowerCorner.y, point.y);
+
+        upperCorner.x = std::max(upperCorner.x, point.x);
+        upperCorner.y = std::max(upperCorner.y, point.y);
+    }
+
+    template <typename T>
+    void BoundingBox<T, 2>::merge(const BoundingBox &other)
+    {
+        lowerCorner.x = std::min(lowerCorner.x, other.lowerCorner.x);
+        lowerCorner.y = std::min(lowerCorner.y, other.lowerCorner.y);
+
+        upperCorner.x = std::max(upperCorner.x, other.upperCorner.x);
+        upperCorner.y = std::max(upperCorner.y, other.upperCorner.y);
+    }
+
+    template <typename T>
+    void BoundingBox<T, 2>::expand(T delta)
+    {
+        lowerCorner -= delta;
+        upperCorner += delta;
+    }
+    template <typename T>
+    Vector<T, 2> BoundingBox<T, 2>::corner(std::size_t idx) const
+    {
+        static const T h = static_cast<T>(1) / 2;
+        static const Vector<T, 2> offset[4] = {
+            {-h, -h}, {h, -h}, {-h, h}, {h, h}};
+
+        return Vector<T, 2>(width(), height()) * offset[idx] + midPoint();
+    }
+    template <typename T>
+    Vector<T, 2> BoundingBox<T, 2>::clamp(const Vector<T, 2> &pt) const
+    {
+        return ::big::clamp(pt, lowerCorner, upperCorner);
+    }
+    template <typename T>
+    bool BoundingBox<T, 2>::isEmpty() const
+    {
+        return (lowerCorner.x >= upperCorner.x || lowerCorner.y >= upperCorner.y);
     }
 }
 #endif

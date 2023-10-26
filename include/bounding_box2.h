@@ -3,7 +3,7 @@
 
 #include "bounding_box.h"
 #include "ray2.h"
-#include "vector2.h"
+// #include "vector2.h"
 
 namespace big
 {
@@ -46,8 +46,10 @@ namespace big
 
         bool contains(const Vector<T, 2> &point) const;
 
+        //！ we don't consider the edge cases.
         bool intersects(const Ray<T, 2> &ray) const;
-
+        
+        // return BoundingBoxRayIntersection2 
         BoundingBoxRayIntersection2<T> closestIntersection(const Ray<T, 2> &ray) const;
 
         Vector<T, 2> midPoint() const;
@@ -69,15 +71,17 @@ namespace big
         //! expand delta
         void expand(T delta);
 
+        //  2  3
+        //  0  1
         Vector<T, 2> corner(std::size_t idx) const;
-
+        
         Vector<T, 2> clamp(const Vector<T, 2> &pt) const;
 
         bool isEmpty() const;
     };
 
     template <typename T>
-    using BoundingBox2 = BoundingBox2<T, 2>;
+    using BoundingBox2 = BoundingBox<T, 2>;
 
     typedef BoundingBox2<float> BoundingBox2F;
 

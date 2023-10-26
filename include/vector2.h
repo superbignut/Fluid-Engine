@@ -1,5 +1,5 @@
 #ifndef INCLUDE_BIG_VECTOR2_H_
-#define INCLUDE_BIG_VCETOR2_H_
+#define INCLUDE_BIG_VECTOR2_H_
 #include "vector.h"
 namespace big
 {
@@ -61,7 +61,7 @@ namespace big
 
         Vector rsub(const Vector &other) const;
 
-        Vector rdiv(T &val) const;
+        Vector rdiv(const T &val) const;
 
         Vector rdiv(const Vector &other) const;
 
@@ -125,9 +125,9 @@ namespace big
 
         constexpr bool isSimilar(const Vector &other, T epsilon = std::numeric_limits<T>::epsilon()) const;
 
-        T &operator[](T i);
+        T &operator[](std::size_t i);
 
-        const T &operator[](T i) const;
+        const T &operator[](std::size_t i) const;
 
         Vector &operator=(const Vector &other);
 
