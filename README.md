@@ -115,7 +115,7 @@
     
     Generally, when a line intersects with an AABB, the ray's origin can be categorized into 5 distinct scenarios, as illustrated below:
 
-    ![Raybox](render/raybox.jpg)
+    ![Raybox](https://github.com/superbignut/Fluid-Engine/blob/master/render/raybox.jpg)
     
     We use : $\vec{r}_0 + t \cdot \vec{r}_d$ to represent a parametric line and $t_i$ to represent the intersection of line and boundary，and we can find that:
     
