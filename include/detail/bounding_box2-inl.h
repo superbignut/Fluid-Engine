@@ -80,7 +80,7 @@ namespace big
             T t_small = (lowerCorner[i] - ray.origin[i]) * rayInvDirection[i];
             T t_big = (upperCorner[i] - ray.origin[i]) * rayInvDirection[i];
 
-            if (t_small < t_big)
+            if (t_small > t_big)
             {
                 std::swap(t_small, t_big);
             }

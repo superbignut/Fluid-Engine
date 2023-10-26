@@ -81,7 +81,7 @@
             return future;
         }
 + ### CG
-    Our interest in the conjugate gradient method is twofold. It is one of the most useful tecnniques for solving large linear systems  of equations, and it can also be adapted to solve nolinear optimization problems.
+    Our interest in the conjugate gradient method is twofold. It is one of the most useful tecnniques for solving large linear systems  of equations, and it can also be adapted to solve nolinear optimization problems[^1].
 
         BlasType::residual(A, *x, b, r);                           //r = A * x - b
         
@@ -110,6 +110,26 @@
 
             ++k;
         }
++ ### Ray-AABB Intersection
+    Kay and Kayjia developed a method based on "slabs" where a slab is the space between two parallel plane[^2]. It is a simple method to ascertain whether a ray intersects with an axis-aligned bounding box(AABB).
+    
+    Generally, when a line intersects with an AABB, the ray's origin can be categorized into 5 distinct scenarios, as illustrated below:
+
+    ![render](render/Ray_box.png)
+    
+    
+    We use : $\vec{r}_0 + t \cdot \vec{r}_d$ to represent a parametric line and $t_i$ to represent the intersection of line and boundary，and we can find that:
+    
+    1. $$\qquad 0 < t_1 < t_3 < t_2 < t_4 < \infty$$
+    2. $$\qquad t_1 < 0 < t_3 < t_2 < t_4 < \infty$$
+    3. $$\qquad t_1 < t_3 < 0 < t_2 < t_4 < \infty$$
+    4. $$\qquad t_1 < t_3 < t_2 < 0 < t_4 < \infty$$  
+    5. $$\qquad t_1 < t_3 < t_2 < t_4 < 0 < \infty$$ 
+
+    We only need to consider the first two cases. The third case is assessed as 'contained within the bounding box', and the last two cases are deemed as non-intersecting. Naturally We can draw a conclusion that: $$Intersect : max(t_1, t_3, 0) < min(t_2, t_4 ,\infty)$$ 
+
+    What a elegant idea it is, alought there are some edge cases need to be considered.
+
 ## To Do :
 
 <!-- #### 8. write someting here... -->
@@ -164,4 +184,8 @@
 [1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
-[4]:https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
+[4]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
+
+
+[^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
+[^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm
