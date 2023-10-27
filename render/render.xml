@@ -15,7 +15,7 @@
     </shape>
 
     <shape type="obj">
-        <string name="filename" value="object/frame_000040.obj"/>
+        <string name="filename" value="object/100_sphere.obj"/>
         <bsdf type="diffuse"/>
     </shape>
 
