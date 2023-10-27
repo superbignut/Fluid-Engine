@@ -9,6 +9,8 @@ namespace big
 {
 
     //! Represents 2-D rigid body transform.
+    //! cos  -sin
+    //! sin  +cos
     class Transform2
     {
     public:
@@ -16,17 +18,19 @@ namespace big
 
         Transform2(const Vector<double, 2> &translation, double orientation);
 
+        //! return translation
         const Vector<double, 2> &translation() const;
 
         void setTranslation(const Vector<double, 2> &translation);
 
+        //! return orientation
         double orientation() const;
 
         void setOrientation(double orientation);
 
         Vector2D toLocal(const Vector2D &pointInWorld) const;
 
-        Vector2D toLocalDirection(const Vector2D &dirInWorld);
+        Vector2D toLocalDirection(const Vector2D &dirInWorld) const;
 
         Ray2D toLocal(const Ray2D &rayInWorld) const;
 
@@ -34,7 +38,7 @@ namespace big
 
         Vector2D toWorld(const Vector2D &pointInLocal) const;
 
-        Vector2D toWorldDirection(const Vector2D &dirInLocal);
+        Vector2D toWorldDirection(const Vector2D &dirInLocal) const;
 
         Ray2D toWorld(const Ray2D &rayInLocal) const;
 

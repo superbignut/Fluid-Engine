@@ -1,5 +1,5 @@
 #ifndef INCLUDE_BIG_VECTOR4_INL_H_
-#define INCLUDE_BIG_VCETOR4_INL_H_
+#define INCLUDE_BIG_VECTOR4_INL_H_
 #include "math_utils.h"
 namespace big
 {
@@ -266,7 +266,7 @@ namespace big
     template <typename T>
     T Vector<T, 4>::min() const
     {
-        return stdstd::min(std::min(x, y), std::min(w, z));
+        return std::min(std::min(x, y), std::min(w, z));
     }
     template <typename T>
     T Vector<T, 4>::max() const
@@ -318,7 +318,7 @@ namespace big
     template <typename T>
     T Vector<T, 4>::distanceTo(const Vector &other) const
     {
-        return sub(other).length()
+        return sub(other).length();
     }
 
     template <typename T>
@@ -346,7 +346,7 @@ namespace big
     template <typename U>
     Vector<U, 4> Vector<T, 4>::castTo() const
     {
-        return Vector<U, 4>(static_cast<U>(x), static_cast<U>(y), static_cast<U>(z), static_cast<U>(W));
+        return Vector<U, 4>(static_cast<U>(x), static_cast<U>(y), static_cast<U>(z), static_cast<U>(w));
     }
 
     template <typename T>

@@ -1,227 +1,258 @@
-// #ifndef INCLUDE_BIG_MATRIX4X4_H_
-// #define INCLUDE_BIG_MATRIX4X4_H_
-// #include "matrix3x3.h"
-// #include "vector4.h"
-// namespace big
-// {
-//     template <typename T>
-//     class Matrix<T, 4, 4>
-//     {
-//     public:
-//         static_assert(std::is_floating_point<T>::value, "Matrix only can be instantiated with float point types.");
+#ifndef INCLUDE_BIG_MATRIX4X4_H_
+#define INCLUDE_BIG_MATRIX4X4_H_
+#include "matrix3x3.h"
+#include "vector4.h"
+namespace big
+{
+    template <typename T>
+    class Matrix<T, 4, 4>
+    {
+    public:
+        static_assert(std::is_floating_point<T>::value, "Matrix only can be instantiated with float point types.");
 
-//         Matrix();
+        Matrix();
 
-//         explicit Matrix(T s);
+        explicit Matrix(T s);
 
-//         Matrix(T m00, T m01, T m02, T m10, T m11, T m12, T m20, T m21, T m22);
+        Matrix(T m00, T m01, T m02, T m10, T m11, T m12, T m20, T m21, T m22);
 
-//         Matrix(const std::initializer_list<std::initializer_list<T>> &lst);
+        Matrix(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T m20, T m21, T m22, T m23, T m30, T m31, T m32, T m33);
 
-//         Matrix(const Matrix &m);
+        Matrix(const std::initializer_list<std::initializer_list<T>> &lst);
 
-//         explicit Matrix(const T *arr);
+        Matrix(const Matrix &m);
 
-//         void set(T s);
+        Matrix(const Matrix3x3<T> &m33);
 
-//         void set(T m00, T m01, T m02, T m10, T m11, T m12, T m20, T m21, T m22);
+        //! row-major
+        explicit Matrix(const T *arr);
 
-//         void set(const std::initializer_list<std::initializer_list<T>> &lst);
+        void set(T s);
 
-//         void set(const Matrix &m);
+        void set(T m00, T m01, T m02, T m10, T m11, T m12, T m20, T m21, T m22);
 
-//         void set(const T *arr);
+        void set(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T m20, T m21, T m22, T m23, T m30, T m31, T m32, T m33);
 
-//         void setRow(std::size_t i, const Vector<T, 3> &row);
+        void set(const Matrix3x3<T> &m33);
 
-//         void setCol(std::size_t i, const Vector<T, 3> &col);
+        void set(const std::initializer_list<std::initializer_list<T>> &lst);
 
-//         bool isSimilar(const Matrix &other, double tol = std::numeric_limits<double>::epsilon()) const;
+        void set(const Matrix &m);
 
-//         constexpr bool isSquare() const;
+        void set(const T *arr);
 
-//         constexpr std::size_t rows() const;
+        void setDiagnoal(T s);
 
-//         constexpr std::size_t cols() const;
+        void setOffDiagnoal(T s);
 
-//         T *data();
+        void setRow(std::size_t i, const Vector<T, 4> &row);
 
-//         const T *const data() const;
+        void setCol(std::size_t i, const Vector<T, 4> &col);
 
-//         Matrix add(T val) const;
+        bool isSimilar(const Matrix &other, double tol = std::numeric_limits<double>::epsilon()) const;
 
-//         Matrix add(const Matrix &other) const;
+        constexpr bool isSquare() const;
 
-//         Matrix sub(T val) const;
+        constexpr std::size_t rows() const;
 
-//         Matrix sub(const Matrix &other) const;
+        constexpr std::size_t cols() const;
 
-//         Matrix mul(T val) const;
+        T *data();
 
-//         Matrix mul(const Matrix &other) const;
+        const T *const data() const;
 
-//         Matrix div(T val) const;
+        Matrix add(T val) const;
 
-//         Matrix radd(T val) const;
+        Matrix add(const Matrix &other) const;
 
-//         Matrix radd(const Matrix &other) const;
+        Matrix sub(T val) const;
 
-//         Matrix rsub(T val) const;
+        Matrix sub(const Matrix &other) const;
 
-//         Matrix rsub(const Matrix &other) const;
+        Matrix mul(T val) const;
 
-//         Matrix rmul(T val) const;
+        Matrix mul(const Matrix &other) const;
 
-//         Matrix rmul(const Matrix &other) const;
+        Vector<T, 4> mul(const Vector<T, 4> &v) const;
 
-//         Matrix rdiv(T val) const;
+        Matrix div(T val) const;
 
-//         void iadd(T val);
+        Matrix radd(T val) const;
 
-//         void iadd(const Matrix &other);
+        Matrix radd(const Matrix &other) const;
 
-//         void isub(T val);
+        Matrix rsub(T val) const;
 
-//         void isub(const Matrix &other);
+        Matrix rsub(const Matrix &other) const;
 
-//         void imul(T val);
+        Matrix rmul(T val) const;
 
-//         void imul(const Matrix &other);
+        Matrix rmul(const Matrix &other) const;
 
-//         void idiv(T val);
+        Matrix rdiv(T val) const;
 
-//         void transpose();
+        void iadd(T val);
 
-//         void invert();
+        void iadd(const Matrix &other);
 
-//         T sum() const;
+        void isub(T val);
 
-//         T avg() const;
+        void isub(const Matrix &other);
 
-//         T min() const;
+        void imul(T val);
 
-//         T max() const;
+        void imul(const Matrix &other);
 
-//         T absmin() const;
+        void imul(const Matrix3x3<T> &other);
 
-//         T absmax() const;
+        void idiv(T val);
 
-//         T trace() const;
+        void transpose();
 
-//         T determinant() const;
+        void invert();
 
-//         void show() const;
+        T sum() const;
 
-//         Matrix diagonal() const;
+        T avg() const;
 
-//         Matrix offDiagonal() const;
+        T min() const;
 
-//         Matrix strictLowerTri() const;
+        T max() const;
 
-//         Matrix stricitUpperTri() const;
+        T absmin() const;
 
-//         Matrix lowerTri() const;
+        T absmax() const;
 
-//         Matrix upperTri() const;
+        T trace() const;
 
-//         Matrix transposed() const;
+        T determinant() const;
 
-//         Matrix inverse() const;
+        void show() const;
 
-//         T frobeniusNorm() const;
+        Matrix diagonal() const;
 
-//         template <typename U>
-//         Matrix<U, 4, 4> castTo() const;
+        Matrix offDiagonal() const;
 
-//         Matrix &operator=(const Matrix &other);
+        Matrix strictLowerTri() const;
 
-//         Matrix &operator+=(T &s);
+        Matrix stricitUpperTri() const;
 
-//         Matrix &operator+=(const Matrix &m);
+        Matrix lowerTri() const;
 
-//         Matrix &operator-=(T &s);
+        Matrix upperTri() const;
 
-//         Matrix &operator-=(const Matrix &m);
+        Matrix transposed() const;
 
-//         Matrix &operator*=(T &s);
+        Matrix inverse() const;
 
-//         Matrix &operator*=(const Matrix &m);
+        T frobeniusNorm() const;
 
-//         Matrix &operator/=(T &s);
+        template <typename U>
+        Matrix<U, 4, 4> castTo() const;
 
-//         bool operator==(const Matrix &m) const;
+        Matrix &operator=(const Matrix &other);
 
-//         bool operator!=(const Matrix &other) const;
+        Matrix &operator+=(T &s);
 
-//         // return is T& while matrix_expression's ()() are all T
-//         T &operator()(std::size_t i, std::size_t j);
+        Matrix &operator+=(const Matrix &m);
 
-//         const T &operator()(std::size_t i, std::size_t j) const;
+        Matrix &operator-=(T &s);
 
-//         T &operator[](std::size_t i);
+        Matrix &operator-=(const Matrix &m);
 
-//         const T &operator[](std::size_t i) const;
+        Matrix &operator*=(T &s);
 
-//         static Matrix makeZero();
+        Matrix &operator*=(const Matrix &m);
 
-//         static Matrix makeIdentity();
+        Matrix &operator*=(const Matrix3x3<T> &m);
 
-//         static Matrix makeScaleMatrix(T sx, T sy ,T sz);
+        Matrix &operator/=(T &s);
 
-//         static Matrix makeScaleMatrix(const Vector<T, 4> &s);
+        bool operator==(const Matrix &m) const;
 
-//         static Matrix makeRotationMatrix(const Vector<T, 4> &axis, T rad);
+        bool operator!=(const Matrix &other) const;
 
-//     private:
-//         std::array<T, 9> _elements;
-//     };
+        // return is T& while matrix_expression's ()() are all T
+        T &operator()(std::size_t i, std::size_t j);
 
-//     template <typename T>
-//     using Matrix3x3 = Matrix<T, 4, 4>;
+        const T &operator()(std::size_t i, std::size_t j) const;
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator+(const Matrix<T, 4, 4> &a, const Matrix<T, 4, 4> &b);
+        T &operator[](std::size_t i);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator+(const Matrix<T, 4, 4> &a, T b);
+        const T &operator[](std::size_t i) const;
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator+(T a, const Matrix<T, 4, 4> &b);
+        static Matrix makeZero();
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator-(const Matrix<T, 4, 4> &a, const Matrix<T, 4, 4> &b);
+        static Matrix makeIdentity();
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator-(const Matrix<T, 4, 4> &a, T b);
+        static Matrix makeScaleMatrix(T sx, T sy, T sz);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator-(T a, const Matrix<T, 4, 4> &b);
+        static Matrix makeScaleMatrix(const Vector<T, 3> &s);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator-(const Matrix<T, 4, 4> &a);
+        static Matrix makeRotationMatrix(const Vector<T, 3> &axis, T rad);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Matrix<T, 4, 4> &b);
+        static Matrix makeTranslationMatrix(const Vector<T, 3> &t);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, T b);
+    private:
+        std::array<T, 16> _elements;
+    };
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator*(T a, const Matrix<T, 4, 4> &b);
+    template <typename T>
+    using Matrix4x4 = Matrix<T, 4, 4>;
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 2> &b);
+    template <typename T>
+    Matrix<T, 4, 4> operator+(const Matrix<T, 4, 4> &a, const Matrix<T, 4, 4> &b);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator/(const Matrix<T, 4, 4> &a, T b);
+    template <typename T>
+    Matrix<T, 4, 4> operator+(const Matrix<T, 4, 4> &a, T b);
 
-//     template <typename T>
-//     Matrix<T, 4, 4> operator/(T a, const Matrix<T, 4, 4> &b);
+    template <typename T>
+    Matrix<T, 4, 4> operator+(T a, const Matrix<T, 4, 4> &b);
 
-//     typedef Matrix<float, 4, 4> Matrix4x4F;
-//     typedef Matrix<double, 4, 4> Matrix4x4D;
+    template <typename T>
+    Matrix<T, 4, 4> operator-(const Matrix<T, 4, 4> &a, const Matrix<T, 4, 4> &b);
 
-// } // namespace big
+    template <typename T>
+    Matrix<T, 4, 4> operator-(const Matrix<T, 4, 4> &a, T b);
 
-// #include "detail/matrix4x4-inl.h"
-// #endif
+    template <typename T>
+    Matrix<T, 4, 4> operator-(T a, const Matrix<T, 4, 4> &b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator-(const Matrix<T, 4, 4> &a);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Matrix<T, 4, 4> &b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, T b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator*(T a, const Matrix<T, 4, 4> &b);
+
+    template <typename T>
+    Vector<T, 4> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 4> &b);
+
+    template <typename T>
+    Vector<T, 3> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 3> &b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Matrix<T, 3, 3> &b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator*(const Matrix<T, 3, 3> &a, const Matrix<T, 4, 4> &b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator/(const Matrix<T, 4, 4> &a, T b);
+
+    template <typename T>
+    Matrix<T, 4, 4> operator/(T a, const Matrix<T, 4, 4> &b);
+
+    typedef Matrix<float, 4, 4> Matrix4x4F;
+
+    typedef Matrix<double, 4, 4> Matrix4x4D;
+
+} // namespace big
+
+#include "detail/matrix4x4-inl.h"
+#endif

@@ -32,6 +32,10 @@ namespace big
 
         void set(const T *arr);
 
+        void setDiagnoal(T s);
+
+        void setOffDiagnoal(T s);
+
         void setRow(std::size_t i, const Vector<T, 3> &row);
 
         void setCol(std::size_t i, const Vector<T, 3> &col);
@@ -59,6 +63,8 @@ namespace big
         Matrix mul(T val) const;
 
         Matrix mul(const Matrix &other) const;
+
+        Vector<T, 3> mul(const Vector<T, 3>& v) const;
 
         Matrix div(T val) const;
 
@@ -166,7 +172,7 @@ namespace big
 
         static Matrix makeIdentity();
 
-        static Matrix makeScaleMatrix(T sx, T sy ,T sz);
+        static Matrix makeScaleMatrix(T sx, T sy, T sz);
 
         static Matrix makeScaleMatrix(const Vector<T, 3> &s);
 
@@ -210,7 +216,10 @@ namespace big
     Matrix<T, 3, 3> operator*(T a, const Matrix<T, 3, 3> &b);
 
     template <typename T>
-    Matrix<T, 3, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 2> &b);
+    Matrix<T, 3, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 3> &b);
+
+
+    
 
     template <typename T>
     Matrix<T, 3, 3> operator/(const Matrix<T, 3, 3> &a, T b);

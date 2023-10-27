@@ -1,5 +1,5 @@
 #ifndef INCLUDE_BIG_VECTOR4_H_
-#define INCLUDE_BIG_VCETOR4_H_
+#define INCLUDE_BIG_VECTOR4_H_
 #include "vector3.h"
 namespace big
 {

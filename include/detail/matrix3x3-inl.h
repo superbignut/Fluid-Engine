@@ -408,7 +408,7 @@ namespace big
     Matrix<T, 3, 3> Matrix<T, 3, 3>::transposed() const
     {
         return (Matrix(_elements[0], _elements[3], _elements[6],
-                       _elements[1], _elements[4], _elements[7] _elements[2], _elements[5], _elements[8]));
+                       _elements[1], _elements[4], _elements[7], _elements[2], _elements[5], _elements[8]));
     }
 
     template <typename T>
@@ -560,9 +560,9 @@ namespace big
         // https://zh.wikipedia.org/zh-sg/%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5
         axis.normalize();
         T cos = std::cos(rad);
-        T rad = std::sin(rad);
+        T sin = std::sin(rad);
         T x = axis.x;
-        T y = axis.y;
+        T y = axis.y;   
         T z = axis.z;
         return Matrix(cos + (1 - cos) * x * x, (1 - cos) * x * y - sin * z, (1 - cos) * x * z + sin * y,
                       (1 - cos) * y * x + sin * z, cos + (1 - cos) * y * y, (1 - cos) * y * z - sin * x,

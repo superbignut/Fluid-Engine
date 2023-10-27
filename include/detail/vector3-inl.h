@@ -1,5 +1,5 @@
 #ifndef INCLUDE_BIG_VECTOR3_INL_H_
-#define INCLUDE_BIG_VCETOR3_INL_H_
+#define INCLUDE_BIG_VECTOR3_INL_H_
 #include "math_utils.h"
 namespace big
 {
@@ -296,7 +296,7 @@ namespace big
     template <typename T>
     T Vector<T, 3>::distanceTo(const Vector &other) const
     {
-        return sub(other).length()
+        return sub(other).length();
     }
 
     template <typename T>
@@ -556,7 +556,7 @@ namespace big
         Vector<T, 3> d2 = (v3 - v1) / two;
         Vector<T, 3> D1 = v2 - v1;
 
-        Vector<T, 3> a3 = d1 - two * D1, + d2;
+        Vector<T, 3> a3 = d1 - two * D1 + d2;
         Vector<T, 3> a2 = - two * d1 + three * D1 - d2;
         Vector<T ,3> a1 = d1;
         Vector<T, 3> a0 = v1;

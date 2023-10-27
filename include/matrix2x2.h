@@ -32,6 +32,10 @@ namespace big
 
         void set(const T *arr);
 
+        void setDiagnoal(T s);
+
+        void setOffDiagnoal(T s);
+
         void setRow(std::size_t i, const Vector<T, 2> &row);
 
         void setCol(std::size_t i, const Vector<T, 2> &col);
@@ -59,6 +63,8 @@ namespace big
         Matrix mul(T val) const;
 
         Matrix mul(const Matrix &other) const;
+
+        Vector<T, 2> mul(const Vector<T, 2>& v) const;
 
         Matrix div(T val) const;
 

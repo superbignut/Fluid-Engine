@@ -447,8 +447,8 @@ namespace big
     template <typename T, std::size_t N>
     void Vector<T, N>::show()
     {
-        std::cout <<"Vector:" << std::endl;
-        for(std::size_t i =0 ;i < N; ++i)
+        std::cout << "Vector:" << std::endl;
+        for (std::size_t i = 0; i < N; ++i)
         {
             std::cout << at(i) << " ";
         }
