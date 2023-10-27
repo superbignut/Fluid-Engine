@@ -129,7 +129,7 @@
 
     Alought there are some edge cases need to be considered.
 
-    If we raise the dimension to three-dimensional space，the positional relationship between straight line and cube will become unimaginable.  However, just remember that, the straight line will pass through three planes first, and then the remaining three planes.(As before, we just consider the cases that the straight line does not parallel to any plane.)
+    If we raise the dimension to three-dimensional space, the positional relationship between straight line and cube will become unimaginable.  However, just remember that, the straight line will pass through three planes first, and then the remaining three planes.(As before, we just consider the cases that the straight line does not parallel to any plane.)
 
     Therefore, the only difference between 2-D and 3-D is that we have 4 parameters $(t_1,t_2,t_3,t_4)$ in 2-D space while 6 paramters $(t_1,t_2,t_3,t_4,t_5,t_6)$ in 3-D space.
 
