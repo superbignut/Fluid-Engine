@@ -537,43 +537,46 @@ namespace big
     {
         return (_elements[0] + _elements[1] + _elements[2] +
                 _elements[3] + _elements[4] + _elements[5] +
-                _elements[6] + _elements[7] + _elements[8]);
+                _elements[6] + _elements[7] + _elements[8] +
+                _elements[9] + _elements[10] + _elements[11] +
+                _elements[12] + _elements[13] + _elements[14] +
+                _elements[15]);
     }
 
     template <typename T>
     T Matrix<T, 4, 4>::avg() const
     {
-        return sum() / 9;
+        return sum() / 16;
     }
 
     template <typename T>
     T Matrix<T, 4, 4>::min() const
     {
-        return big::minn(data(), 9);
+        return big::minn(data(), 16);
     }
 
     template <typename T>
     T Matrix<T, 4, 4>::max() const
     {
-        return big::maxn(data(), 9);
+        return big::maxn(data(), 16);
     }
 
     template <typename T>
     T Matrix<T, 4, 4>::absmin() const
     {
-        return big::absminn(data(), 9);
+        return big::absminn(data(), 16);
     }
 
     template <typename T>
     T Matrix<T, 4, 4>::absmax() const
     {
-        return big::absmaxn(data(), 9);
+        return big::absmaxn(data(), 16);
     }
 
     template <typename T>
     T Matrix<T, 4, 4>::trace() const
     {
-        return _elements[0] + _elements[4] + _elements[8];
+        return _elements[0] + _elements[5] + _elements[10] + _elements[15];
     }
 
     template <typename T>
@@ -603,62 +606,70 @@ namespace big
                     std::cout << std::endl;
             }
         }
-        // std::cout << "det is :" << determinant() << std::endl;
+        std::cout << "det is :" << determinant() << std::endl;
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::diagonal() const
     {
-        return (Matrix(_elements[0], 0, 0,
-                       0, _elements[4], 0,
-                       0, 0, _elements[8]));
+        return (Matrix(_elements[0], 0, 0, 0,
+                       0, _elements[5], 0, 0,
+                       0, 0, _elements[10], 0,
+                       0, 0, 0, _elements[15]));
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::offDiagonal() const
     {
-        return (Matrix(0, _elements[1], _elements[2],
-                       _elements[3], 0, _elements[4],
-                       _elements[6], _elements[7], 0));
+        return (Matrix(0, _elements[1], _elements[2], _elements[3],
+                       _elements[4], 0, _elements[6], _elements[7],
+                       _elements[8], _elements[9], 0, _elements[11],
+                       _elements[12], _elements[13], _elements[14], 0));
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::strictLowerTri() const
     {
-        return (Matrix(0, 0, 0,
-                       _elements[3], 0, 0,
-                       _elements[6], _elements[7], 0));
+        return (Matrix(0, 0, 0, 0,
+                       _elements[4], 0, 0, 0,
+                       _elements[8], _elements[9], 0, 0,
+                       _elements[12], _elements[13], _elements[14], 0));
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::stricitUpperTri() const
     {
-        return (Matrix(0, _elements[1], _elements[2],
-                       0, 0, _elements[4],
-                       0, 0, 0));
+        return (Matrix(0, _elements[1], _elements[2], _elements[3],
+                       0, 0, _elements[6], _elements[7],
+                       0, 0, 0, _elements[11],
+                       0, 0, 0, 0));
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::lowerTri() const
     {
-        return (Matrix(_elements[0], 0, 0,
-                       _elements[3], _elements[4], 0,
-                       _elements[6], _elements[7], _elements[8]));
+        return (Matrix(_elements[0], 0, 0, 0,
+                       _elements[4], _elements[5], 0, 0,
+                       _elements[8], _elements[9], _elements[10], 0,
+                       _elements[12], _elements[13], _elements[14], _elements[15]));
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::upperTri() const
     {
-        return (Matrix(_elements[0], _elements[1], _elements[2],
-                       0, _elements[4], _elements[5],
-                       0, 0, _elements[8]));
+        return (Matrix(_elements[0], _elements[1], _elements[2], _elements[3],
+                       0, _elements[5], _elements[6], _elements[7],
+                       0, 0, _elements[10], _elements[11],
+                       0, 0, 0, _elements[15]));
     }
 
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::transposed() const
     {
-        return (Matrix(_elements[0], _elements[3], _elements[6],
-                       _elements[1], _elements[4], _elements[7], _elements[2], _elements[5], _elements[8]));
+        return (Matrix(_elements[0], _elements[4], _elements[8], _elements[12],
+                       _elements[1], _elements[5], _elements[9], _elements[13],
+                       _elements[2], _elements[6], _elements[10], _elements[14],
+                       _elements[3], _elements[7], _elements[11], _elements[15]));
     }
 
     template <typename T>
@@ -674,7 +685,10 @@ namespace big
     {
         return std::sqrt(_elements[0] * _elements[0] + _elements[1] * _elements[1] + _elements[2] * _elements[2] +
                          _elements[3] * _elements[3] + _elements[4] * _elements[4] + _elements[5] * _elements[5] +
-                         _elements[6] * _elements[6] + _elements[7] * _elements[7] + _elements[8] * _elements[8]);
+                         _elements[6] * _elements[6] + _elements[7] * _elements[7] + _elements[8] * _elements[8] +
+                         _elements[9] * _elements[9] + _elements[10] * _elements[10] + _elements[11] * _elements[11] +
+                         _elements[12] * _elements[12] + _elements[13] * _elements[13] + _elements[14] * _elements[14] +
+                         _elements[15] * _elements[15]);
     }
     template <typename T>
     template <typename U>
@@ -683,7 +697,10 @@ namespace big
         return Matrix<U, 4, 4>(
             static_cast<U>(_elements[0]), static_cast<U>(_elements[1]), static_cast<U>(_elements[2]),
             static_cast<U>(_elements[3]), static_cast<U>(_elements[4]), static_cast<U>(_elements[5]),
-            static_cast<U>(_elements[6]), static_cast<U>(_elements[7]), static_cast<U>(_elements[8]));
+            static_cast<U>(_elements[6]), static_cast<U>(_elements[7]), static_cast<U>(_elements[8]),
+            static_cast<U>(_elements[9]), static_cast<U>(_elements[10]), static_cast<U>(_elements[11]),
+            static_cast<U>(_elements[12]), static_cast<U>(_elements[13]), static_cast<U>(_elements[14]),
+            static_cast<U>(_elements[15]));
     }
 
     template <typename T>
@@ -746,14 +763,20 @@ namespace big
     {
         return (_elements[0] == other._elements[0] && _elements[1] == other._elements[1] && _elements[2] == other._elements[2] &&
                 _elements[3] == other._elements[3] && _elements[4] == other._elements[4] && _elements[5] == other._elements[5] &&
-                _elements[6] == other._elements[6] && _elements[7] == other._elements[7] && _elements[8] == other._elements[8]);
+                _elements[6] == other._elements[6] && _elements[7] == other._elements[7] && _elements[8] == other._elements[8] &&
+                _elements[9] == other._elements[9] && _elements[10] == other._elements[10] && _elements[11] == other._elements[11] &&
+                _elements[12] == other._elements[12] && _elements[13] == other._elements[13] && _elements[14] == other._elements[14] &&
+                _elements[15] == other._elements[15]);
     }
     template <typename T>
     bool Matrix<T, 4, 4>::operator!=(const Matrix &other) const
     {
         return (_elements[0] != other._elements[0] || _elements[1] != other._elements[1] || _elements[2] != other._elements[2] ||
                 _elements[3] != other._elements[3] || _elements[4] != other._elements[4] || _elements[5] != other._elements[5] ||
-                _elements[6] != other._elements[6] || _elements[7] != other._elements[7] || _elements[8] != other._elements[8]);
+                _elements[6] != other._elements[6] || _elements[7] != other._elements[7] || _elements[8] != other._elements[8] ||
+                _elements[9] != other._elements[9] || _elements[10] != other._elements[10] || _elements[11] != other._elements[11] ||
+                _elements[12] != other._elements[12] || _elements[13] != other._elements[13] || _elements[14] != other._elements[14] ||
+                _elements[15] != other._elements[15]);
     }
 
     template <typename T>
@@ -779,44 +802,48 @@ namespace big
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::makeZero()
     {
-        return Matrix(0, 0, 0,
-                      0, 0, 0,
-                      0, 0, 0);
+        return Matrix(0, 0, 0, 0,
+                      0, 0, 0, 0,
+                      0, 0, 0, 0,
+                      0, 0, 0, 0);
     }
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::makeIdentity()
     {
-        return Matrix(1, 0, 0,
-                      0, 1, 0,
-                      0, 0, 1);
+        return Matrix(1, 0, 0, 0,
+                      0, 1, 0, 0,
+                      0, 0, 1, 0,
+                      0, 0, 0, 1);
     }
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::makeScaleMatrix(T sx, T sy, T sz)
     {
-        return Matrix(sx, 0, 0,
-                      0, sy, 0,
-                      0, 0, sz);
+        return Matrix(sx, 0, 0, 0,
+                      0, sy, 0, 0,
+                      0, 0, sz, 0,
+                      0, 0, 0, 1);
     }
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::makeScaleMatrix(const Vector<T, 3> &s)
     {
-        return Matrix(s.x, 0, 0,
-                      0, s.y, 0,
-                      0, 0, s.z);
+        return Matrix(s.x, 0, 0, 0,
+                      0, s.y, 0, 0,
+                      0, 0, s.z, 0,
+                      0, 0, 0, 1);
     }
     template <typename T>
     Matrix<T, 4, 4> Matrix<T, 4, 4>::makeRotationMatrix(const Vector<T, 3> &axis, T rad)
     {
-        // https://zh.wikipedia.org/zh-sg/%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5
-        axis.normalize();
-        T cos = std::cos(rad);
-        T sin = std::sin(rad);
-        T x = axis.x;
-        T y = axis.y;
-        T z = axis.z;
-        return Matrix(cos + (1 - cos) * x * x, (1 - cos) * x * y - sin * z, (1 - cos) * x * z + sin * y,
-                      (1 - cos) * y * x + sin * z, cos + (1 - cos) * y * y, (1 - cos) * y * z - sin * x,
-                      (1 - cos) * z * x + sin * y, (1 - cos) * z * y - sin * x, cos + (1 - cos) * z * z);
+        return Matrix(Matrix<T, 3, 3>::makeRotationMatrix(axis, rad));
+    }
+
+    template <typename T>
+    Matrix<T, 4, 4> Matrix<T, 4, 4>::makeTranslationMatrix(const Vector<T, 3> &t)
+    {
+        return Matrix(1, 0, 0, t.x,
+                      0, 1, 0, t.y,
+                      0, 0, 1, t.z,
+                      0, 0, 0, 1);
     }
 
     template <typename T>
@@ -881,11 +908,27 @@ namespace big
     }
 
     template <typename T>
-    Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 2> &b)
+    Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 4> &b)
     {
         return a.mul(b);
     }
 
+    // template <typename T>
+    // Vector<T, 3> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 3> &b)
+    // {
+    //     return a.mul(b);
+    // }
+    // template <typename T>
+    // Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Matrix<T, 3, 3> &b)
+    // {
+
+    // }
+
+    // template <typename T>
+    // Matrix<T, 4, 4> operator*(const Matrix<T, 3, 3> &a, const Matrix<T, 4, 4> &b)
+    // {
+        
+    // }
     template <typename T>
     Matrix<T, 4, 4> operator/(const Matrix<T, 4, 4> &a, T b)
     {

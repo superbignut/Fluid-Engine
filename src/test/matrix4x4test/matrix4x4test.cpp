@@ -13,9 +13,9 @@ int main()
 
     mi.invert();
 
-    // auto ans = mi * m;
+    auto ans = mi * m;
 
-    mi.show();
+    ans.show();
 
     std::cout << m.determinant()<<std::endl;
 

@@ -631,7 +631,7 @@ namespace big
     }
 
     template <typename T>
-    Matrix<T, 3, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 2> &b)
+    Matrix<T, 3, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 3> &b)
     {
         return a.mul(b);
     }

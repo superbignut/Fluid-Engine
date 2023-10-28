@@ -233,12 +233,15 @@ namespace big
     template <typename T>
     Vector<T, 4> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 4> &b);
 
+    //! empty
     template <typename T>
     Vector<T, 3> operator*(const Matrix<T, 4, 4> &a, const Vector<T, 3> &b);
 
+    //! empty
     template <typename T>
     Matrix<T, 4, 4> operator*(const Matrix<T, 4, 4> &a, const Matrix<T, 3, 3> &b);
 
+    //! empty
     template <typename T>
     Matrix<T, 4, 4> operator*(const Matrix<T, 3, 3> &a, const Matrix<T, 4, 4> &b);
 
