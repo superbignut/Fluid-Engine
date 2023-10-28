@@ -4,7 +4,7 @@
 #include <bounding_box3.h>
 #include <ray3.h>
 #include <vector3.h>
-
+#include "quaternion.h"
 namespace big
 {
 

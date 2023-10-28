@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BIG_VECTOR3_H_
 #define INCLUDE_BIG_VECTOR3_H_
 #include "vector2.h"
+#include <tuple>
 namespace big
 {
 
@@ -102,6 +103,8 @@ namespace big
 
         T absmax() const;
 
+        void show() const;
+
         std::size_t domintAxis() const;
 
         std::size_t subminanAxis() const;
@@ -120,8 +123,8 @@ namespace big
 
         Vector project(const Vector &normal) const;
 
-        // Counterclockwise rotate 90 degree in 2-D.
-        Vector tangential() const;
+        // tuple are normalized()
+        std::tuple<Vector<T, 3>, Vector<T, 3>> tangential() const;
 
         template <typename U>
         Vector<U, 3> castTo() const;

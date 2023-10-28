@@ -16,20 +16,20 @@
 </div> -->
 ![render](https://github.com/superbignut/Fluid-Engine/blob/master/render/render.jpg)
 ---
-[📦 Contents:](#Contents:)
-+ [📌 Curiously Recurring Template Pattern](#CRTP)
-+ [📌 Compressed Sparse Row](#CSR)
-+ [📌 ASYNC](#ASYNC)
-+ [📌 Conjugate Gradient Method](#CG)
-+ [📌 Ray Axis-Aligned Bounding Box Intersection](#Ray-AABB-Intersection)
+📦 [Contents:](#Contents-)
++ 📌 [Curiously Recurring Template Pattern](#CRTP)
++ 📌 [Compressed Sparse Row](#CSR)
++ 📌 [ASYNC](#ASYNC)
++ 📌 [Conjugate Gradient Method](#CG)
++ 📌 [Ray Axis-Aligned Bounding Box Intersection](#Ray-AABB-Intersection)
 
-[🗓 To Do:](#ToDO:)
+🗓 [To Do:](#ToDO-)
 
-[📎 Reference:](#Reference:)
+📎 [Reference:](#Reference-)
 
 ---
-## Contents:
-+ ### CRTP 
+## Contents :
++ ### CRTP
     The results of most operations related to Matrices and Vectors are defined as a new agent type.All these types are [CRTP][1] and derive from Matrix_Expression or Vector_Expression.
 
         // CRTP base
@@ -199,8 +199,7 @@
 [1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
-[4]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
-
+[4]: https://github.com/Krasjet/quaternion
 
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm

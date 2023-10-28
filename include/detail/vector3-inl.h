@@ -274,6 +274,11 @@ namespace big
     {
         return big::absmax(x, y, z);
     }
+    template <typename T>
+    void Vector<T, 3>::show() const
+    {
+        std::cout << x << " " << y << " " << z << std::endl;
+    }
 
     template <typename T>
     std::size_t Vector<T, 3>::domintAxis() const
@@ -315,9 +320,21 @@ namespace big
         return sub(normal.mul(dot(normal)));
     }
     template <typename T>
-    Vector<T, 3> Vector<T, 3>::tangential() const
+    std::tuple<Vector<T, 3>, Vector<T, 3>> Vector<T, 3>::tangential() const
     {
-        // return Vector<T, 3>(-y, x);
+        Vector<T, 3> a;
+        if (std::fabs(y) > 0 || std::fabs(z) > 0)
+        {
+            Vector<T, 3> temp(1, 0, 0);
+            a = temp.cross(*this).normalized();
+        }
+        else
+        {
+            Vector<T, 3> temp(0, 1, 0);
+            a = temp.cross(*this).normalized();
+        }
+        Vector<T, 3> b = cross(a).normalized();
+        return std::make_tuple(a, b);
     }
 
     template <typename T>
@@ -557,8 +574,8 @@ namespace big
         Vector<T, 3> D1 = v2 - v1;
 
         Vector<T, 3> a3 = d1 - two * D1 + d2;
-        Vector<T, 3> a2 = - two * d1 + three * D1 - d2;
-        Vector<T ,3> a1 = d1;
+        Vector<T, 3> a2 = -two * d1 + three * D1 - d2;
+        Vector<T, 3> a1 = d1;
         Vector<T, 3> a0 = v1;
 
         return a3 * cubic(f) + a2 * square(f) + a1 * f + a0;

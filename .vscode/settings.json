@@ -104,6 +104,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "future": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 
 }
