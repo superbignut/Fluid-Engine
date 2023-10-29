@@ -216,7 +216,7 @@ namespace big
     Matrix<T, 3, 3> operator*(T a, const Matrix<T, 3, 3> &b);
 
     template <typename T>
-    Matrix<T, 3, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 3> &b);
+    Vector<T, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 3> &b);
 
 
     

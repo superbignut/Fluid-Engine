@@ -46,7 +46,7 @@ namespace big
 
     private:
         Vector<double, 3> _translation;
-        double _orientation = 0.0;
+        double _orientation = 0.0; // angle(rad)
         double _cosAngle = 1.0;
         double _sinAngle = 0.0;
     };

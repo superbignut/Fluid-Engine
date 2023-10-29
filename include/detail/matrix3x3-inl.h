@@ -197,6 +197,16 @@ namespace big
                       _elements[6] * other._elements[1] + _elements[7] * other._elements[4] + _elements[8] * other._elements[7],
                       _elements[6] * other._elements[2] + _elements[7] * other._elements[5] + _elements[8] * other._elements[8]);
     }
+
+    template <typename T>
+    Vector<T, 3> Matrix<T, 3, 3>::mul(const Vector<T, 3> &v) const
+    {
+        return Vector<T, 3>(
+            _elements[0] * v.x + _elements[1] * v.y + _elements[2] * v.z,
+            _elements[3] * v.x + _elements[4] * v.y + _elements[5] * v.z,
+            _elements[6] * v.x + _elements[7] * v.y + _elements[8] * v.z);
+    }
+
     template <typename T>
     Matrix<T, 3, 3> Matrix<T, 3, 3>::div(T val) const
     {
@@ -558,15 +568,15 @@ namespace big
     Matrix<T, 3, 3> Matrix<T, 3, 3>::makeRotationMatrix(const Vector<T, 3> &axis, T rad)
     {
         // https://zh.wikipedia.org/zh-sg/%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5
-        axis.normalize();
+        auto axis_new = axis.normalized();
         T cos = std::cos(rad);
         T sin = std::sin(rad);
-        T x = axis.x;
-        T y = axis.y;   
-        T z = axis.z;
+        T x = axis_new.x;
+        T y = axis_new.y;
+        T z = axis_new.z;
         return Matrix(cos + (1 - cos) * x * x, (1 - cos) * x * y - sin * z, (1 - cos) * x * z + sin * y,
                       (1 - cos) * y * x + sin * z, cos + (1 - cos) * y * y, (1 - cos) * y * z - sin * x,
-                      (1 - cos) * z * x + sin * y, (1 - cos) * z * y - sin * x, cos + (1 - cos) * z * z);
+                      (1 - cos) * z * x - sin * y, (1 - cos) * z * y + sin * x, cos + (1 - cos) * z * z);
     }
 
     template <typename T>
@@ -631,7 +641,7 @@ namespace big
     }
 
     template <typename T>
-    Matrix<T, 3, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 3> &b)
+    Vector<T, 3> operator*(const Matrix<T, 3, 3> &a, const Vector<T, 3> &b)
     {
         return a.mul(b);
     }

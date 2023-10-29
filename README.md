@@ -22,6 +22,7 @@
 + 📌 [ASYNC](#ASYNC)
 + 📌 [Conjugate Gradient Method](#CG)
 + 📌 [Ray Axis-Aligned Bounding Box Intersection](#Ray-AABB-Intersection)
++ 📌 [Quaternion and 3-D Rotation Matrix]()
 
 🗓 [To Do:](#ToDO-)
 
@@ -144,7 +145,10 @@
     If we raise the dimension to three-dimensional space, the positional relationship between straight line and cube will become unimaginable.  However, just remember that, the straight line will pass through three planes first, and then the remaining three planes.(As before, we just consider the cases that the straight line does not parallel to any plane.)
 
     Therefore, the only difference between 2-D and 3-D is that we have 4 parameters $(t_1,t_2,t_3,t_4)$ in 2-D space while 6 paramters $(t_1,t_2,t_3,t_4,t_5,t_6)$ in 3-D space.
-
++ ### Quaternion and 3-D Rotation Matrix
+    $$\vec{v'} = cos\theta \cdot\vec{v} + (1-cos\theta)(\vec{u}\cdot\vec{v})\vec{u}+sin\theta\cdot(\vec{u}\times\vec{v})$$
+    $$ v'  = q v q^* = qvq^{-1} \qquad v=[0, \vec{v}]\qquad q=[cos(\frac{1}{2}\theta),sin(\frac{1}{2}\theta)\vec{u}]$$
+    If you are new to quaternion, this [Quaternion Introduction](https://github.com/Krasjet/quaternion) is all you needed. 
 ## ToDo :
 
 <!-- #### 8. write someting here... -->
@@ -192,14 +196,17 @@
 ---
 ## Reference :
 ---
-### [1 https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
-### [2 https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf](https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf)
+<!-- github-引用 -->
+### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
+### [https://github.com/mitsuba-renderer/mitsuba3](https://github.com/mitsuba-renderer/mitsuba3)
+### [https://github.com/Krasjet/quaternion](https://github.com/Krasjet/quaternion)
 ---
 <!-- 知我者谓我心忧，不知者谓我何求 -->
+<!-- keyword-链接 -->
 [1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
 [4]: https://github.com/Krasjet/quaternion
-
+<!-- 段落出处-脚注 -->
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm

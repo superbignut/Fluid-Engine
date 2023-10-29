@@ -82,9 +82,9 @@ namespace big
 
         Quaternion inverse() const;
 
-        Matrix3x3<T> matrix3() const;
+        Matrix<T, 3, 3>  matrix3() const;
 
-        Matrix4x4<T> matrix4() const;
+        Matrix<T, 4, 4> matrix4() const;
 
         T l2Norm() const;
 
@@ -103,8 +103,12 @@ namespace big
         static Quaternion makeIdentity();
     };
 
+    //! \param a  unit quaternion
+    //! \param b  unit quaternion
+    //! \param t  interpolation param
+    //! \param threshold default param in algorithm
     template <typename T>
-    Quaternion<T> slerp(const Quaternion<T> &a, const Quaternion<T> &b, T t);
+    Quaternion<T> slerp(const Quaternion<T> &a, const Quaternion<T> &b, T t, double threshold=0.01);
 
     template <typename T>
     Vector<T, 3> operator*(const Quaternion<T> &a, const Vector<T, 3> &v);
