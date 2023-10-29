@@ -22,7 +22,7 @@
 + 📌 [ASYNC](#ASYNC)
 + 📌 [Conjugate Gradient Method](#CG)
 + 📌 [Ray Axis-Aligned Bounding Box Intersection](#Ray-AABB-Intersection)
-+ 📌 [Quaternion and 3-D Rotation Matrix]()
++ 📌 [Quaternion and 3-D Rotation Matrix](#Quaternion-and-3-D-Rotation-Matrix)
 
 🗓 [To Do:](#ToDO-)
 
@@ -147,7 +147,9 @@
     Therefore, the only difference between 2-D and 3-D is that we have 4 parameters $(t_1,t_2,t_3,t_4)$ in 2-D space while 6 paramters $(t_1,t_2,t_3,t_4,t_5,t_6)$ in 3-D space.
 + ### Quaternion and 3-D Rotation Matrix
     $$\vec{v'} = cos\theta \cdot\vec{v} + (1-cos\theta)(\vec{u}\cdot\vec{v})\vec{u}+sin\theta\cdot(\vec{u}\times\vec{v})$$
-    $$ v'  = q v q^* = qvq^{-1} \qquad v=[0, \vec{v}]\qquad q=[cos(\frac{1}{2}\theta),sin(\frac{1}{2}\theta)\vec{u}]$$
+
+    $$v'  = q v q^* = qvq^{-1} \qquad v=（0, \vec{v}） \qquad q=(cos( \frac{1}{2} \theta),sin( \frac{1}{2} \theta) \vec{u})$$
+
     If you are new to quaternion, this [Quaternion Introduction](https://github.com/Krasjet/quaternion) is all you needed. 
 ## ToDo :
 
