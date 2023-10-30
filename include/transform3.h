@@ -16,7 +16,7 @@ namespace big
     public:
         Transform3();
 
-        Transform3(const Vector<double, 3> &translation, double orientation);
+        Transform3(const Vector<double, 3> &translation, const Quaternion<double>& orientation);
 
         //! return translation
         const Vector<double, 3> &translation() const;
@@ -24,9 +24,9 @@ namespace big
         void setTranslation(const Vector<double, 3> &translation);
 
         //! return orientation
-        double orientation() const;
+        const Quaternion<double>& orientation() const;
 
-        void setOrientation(double orientation);
+        void setOrientation(const Quaternion<double>& orientation);
 
         Vector3D toLocal(const Vector3D &pointInWorld) const;
 
@@ -46,9 +46,9 @@ namespace big
 
     private:
         Vector<double, 3> _translation;
-        double _orientation = 0.0; // angle(rad)
-        double _cosAngle = 1.0;
-        double _sinAngle = 0.0;
+        Quaternion<double> _orientation;
+        Matrix<double, 3, 3> _orientationMat3;
+        Matrix<double, 3, 3> _invertOrientationMat3;
     };
 
 }

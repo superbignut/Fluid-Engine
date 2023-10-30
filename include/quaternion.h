@@ -6,6 +6,7 @@
 namespace big
 {
     //! \brief Quaternion class define as q = w + xi + yj+ zk
+    //! Only normalized quaternion is valid in this frame!!!!
 
     template <typename T>
     class Quaternion
@@ -25,10 +26,12 @@ namespace big
 
         Quaternion(const std::initializer_list<T> &lst);
 
+        //! \brief Constructor Recommended.
         Quaternion(const Vector<T, 3> &axis, T angle);
 
         Quaternion(const Vector<T, 3> &from, const Vector<T, 3> &to);
 
+        //! \brief Empty.
         Quaternion(const Vector<T, 3> &axis0, const Vector<T, 3> &axis1, const Vector<T, 3> &axis2);
 
         explicit Quaternion(const Matrix3x3<T> &m33);

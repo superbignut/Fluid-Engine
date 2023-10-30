@@ -146,8 +146,10 @@
 
     Therefore, the only difference between 2-D and 3-D is that we have 4 parameters $(t_1,t_2,t_3,t_4)$ in 2-D space while 6 paramters $(t_1,t_2,t_3,t_4,t_5,t_6)$ in 3-D space.
 + ### Quaternion and 3-D Rotation Matrix
+    In $R^3$, a proper rotation by angle $\theta$ around the axis $\vec{u}$ can be written concisely as :[^3]
     $$\vec{v'} = cos\theta \cdot\vec{v} + (1-cos\theta)(\vec{u}\cdot\vec{v})\vec{u}+sin\theta\cdot(\vec{u}\times\vec{v})$$
 
+    The representations of rotations by quaternions are more compact than the representations by matrices. In addition, unlike Euler angles, they are not susceptible to "gimbal lock".[^4]
     $$v'  = q v q^* = qvq^{-1} \qquad v=（0, \vec{v}） \qquad q=(cos( \frac{1}{2} \theta),sin( \frac{1}{2} \theta) \vec{u})$$
 
     If you are new to quaternion, this [Quaternion Introduction](https://github.com/Krasjet/quaternion) is all you needed. 
@@ -212,3 +214,5 @@
 <!-- 段落出处-脚注 -->
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm
+[^3]: https://en.wikipedia.org/wiki/Rotation_matrix
+[^4]: https://en.wikipedia.org/wiki/Quaternion
