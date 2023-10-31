@@ -28,6 +28,10 @@ namespace big
 
     constexpr std::size_t kMaxSize = std::numeric_limits<std::size_t>::max();
 
+    constexpr double kMaxD = std::numeric_limits<double>::max();
+
+    constexpr float kMaxF = std::numeric_limits<float>::max();
+
     constexpr float kPiF = 3.1415926535;
 
     constexpr double kPiD = 3.1415926535;
