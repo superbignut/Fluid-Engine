@@ -157,7 +157,9 @@
 
 <!-- #### 8. write someting here... -->
 ---
-#### 8. Complete the surface.h and its corresponding files.
+#### 9. Complete the surface of sphere, box, plane and cylinder.
+---
+#### ~~8. Complete the surface.h and its corresponding files.~~
 
 ---
 #### ~~7. Complete the Field, scalar_field, vector_field and conjugate gradient parts.~~

@@ -30,7 +30,7 @@ namespace big
 
         bool _isNormalFlipped = false;
 
-        Surface2(const Transform2 transform = Transform2(), bool isNormalFlippe = false);
+        Surface2(const Transform2 transform = Transform2(), bool isNormalFlipped = false);
 
         Surface2(const Surface2 &other);
 
@@ -69,18 +69,18 @@ namespace big
         virtual Vector<double, 2> closestPointLocal(const Vector<double, 2> &otherPoint) const = 0;
 
         //! Return the BoundingBox of this surface in local frame.
-        virtual BoundingBox<double, 2> boundingBoxLocal(const Vector<double, 2> &otherPoint) const = 0;
+        virtual BoundingBox<double, 2> boundingBoxLocal() const = 0;
 
         //! Local
         virtual SurfaceRayIntersection2 closestIntersectionLocal(const Ray<double, 2> &ray) const = 0;
 
         virtual Vector<double, 2> closestNormalLocal(const Vector<double, 2> &otherPoint) const = 0;
 
-        virtual bool intersectsLocal(const Ray<double, 2> &ray) const;
+        virtual bool intersectsLocal(const Ray<double, 2> &rayLocal) const;
 
-        virtual double closestDistanceLocal(const Vector<double, 2> &otherPoint) const;
+        virtual double closestDistanceLocal(const Vector<double, 2> &otherPointLocal) const;
 
-        virtual bool isInsideLocal(const Vector<double, 2> &otherPoint) const;
+        virtual bool isInsideLocal(const Vector<double, 2> &otherPointLocal) const;
     };
 
     typedef std::shared_ptr<Surface2> Surface2Ptr;
