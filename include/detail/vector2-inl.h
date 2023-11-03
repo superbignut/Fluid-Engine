@@ -349,7 +349,7 @@ namespace big
     }
 
     template <typename T>
-    Vector<T, 2> &Vector<T, 2>::operator+=(T &val)
+    Vector<T, 2> &Vector<T, 2>::operator+=(T val)
     {
         iadd(val);
         return (*this);
@@ -363,7 +363,7 @@ namespace big
     }
 
     template <typename T>
-    Vector<T, 2> &Vector<T, 2>::operator-=(T &val)
+    Vector<T, 2> &Vector<T, 2>::operator-=(T val)
     {
         isub(val);
         return (*this);
@@ -377,7 +377,7 @@ namespace big
     }
 
     template <typename T>
-    Vector<T, 2> &Vector<T, 2>::operator*=(T &val)
+    Vector<T, 2> &Vector<T, 2>::operator*=(T val)
     {
         imul(val);
         return (*this);
@@ -391,7 +391,7 @@ namespace big
     }
 
     template <typename T>
-    Vector<T, 2> &Vector<T, 2>::operator/=(T &val)
+    Vector<T, 2> &Vector<T, 2>::operator/=(T val)
     {
         idiv(val);
         return (*this);

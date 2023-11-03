@@ -30,11 +30,11 @@ namespace big
 
         bool _isNormalFlipped = false;
 
-        Surface2(const Transform2 transform = Transform2(), bool isNormalFlipped = false);
+        Surface2(const Transform2 &transform = Transform2(), bool isNormalFlipped = false);
 
         Surface2(const Surface2 &other);
 
-        virtual ~Surface2();
+        virtual ~Surface2() = default;
 
         //! the closest point of the surface.
         Vector<double, 2> closestPoint(const Vector<double, 2> &otherPoint) const;

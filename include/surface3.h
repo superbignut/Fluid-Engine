@@ -30,11 +30,11 @@ namespace big
 
         bool _isNormalFlipped = false;
 
-        Surface3(const Transform3 transform = Transform3(), bool isNormalFlipped = false);
+        Surface3(const Transform3 &transform = Transform3(), bool isNormalFlipped = false);
 
         Surface3(const Surface3 &other);
 
-        virtual ~Surface3();
+        virtual ~Surface3() = default;
 
         //! the closest point of the surface.
         Vector<double, 3> closestPoint(const Vector<double, 3> &otherPoint) const;
@@ -67,6 +67,7 @@ namespace big
         bool isInside(const Vector<double, 3> &otherPoint) const;
 
     protected:
+        //!  Four pure-virtual funcs below are the basic tool functions of the surface class.
         //!
         //! Return the closest point from the given point to the surface in local frame.
         virtual Vector<double, 3> closestPointLocal(const Vector<double, 3> &otherPoint) const = 0;
@@ -79,6 +80,9 @@ namespace big
 
         virtual Vector<double, 3> closestNormalLocal(const Vector<double, 3> &otherPoint) const = 0;
 
+
+        //! Funcs below are a abstraction layer of the basic funcs.
+        //! And, these tool functions are difined as "protected" which is blind for users. 
         virtual bool intersectsLocal(const Ray<double, 3> &rayLocal) const;
 
         virtual double closestDistanceLocal(const Vector<double, 3> &otherPointLocal) const;

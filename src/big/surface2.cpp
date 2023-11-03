@@ -3,11 +3,12 @@
 namespace big
 {
 
-    Surface2::Surface2(const Transform2 transform, bool isNormalFlipped)
+    Surface2::Surface2(const Transform2& transform, bool isNormalFlipped)
         : _transform(transform), _isNormalFlipped(isNormalFlipped) {}
 
     Surface2::Surface2(const Surface2 &other)
         : _transform(other._transform), _isNormalFlipped(other._isNormalFlipped) {}
+
 
     Vector<double, 2> Surface2::closestPoint(const Vector<double, 2> &otherPoint) const
     {
@@ -32,8 +33,8 @@ namespace big
     Vector<double, 2> Surface2::closestNormal(const Vector<double, 2> &otherPoint) const
     {
         auto result = _transform.toWorldDirection(
-            closestNormalLocal(transform.toLocal(otherPoint)));
-        result *= (_isNormalFlipped) ? -1.0 : 1.0;
+            closestNormalLocal(_transform.toLocal(otherPoint)));
+        result *= (_isNormalFlipped ? -1.0 : 1.0);
         return result;
     }
 
@@ -80,6 +81,6 @@ namespace big
     {
         auto cpLocal = closestPointLocal(otherPointLocal);
         auto nrLocal = closestNormalLocal(otherPointLocal);
-        return (otherPointLocal - cpLocal).dot() < 0.0;
+        return (otherPointLocal - cpLocal).dot(nrLocal) < 0.0;
     }
 }

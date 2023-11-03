@@ -1,11 +1,13 @@
 #include <iostream>
-#include "surface2.h"
-#include "surface3.h"
+#include "sphere2.h"
 int main()
 {
-    big::SurfaceRayIntersection2 aaa;
 
-    std::cout << aaa.distance;
+    big::Vector<double, 2> cen{1,2};
+
+    big::Sphere2 sph2{cen, 1.0}; 
+
+    
 
     return 0;
 }

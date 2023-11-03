@@ -3,7 +3,7 @@
 namespace big
 {
 
-    Surface3::Surface3(const Transform3 transform, bool isNormalFlipped)
+    Surface3::Surface3(const Transform3 &transform, bool isNormalFlipped)
         : _transform(transform), _isNormalFlipped(isNormalFlipped) {}
 
     Surface3::Surface3(const Surface3 &other)
@@ -32,7 +32,7 @@ namespace big
     Vector<double, 3> Surface3::closestNormal(const Vector<double, 3> &otherPoint) const
     {
         auto result = _transform.toWorldDirection(
-            closestNormalLocal(transform.toLocal(otherPoint)));
+            closestNormalLocal(_transform.toLocal(otherPoint)));
         result *= (_isNormalFlipped) ? -1.0 : 1.0;
         return result;
     }
@@ -80,6 +80,6 @@ namespace big
     {
         auto cpLocal = closestPointLocal(otherPointLocal);
         auto nrLocal = closestNormalLocal(otherPointLocal);
-        return (otherPointLocal - cpLocal).dot() < 0.0;
+        return (otherPointLocal - cpLocal).dot(nrLocal) < 0.0;
     }
 }

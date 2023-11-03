@@ -134,19 +134,19 @@ namespace big
         template <typename U>
         Vector &operator=(std::initializer_list<U> &lst);
 
-        Vector &operator+=(T &val);
+        Vector &operator+=(T val);
 
         Vector &operator+=(const Vector &other);
 
-        Vector &operator-=(T &val);
+        Vector &operator-=(T val);
 
         Vector &operator-=(const Vector &other);
 
-        Vector &operator*=(T &val);
+        Vector &operator*=(T val);
 
         Vector &operator*=(const Vector &other);
 
-        Vector &operator/=(T &val);
+        Vector &operator/=(T val);
 
         Vector &operator/=(const Vector &other);
 
