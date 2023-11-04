@@ -10,7 +10,7 @@ namespace big
     public:
         class Builder;
 
-        Vector<double, 2> _center;
+        Vector<double, 2> _center{0, 0};
 
         double _radius = 1.0;
 
@@ -36,6 +36,10 @@ namespace big
         SurfaceRayIntersection2 closestIntersectionLocal(const Ray<double, 2> &ray) const override;
 
         Vector<double, 2> closestNormalLocal(const Vector<double, 2> &otherPoint) const override;
+
+        bool intersectsLocal(const Ray<double, 2> &rayLocal) const override; //use a special and simple version
+
+        double closestDistanceLocal(const Vector<double, 2> &otherPointLocal) const override; //use a special and simple version
     };
 
     typedef std::shared_ptr<Sphere2> Sphere2Ptr;
@@ -47,8 +51,10 @@ namespace big
 
         Builder &withRadius(double radius);
 
+        //! return a Sphere2.
         Sphere2 build() const;
 
+        //! return a Sphere2Ptr
         Sphere2Ptr makeShared() const;
 
     private:

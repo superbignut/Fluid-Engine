@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(target surface2)
+set(target surface2test)
 
 project(${target})
 

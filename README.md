@@ -202,19 +202,20 @@
 ---
 ## Reference :
 ---
-<!-- github-引用 -->
+<!-- github-reference -->
 ### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
 ### [https://github.com/mitsuba-renderer/mitsuba3](https://github.com/mitsuba-renderer/mitsuba3)
 ### [https://github.com/Krasjet/quaternion](https://github.com/Krasjet/quaternion)
 ---
-<!-- 知我者谓我心忧，不知者谓我何求 -->
-<!-- keyword-链接 -->
+<!-- keyword-link -->
 [1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
 [4]: https://github.com/Krasjet/quaternion
-<!-- 段落出处-脚注 -->
+<!-- paragraph-footnote -->
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm
 [^3]: https://en.wikipedia.org/wiki/Rotation_matrix
 [^4]: https://en.wikipedia.org/wiki/Quaternion
+
+<!-- 知我者谓我心忧，不知者谓我何求 -->

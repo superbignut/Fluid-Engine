@@ -3,11 +3,15 @@
 int main()
 {
 
-    big::Vector<double, 2> cen{1,2};
+    big::Vector<double, 2> cen{1, 2};
 
-    big::Sphere2 sph2{cen, 1.0}; 
-
+    // auto sph2 = big::Sphere2::builder().withCenter().withCenter().makeShared(); 
     
+    double a = 0.1;
+    if(a > 0)
+    {
+        std::cout <<"yes";
+    }
 
     return 0;
 }

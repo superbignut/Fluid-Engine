@@ -14,11 +14,11 @@ namespace big
     {
         bool isIntersecting = false;
 
-        double distance = kMaxD;
+        double distance = kMaxD; // t_min
 
-        Vector<double, 2> point;
+        Vector<double, 2> point; // t_min point
 
-        Vector<double, 2> normal;
+        Vector<double, 2> normal;  // normal at t_min
     };
 
     class Surface2
@@ -71,9 +71,10 @@ namespace big
         //! Return the BoundingBox of this surface in local frame.
         virtual BoundingBox<double, 2> boundingBoxLocal() const = 0;
 
-        //! Local
+        //! Return the closest intersection.
         virtual SurfaceRayIntersection2 closestIntersectionLocal(const Ray<double, 2> &ray) const = 0;
 
+        //! return the normal of surface at closest point.
         virtual Vector<double, 2> closestNormalLocal(const Vector<double, 2> &otherPoint) const = 0;
 
         virtual bool intersectsLocal(const Ray<double, 2> &rayLocal) const;
