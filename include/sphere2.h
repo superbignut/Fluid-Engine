@@ -58,9 +58,9 @@ namespace big
         Sphere2Ptr makeShared() const;
 
     private:
-        Vector<double, 2> _center{0, 0}; // or (0.0, 0.0) but (0, 0)
+        Vector<double, 2> _center{0, 0}; 
 
-        double _radius = 0.0;
+        double _radius = 1.0;
     };
 }
 

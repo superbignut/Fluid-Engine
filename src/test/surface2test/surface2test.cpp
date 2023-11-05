@@ -3,15 +3,16 @@
 int main()
 {
 
-    big::Vector<double, 2> cen{1, 2};
+    big::Vector<double, 2> center_{1, 2};
 
-    // auto sph2 = big::Sphere2::builder().withCenter().withCenter().makeShared(); 
+    big::Vector<double, 2> center_1(1, 2);
+
+    auto sph2_Ptr = big::Sphere2::builder().withCenter(center_).withRadius(2.0).makeShared();
+
+    auto sph2 = big::Sphere2::builder().withCenter(center_).withRadius(2.0).build();
+
+    std::cout<< sph2_Ptr->_center.x<< sph2_Ptr->_center.y;
+
     
-    double a = 0.1;
-    if(a > 0)
-    {
-        std::cout <<"yes";
-    }
-
     return 0;
 }

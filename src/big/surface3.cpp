@@ -26,14 +26,21 @@ namespace big
 
     double Surface3::closestDistance(const Vector<double, 3> &otherPoint) const
     {
-        return closestDistance(_transform.toLocal(otherPoint));
+        return closestDistanceLocal(_transform.toLocal(otherPoint));
     }
 
     Vector<double, 3> Surface3::closestNormal(const Vector<double, 3> &otherPoint) const
     {
+        // auto temp = closestNormalLocal(_transform.toLocal(otherPoint));
         auto result = _transform.toWorldDirection(
             closestNormalLocal(_transform.toLocal(otherPoint)));
+        // std::cout << result.x << std::endl;
         result *= (_isNormalFlipped) ? -1.0 : 1.0;
+        std::cout << result.x << std::endl;
+        std::cout << result.x << std::endl;
+        std::cout << result.x << std::endl;
+        std::cout << result.x << std::endl;
+
         return result;
     }
 

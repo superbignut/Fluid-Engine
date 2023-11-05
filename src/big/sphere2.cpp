@@ -3,7 +3,7 @@
 namespace big
 {
     Sphere2::Sphere2(const Transform2 &transform, bool isNormalFlipped)
-        : Surface2(transform, isNormalFlipped), _center(0, 0), _radius(0.0)
+        : Surface2(transform, isNormalFlipped), _center(0, 0), _radius(1.0)
     {
         // Empty
     }
@@ -138,7 +138,6 @@ namespace big
     //! return a Sphere2Ptr
     Sphere2Ptr Sphere2::Builder::makeShared() const
     {
-        // return std::shared_ptr<Sphere2>()
         return std::shared_ptr<Sphere2>(
             new Sphere2(_center, _radius, _transform, _isNormalFlipped),
             [](Sphere2 *obj)

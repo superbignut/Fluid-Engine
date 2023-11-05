@@ -5,6 +5,8 @@ namespace big
     inline Transform3::Transform3()
         : _translation(), _orientation(), _orientationMat3(), _invertOrientationMat3()
     {
+        _orientationMat3 = _orientation.matrix3();
+        _invertOrientationMat3 = _orientation.inverse().matrix3();
     }
 
     inline Transform3::Transform3(const Vector<double, 3> &translation, const Quaternion<double> &orientation)

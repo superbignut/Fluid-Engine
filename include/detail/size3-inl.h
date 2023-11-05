@@ -376,7 +376,7 @@ namespace big
         return Size3(std::max(other1.x, other2.x), std::max(other1.y, other2.y), std::max(other1.z, other2.z));
     }
 
-    Size3 clamp(const Size3 &s, const Size3 &low, const Size3 &high)
+    inline Size3 clamp(const Size3 &s, const Size3 &low, const Size3 &high)
     {
         return Size3(std::clamp(s.x, low.x, high.x), std::clamp(s.y, low.y, high.y), std::clamp(s.z, low.z, high.z));
     }
