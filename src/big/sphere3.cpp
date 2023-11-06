@@ -96,6 +96,8 @@ namespace big
 
         double d3_perpendicular = origin3center.lengthSquared() - square(d_ray_project);
 
+        // std::cout << "IntersectsLocal INFO:Distance^2 betweeen _center and ray is :" << d3_perpendicular<<std::endl;
+
         double d3_delta = square(_radius) - d3_perpendicular;
 
         if (d3_delta > 0) // line have intersectons with circle, but not ray
