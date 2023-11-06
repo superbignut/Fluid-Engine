@@ -10,9 +10,9 @@ namespace big
     public:
         class Builder;
 
-        Vector<double, 2> _center{0, 0};
+        Vector<double, 2> _center;
 
-        double _radius = 1.0;
+        double _radius;
 
         //!
         Sphere2(const Transform2 &transform = Transform2(),

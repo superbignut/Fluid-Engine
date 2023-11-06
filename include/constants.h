@@ -25,7 +25,10 @@ namespace big
     {
         return 0.0;
     }
+    constexpr float kEpsilonF = std::numeric_limits<float>::epsilon();
 
+    constexpr double kEpsilonD = std::numeric_limits<double>::epsilon();
+    
     constexpr std::size_t kMaxSize = std::numeric_limits<std::size_t>::max();
 
     constexpr double kMaxD = std::numeric_limits<double>::max();

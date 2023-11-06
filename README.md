@@ -23,6 +23,7 @@
 + 📌 [Conjugate Gradient Method](#CG)
 + 📌 [Ray Axis-Aligned Bounding Box Intersection](#Ray-AABB-Intersection)
 + 📌 [Quaternion and 3-D Rotation Matrix](#Quaternion-and-3-D-Rotation-Matrix)
++ 📌 [Builder Pattern](#Builder-Pattern)
 
 🗓 [To Do:](#ToDO-)
 
@@ -153,11 +154,50 @@
     $$v'  = q v q^* = qvq^{-1} \qquad v=（0, \vec{v}） \qquad q=(cos( \frac{1}{2} \theta),sin( \frac{1}{2} \theta) \vec{u})$$
 
     If you are new to quaternion, this [Quaternion Introduction](https://github.com/Krasjet/quaternion) is all you needed. 
+
+
++ ### Builder Pattern
+    The builder pattern is a design pattern designed to provide a flexible solution to various object creation problems in object-oriented programming. The intent of the builder design pattern is to separate the construction of a complex object from its representation. [^5]
+
+    Furthermore, it's possible to integrate the Builder Pattern with the Curiously Recurring Template Pattern (CRTP). At first glance，the implementation may appear somewhat complex and puzzeling. However, once finished, it becomes exceedingly straightforward to use.
+
+        template <typename DrivedBuilder>
+        class SurfaceBuilderBase3
+        {
+        public:
+            DrivedBuilder &withIsNormalFlipped(...);
+
+            DrivedBuilder &withTranslation(...);
+
+            DrivedBuilder &withOrientation(...);
+
+            DrivedBuilder &withTransform(...);
+        protected:
+            bool _isNormalFlipped;
+            Transform3 _transform;
+        };
+
+        class Sphere3::Builder final : public SurfaceBuilderBase3<Sphere3::Builder>
+        {
+        public:
+            Builder &withCenter(...);
+
+            Builder &withRadius(...);
+
+            Sphere3 build() const;
+
+            Sphere3Ptr makeShared() const;
+        private:
+            Vector<double, 3> _center; 
+            double _radius;
+        };
+
 ## ToDo :
 
 <!-- #### 8. write someting here... -->
+#### 10. Complete the animation and physics_animation.
 ---
-#### 9. Complete the surface of sphere, box, plane and cylinder.
+#### ~~9. Complete the surface of sphere and plane ,while box and cylinder are not done.~~
 ---
 #### ~~8. Complete the surface.h and its corresponding files.~~
 
@@ -217,5 +257,6 @@
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm
 [^3]: https://en.wikipedia.org/wiki/Rotation_matrix
 [^4]: https://en.wikipedia.org/wiki/Quaternion
+[^5]: https://en.wikipedia.org/wiki/Builder_pattern
 
 <!-- 知我者谓我心忧，不知者谓我何求 -->

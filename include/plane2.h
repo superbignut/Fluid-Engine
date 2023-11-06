@@ -10,15 +10,15 @@ namespace big
     public:
         class Builder;
 
-        Vector<double, 2> _normal{0, 1};
+        Vector<double, 2> _normal;
 
-        Vector<double, 2> _point{0, 0};
+        Vector<double, 2> _point;
 
-        Plane2(const Transform2 &_transform = Transform2(), bool isNormalFlipped = false);
+        Plane2(const Transform2 &transform = Transform2(), bool isNormalFlipped = false);
 
         Plane2(const Vector<double, 2> &normal,
                const Vector<double, 2> &point,
-               const Transform2 &_transform = Transform2(),
+               const Transform2 &transform = Transform2(),
                bool isNormalFlipped = false);
 
         Plane2(const Plane2 &other);
@@ -29,7 +29,7 @@ namespace big
         static Builder builder();
 
     private:
-        //!
+        //! Point of both sides are ok.
         Vector<double, 2> closestPointLocal(const Vector<double, 2> &otherPoint) const override;
 
         SurfaceRayIntersection2 closestIntersectionLocal(const Ray<double, 2> &ray) const override;
@@ -38,7 +38,7 @@ namespace big
 
         bool intersectsLocal(const Ray<double, 2> &rayLocal) const override;
 
-        double closestDistanceLocal(const Vector<double, 2> &otherPointLocal) const override;
+        BoundingBox<double, 2> boundingBoxLocal() const override;
     };
 
     typedef std::shared_ptr<Plane2> Plane2Ptr;
@@ -46,9 +46,9 @@ namespace big
     {
     public:
         //!
-        withNormal(const Vector<double, 2> &normal);
+        Builder &withNormal(const Vector<double, 2> &normal);
 
-        withNormal(const Vector<double, 2> &normal);
+        Builder &withPoint(const Vector<double, 2> &point);
 
         Plane2 build() const;
 

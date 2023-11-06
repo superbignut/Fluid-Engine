@@ -10,9 +10,9 @@ namespace big
     public:
         class Builder;
 
-        Vector<double, 3> _normal{0, 1, 0};
+        Vector<double, 3> _normal;
 
-        Vector<double, 3> _point{0, 0, 0};
+        Vector<double, 3> _point;
 
         Plane3(const Transform3 &_transform = Transform3(), bool isNormalFlipped = false);
 
@@ -44,7 +44,7 @@ namespace big
 
         bool intersectsLocal(const Ray<double, 3> &rayLocal) const override;
 
-        double closestDistanceLocal(const Vector<double, 3> &otherPointLocal) const override;
+        BoundingBox<double, 3> boundingBoxLocal() const override;
     };
 
     typedef std::shared_ptr<Plane3> Plane3Ptr;
@@ -52,9 +52,9 @@ namespace big
     {
     public:
         //!
-        withNormal(const Vector<double, 3> &normal);
+        Builder &withNormal(const Vector<double, 3> &normal);
 
-        withNormal(const Vector<double, 3> &normal);
+        Builder &withPoint(const Vector<double, 3> &normal);
 
         Plane3 build() const;
 
