@@ -39,7 +39,11 @@ int main(int argc, char **argv)
     for (int i = 0; i < 10; ++i)
     {
         pool.emplace_back(small::async([i = i]()
-                                     { std::cout << i << " "; }));
+                                       { std::cout << i << " "; }));
+        // without push_back :
+        // auto fu = std::async([i=i, &logger](){std::cout << std::to_string(i);});
+        // when temp loop finish, fu is going to destrut, but, if this async opetion does not finsh, program will block.
+        // to prevent this, u need to store the std::async's return, which is a std::future object into a container.
     }
     for (auto &f : pool)
     {
