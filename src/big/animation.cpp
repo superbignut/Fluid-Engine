@@ -42,7 +42,15 @@ namespace big
     void Animation::update(const Frame &frame)
     {
         Timer timer;
+        
+        BIG_INFO << "Begin updating frame" << frame._index
+                 << " timeIntervalInSeconds" << frame._timeIntervalInSeconds
+                 << " (1/" << 1 / frame._timeIntervalInSeconds
+                 << "} seconds.";
         onUpdate(frame);
+
+        BIG_INFO << "End updating frame (took " <<timer.durationInSeconds()
+                 << " seconds.";
     }
 
 }

@@ -24,6 +24,7 @@
 + 📌 [Ray Axis-Aligned Bounding Box Intersection](#Ray-AABB-Intersection)
 + 📌 [Quaternion and 3-D Rotation Matrix](#Quaternion-and-3-D-Rotation-Matrix)
 + 📌 [Builder Pattern](#Builder-Pattern)
++ 📌 [Animation and Physics Animation](#Animation-and-Physics-Animation)
 
 🗓 [To Do:](#ToDO-)
 
@@ -191,6 +192,23 @@
             Vector<double, 3> _center; 
             double _radius;
         };
++ ### Animation and Physics Animation
+    When i first saw author's code about the animation part, i am puzzled about the words : "subTimeSteps", "update", "onUpdate", "advanceTimeStep", "onAdvanceTimeStep". However, after reading the entire code from a global perspective, my understanding has become clearer, and then, i realized i should write something to prevent forgetting.
+    
+    First of all, subTimeSteps are **slices** that an original frame (_timeIntervalInSeconds = 1.0s / 60.0) are further divided into. Consequently, this allows for more precise computations and integrations.
+
+    Secondly, the **order** of these four functions are called is important, which can be sumarized as the followed table:
+
+    |Function name: |update|onUpdate|advanceTimeStep|onAdvanceTimeStep|
+    |:----:|:----:|:----:|:----:|:----:|
+    |Order:|1->|2->|3->|->4|
+    |Virtual?|❌|✅|❌|✅|
+    |Parameter|frame|frame|timeIntervalInSeconds|actualTimeInterval|
+    ||||||
+    
+    Thirdly, function onAdvanceTimeStep has a special parameter: **actualTimeInterval** = **timeIntervalInSeconds** / **N**, where N is an unsigned int number,  which can be either fixed or not depending on member variable **_isUsingFixedSubTimeSteps**.
+
+
 
 ## ToDo :
 

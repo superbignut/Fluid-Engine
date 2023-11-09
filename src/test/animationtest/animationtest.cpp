@@ -15,6 +15,7 @@ int main()
     t.reset();
     std::cout << t.durationInSeconds() << std::endl;
 
+    
     // big::LoggingLeve level = big::LoggingLeve::Info;
 
     // big::Logger logger(level);
@@ -27,11 +28,7 @@ int main()
 
     // big::infoLogger << "aaaa";
     // big::infoLogger << "ccccc" <<__FILE__;
-    big::Logging::setLevel(big::LoggingLeve::Warn);
-    BIG_INFO << "hihsihah ";
-    BIG_WARN << "HAS A WARN";
-    BIG_INFO << "2222222 " << 10;
-    BIG_ERROR << "Error!!!" << 110;
-
+    int(10);
+    int(20);
     return 0;
 }

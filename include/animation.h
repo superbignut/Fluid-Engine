@@ -44,13 +44,13 @@ namespace big
         virtual ~Animation() = default;
 
         //! \brief This func update the animation by calling Animation::onUpdate()
-        void update(const Frame& frame);
-    
+        ///        Update the animation to this specific frame.
+        void update(const Frame &frame);
+
     protected:
         //! \brief This func is called from undate()
         //! This func needed to be overrided by deriveded class.
-        virtual void onUpdate(const Frame& frame) = 0;
-
+        virtual void onUpdate(const Frame &frame) = 0;
     };
 
     typedef std::shared_ptr<Animation> AnimationPtr;
