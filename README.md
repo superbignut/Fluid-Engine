@@ -201,12 +201,11 @@
 
     |Function name: |update|onUpdate|advanceTimeStep|onAdvanceTimeStep|
     |:----:|:----:|:----:|:----:|:----:|
-    |Order:|1->|2->|3->|->4|
-    |Virtual?|❌|✅|❌|✅|
-    |Parameter|frame|frame|timeIntervalInSeconds|actualTimeInterval|
-    ||||||
+    |Order :|1->|2->|3->|->4|
+    |Virtual :|❌|✅|❌|✅|
+    |Parameter :|frame|frame|timeIntervalInSeconds|actualTimeInterval|
     
-    Thirdly, function onAdvanceTimeStep has a special parameter: **actualTimeInterval** = **timeIntervalInSeconds** / **N**, where N is an unsigned int number,  which can be either fixed or not depending on member variable **_isUsingFixedSubTimeSteps**.
+    <!-- Thirdly, onAdvanceTimeStep's parameter is **actualTimeInterval** = **timeIntervalInSeconds** / **N**  where N is an unsigned int number. -->
 
 
 
