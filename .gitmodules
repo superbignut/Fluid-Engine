@@ -1,3 +1,9 @@
-# [submodule "external/googletest"]
-# 	path = external/googletest
-# 	url = https://github.com/google/googletest
+[submodule "external/gtest"]
+	path = external/gtest
+	url = https://github.com/google/googletest
+[submodule "external/cnpy"]
+	path = external/cnpy
+	url = https://github.com/rogersce/cnpy
+[submodule "external/pystring"]
+	path = external/pystring
+	url = https://github.com/imageworks/pystring

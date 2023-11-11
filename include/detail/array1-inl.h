@@ -9,7 +9,7 @@ namespace big
 {
 
     template <typename T>
-    Array<T, 1>::Array() : _data() {} /*Array()*/  //default construct 
+    Array<T, 1>::Array() : _data() {} /*Array()*/ // default construct
 
     template <typename T>
     Array<T, 1>::Array(std::size_t size, const T &initial_val) /*Array()*/
@@ -135,6 +135,16 @@ namespace big
     T *Array<T, 1>::data()
     {
         return _data.data();
+    }
+
+    template <typename T>
+    void Array<T, 1>::show() const
+    {
+        for (auto it : _data)
+        {
+            std::cout << it << " ";
+        }
+        std::cout << std::endl;
     }
 
     template <typename T>

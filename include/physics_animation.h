@@ -48,10 +48,10 @@ namespace big
 
     private:
         ///
-        /// @brief Called when a single time-step should be advanced.
-        ///        Same as update and onUpdate in animation.h
-        /// @param timeIntervalInSeconds
-        virtual void onAdvanceTimeStep(double timeIntervalInSeconds) = 0;
+        /// @brief Called when a single subTimeInterval should be advanced.
+        ///        
+        /// @param actualTimeIntervalInSeconds 
+        virtual void onAdvanceTimeStep(double actualTimeIntervalInSeconds) = 0;
 
         /// @brief Which is different from the Fixed-SubTimeStep.The required number of 
         ///        sub-timestep can be different depending on the physics model.       

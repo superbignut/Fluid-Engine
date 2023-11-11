@@ -39,7 +39,7 @@ namespace big
 
         ConstantVectorField2 build() const;
 
-        ConstantVectorField2 makeShared() const;
+        ConstantVectorField2Ptr makeShared() const;
     private:
         Vector<double, 2> _value{0,0};
     };

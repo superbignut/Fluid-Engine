@@ -59,6 +59,8 @@ namespace big
 
     T *data();
 
+    void show() const;
+    
     const T *const data() const;
 
     void swap(Array &newVal);

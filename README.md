@@ -193,7 +193,7 @@
             double _radius;
         };
 + ### Animation and Physics Animation
-    When i first saw author's code about the animation part, i am puzzled about the words : "subTimeSteps", "update", "onUpdate", "advanceTimeStep", "onAdvanceTimeStep". However, after reading the entire code from a global perspective, my understanding has become clearer, and then, i realized i should write something to prevent forgetting.
+    When I initially encountered the animation code, terms like subTimeSteps, update, onUpdate, advanceTimeStep and onAdvanceTimeStep perplexed me. However, upon scrutinizing the entire code with a global perspective, my comprehension improved. It dawned on me that I should document my insights to avoid forgetting them.
     
     First of all, subTimeSteps are **slices** that an original frame (_timeIntervalInSeconds = 1.0s / 60.0) are further divided into. Consequently, this allows for more precise computations and integrations.
 
