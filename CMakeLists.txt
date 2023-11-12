@@ -7,6 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
+set(EXTERNAL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
+# include(FetchContent)
+# FetchContent_Declare(
+#   googletest
+#   GIT_REPOSITORY https://github.com/google/googletest.git
+# )   
 
 include_directories(/usr/local/include) 
 include_directories(include)
@@ -16,6 +22,8 @@ include_directories(include)
 
 # add_executable(big ${source_list})
 add_subdirectory(src/big)
+add_subdirectory(external/gtest)
+
 add_subdirectory(src/examples/async)
 add_subdirectory(src/examples/CRTP)
 add_subdirectory(src/test/blastest)
@@ -29,4 +37,5 @@ add_subdirectory(src/test/sphere3test)
 add_subdirectory(src/test/planetest)
 add_subdirectory(src/test/animationtest)
 add_subdirectory(src/test/physics_animation_test)
+add_subdirectory(src/test/manual_tests)
 # target_link_libraries(big ${OpenCV_LIBRARIES})

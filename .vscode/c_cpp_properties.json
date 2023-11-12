@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/**",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/external/gtest/googletest/include",
+                "${workspaceFolder}/external/gtest/googlemock/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
