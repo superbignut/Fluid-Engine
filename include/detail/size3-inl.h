@@ -158,13 +158,13 @@ namespace big
         z /= other.z;
     }
 
-    std::size_t &Size3::at(std::size_t i)
+    inline std::size_t &Size3::at(std::size_t i)
     {
         assert(i < 3);
         return (&x)[i];
     }
 
-    const std::size_t &Size3::at(std::size_t i) const
+    inline const std::size_t &Size3::at(std::size_t i) const
     {
         assert(i < 3);
         return (&x)[i];

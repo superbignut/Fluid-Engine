@@ -23,6 +23,8 @@ include_directories(include)
 # add_executable(big ${source_list})
 add_subdirectory(src/big)
 add_subdirectory(external/gtest)
+add_subdirectory(external/cnpy)
+add_subdirectory(external/pystring)
 
 add_subdirectory(src/examples/async)
 add_subdirectory(src/examples/CRTP)

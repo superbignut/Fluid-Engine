@@ -11,7 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${EXTERNAL_DIR}/gtest/googletest/include
-                    ${EXTERNAL_DIR}/gtest/googlemock/include)
+                    ${EXTERNAL_DIR}/gtest/googlemock/include
+                    ${EXTERNAL_DIR}/pystring
+                    ${EXTERNAL_DIR}/cnpy)
 
 file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
@@ -19,4 +21,6 @@ add_executable(${target} ${sources})
 
 target_link_libraries(${target} 
                         libbig
-                        gtest)
+                        gtest
+                        cnpy
+                        pystring)

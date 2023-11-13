@@ -108,7 +108,10 @@
         "executor": "cpp",
         "io_context": "cpp",
         "netfwd": "cpp",
-        "timer": "cpp"
+        "timer": "cpp",
+        "bitset": "cpp",
+        "csignal": "cpp",
+        "regex": "cpp"
     },
     "cmake.configureOnOpen": true,
     "C_Cpp.errorSquiggles": "disabled"

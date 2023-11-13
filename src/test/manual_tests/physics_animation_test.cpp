@@ -4,6 +4,7 @@
 #include "constant_vector_field3.h"
 #include "vector3.h"
 
+#include "manual_tests.h"
 using namespace big;
 
 class SimpleMassSpringAnimation : public PhysicsAnimation
@@ -155,7 +156,12 @@ protected:
         }
     }
 };
+BIG_TESTS(PhysicsAnimation)
+BIG_BEGIN_TEST_F(PhysicsAnimation, SimpleMassSpringAnimation)
+{
 
+}
+BIG_END_TEST_F
 // int main()
 // {
 //     Array1<double> x;

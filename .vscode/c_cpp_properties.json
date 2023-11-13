@@ -7,7 +7,9 @@
                 "/usr/include/**",
                 "${workspaceFolder}/include",
                 "${workspaceFolder}/external/gtest/googletest/include",
-                "${workspaceFolder}/external/gtest/googlemock/include"
+                "${workspaceFolder}/external/gtest/googlemock/include",
+                "${workspaceFolder}/external/cnpy",
+                "${workspaceFolder}/external/pystring"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
