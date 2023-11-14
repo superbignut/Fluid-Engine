@@ -160,7 +160,7 @@ protected:
 int main()
 {
     std::string outDirname = "manual_tests_output/PhysicsAnimation/SimpleMassSpringAnimation";
-    sdata::creatDirectory(outDirname); // 在build目录下创建一个存放数据的目录
+    sdata::creatDirectory(outDirname); // 在build目录下递归的创建一个存放数据的目录
 
     Array1<double> x;
     Array1<double> y;
