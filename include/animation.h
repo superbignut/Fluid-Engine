@@ -9,7 +9,7 @@ namespace big
     //!
     struct Frame final
     {
-        unsigned int _index = 0;
+        int _index = 0;
 
         double _timeIntervalInSeconds = 1.0 / 60.0;
 

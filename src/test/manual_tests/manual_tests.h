@@ -26,6 +26,15 @@ inline void creatDirectory(const std::string &dirname)
     }
     mkdir(partialDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 }
+inline void creatSubTestDirectory(const std::string &classname, const std::string &casename)
+{
+    std::string subTestDir = pystring::os::path::join(BIG_TESTS_OUTPUT_DIR, classname);
+    creatDirectory(subTestDir);//first subDir
+
+    std::string caseDir = pystring::os::path::join(subTestDir, casename);
+    // std::cout << caseDir;
+    creatDirectory(caseDir);//second subDir       
+}
 
 #define BIG_TESTS(testSetName)                                                            \
     class testSetName##Tests : public ::testing::Test                                     \
@@ -75,5 +84,8 @@ inline void creatDirectory(const std::string &dirname)
         creatTestDirectory(#testCaseName);
 
 #define BIG_END_TEST_F }
+
+
+
 
 #endif

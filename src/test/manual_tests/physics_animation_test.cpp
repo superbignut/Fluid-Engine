@@ -3,8 +3,8 @@
 #include "array1.h"
 #include "constant_vector_field3.h"
 #include "vector3.h"
+#include "manual_tests_include.h"
 
-#include "manual_tests.h"
 using namespace big;
 
 class SimpleMassSpringAnimation : public PhysicsAnimation
@@ -156,31 +156,36 @@ protected:
         }
     }
 };
-BIG_TESTS(PhysicsAnimation)
-BIG_BEGIN_TEST_F(PhysicsAnimation, SimpleMassSpringAnimation)
+
+int main()
 {
+    std::string outDirname = "manual_tests_output/PhysicsAnimation/SimpleMassSpringAnimation";
+    sdata::creatDirectory(outDirname); // 在build目录下创建一个存放数据的目录
 
+    Array1<double> x;
+    Array1<double> y;
+    SimpleMassSpringAnimation anim;
+
+    anim.makeChain(10);
+    anim.wind = std::make_shared<ConstantVectorField3>(Vector3D{30, 0, 0});
+
+    anim.constrains.push_back({0, Vector3D(), Vector3D()});
+
+    anim.exportStates(x, y);
+    char filename[256];
+    snprintf(filename, sizeof(filename), "data.#line2,0000,x.npy");
+    sdata::saveData(x.constAccessor(), outDirname, filename);
+    snprintf(filename, sizeof(filename), "data.#line2,0000,y.npy");
+    sdata::saveData(y.constAccessor(), outDirname, filename);
+
+    for (Frame frame(0, 1.0 / 60.0); frame._index < 360; frame.advance())
+    {
+        anim.update(frame);
+        anim.exportStates(x, y);
+        snprintf(filename, sizeof(filename), "data.#line2,%04d,x.npy", frame._index);
+        sdata::saveData(x.constAccessor(), outDirname, filename);
+        snprintf(filename, sizeof(filename), "data.#line2,%04d,y.npy", frame._index);
+        sdata::saveData(y.constAccessor(), outDirname, filename);
+    }
+    return 0;
 }
-BIG_END_TEST_F
-// int main()
-// {
-//     Array1<double> x;
-//     Array1<double> y;
-//     SimpleMassSpringAnimation anim;
-
-//     anim.makeChain(10);
-//     anim.wind = std::make_shared<ConstantVectorField3>(Vector3D{30, 0, 0});
-
-//     // anim.wind->sample({0,110,0}).show();
-    
-//     anim.constrains.push_back({0, Vector3D(), Vector3D()});
-
-//     anim.exportStates(x, y);
-//     x.show();
-//     y.show();
-//     char filename[256];
-//     snprintf(filename, sizeof(filename), "data.#line2,0000,x.npy");
-//     std::cout << filename;
-
-//     return 0;
-// }
