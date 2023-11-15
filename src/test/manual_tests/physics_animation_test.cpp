@@ -28,7 +28,7 @@ public:
     std::vector<Vector3D> forces;
     std::vector<Edge> edges;
 
-    double mass = 1.0;
+    double mass = 5.0;
 
     Vector3D gravity = Vector3D(0.0, -9.8, 0.0);
 
@@ -104,7 +104,7 @@ protected:
             }
             forces[i] += -dragCoefficient * relativeVel;
         }
-
+        
         for (std::size_t i = 0; i < numberOfEdges; ++i)
         {
             std::size_t pointIndex0 = edges[i].first;
@@ -129,6 +129,7 @@ protected:
             forces[pointIndex1] -= damping;
         }
 
+        //计算加速度和速度
         for (std::size_t i = 0; i < numberOfPoints; ++i)
         {
             Vector3D newAcceleration = forces[i] / mass;
@@ -148,6 +149,7 @@ protected:
             velocities[i] = newVelocity;
             positions[i] = newPosition;
         }
+        //计算约束
         for (std::size_t i = 0; i < constrains.size(); ++i)
         {
             std::size_t pointIndex = constrains[i].pointIndex;
@@ -170,14 +172,12 @@ int main()
     anim.wind = std::make_shared<ConstantVectorField3>(Vector3D{30, 0, 0});
 
     anim.constrains.push_back({0, Vector3D(), Vector3D()});
+    anim.constrains.push_back({9, Vector3D(-9,0,0), Vector3D(0,0,0)});
+
 
     anim.exportStates(x, y);
     char filename[256];
-    snprintf(filename, sizeof(filename), "data.#line2,0000,x.npy");
-    sdata::saveData(x.constAccessor(), outDirname, filename);
-    snprintf(filename, sizeof(filename), "data.#line2,0000,y.npy");
-    sdata::saveData(y.constAccessor(), outDirname, filename);
-
+    
     for (Frame frame(0, 1.0 / 60.0); frame._index < 360; frame.advance())
     {
         anim.update(frame);

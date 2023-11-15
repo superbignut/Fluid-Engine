@@ -14,7 +14,6 @@
 <!-- <div align="center">
 	<img src="render/render.jpg" alt="Editor" width="700">
 </div> -->
-![render](https://github.com/superbignut/Fluid-Engine/blob/master/render_dir/render.jpg)
 ---
 📦 [Contents:](#Contents-)
 + 📌 [Curiously Recurring Template Pattern](#CRTP)
@@ -204,7 +203,11 @@
     |Order :|1->|2->|3->|->4|
     |Virtual :|❌|✅|❌|✅|
     |Parameter :|frame|frame|timeIntervalInSeconds|actualTimeInterval|
-    
+
+    After knowing all of these, we can use **matplotlib.animation** to generate our first simulation in this book, which are balls and springs. It is such a classic problem in physics book. I was so  execited when i see it on my screen. My mp4 file is under *render_dir*.
+
+
+    ![spring](https://github.com/superbignut/Fluid-Engine/blob/master/render_dir/bound_points_line.jpg)
     <!-- Thirdly, onAdvanceTimeStep's parameter is **actualTimeInterval** = **timeIntervalInSeconds** / **N**  where N is an unsigned int number. -->
 
 
