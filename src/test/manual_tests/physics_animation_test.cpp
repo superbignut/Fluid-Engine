@@ -180,10 +180,12 @@ int main()
     
     for (Frame frame(0, 1.0 / 60.0); frame._index < 360; frame.advance())
     {
-        anim.update(frame);
-        anim.exportStates(x, y);
+        anim.update(frame); // 更新 frame
+        anim.exportStates(x, y); // 写入 x y
+
         snprintf(filename, sizeof(filename), "data.#line2,%04d,x.npy", frame._index);
         sdata::saveData(x.constAccessor(), outDirname, filename);
+
         snprintf(filename, sizeof(filename), "data.#line2,%04d,y.npy", frame._index);
         sdata::saveData(y.constAccessor(), outDirname, filename);
     }

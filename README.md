@@ -150,7 +150,7 @@
     $$\vec{v'} = cos\theta \cdot\vec{v} + (1-cos\theta)(\vec{u}\cdot\vec{v})\vec{u}+sin\theta\cdot(\vec{u}\times\vec{v})$$
 
     The representations of rotations by quaternions are more compact than the representations by matrices. In addition, unlike Euler angles, they are not susceptible to "gimbal lock".[^4]
-    $$v'  = q v q^* = qvq^{-1} \qquad v=（0, \vec{v}） \qquad q=(cos( \frac{1}{2} \theta),sin( \frac{1}{2} \theta) \vec{u})$$
+    $$v'  = q v q^* = qvq^{-1} \qquad v=(0, \vec{v}) \qquad q=(cos( \frac{1}{2} \theta),sin( \frac{1}{2} \theta) \vec{u})$$
 
     If you are new to quaternion, this [Quaternion Introduction](https://github.com/Krasjet/quaternion) is all you needed. 
 
@@ -199,9 +199,9 @@
 
     |Function name: |update|onUpdate|advanceTimeStep|onAdvanceTimeStep|
     |:----:|:----:|:----:|:----:|:----:|
-    |Order :|1->|2->|3->|->4|
-    |Virtual :|❌|✅|❌|✅|
-    |Parameter :|frame|frame|timeIntervalInSeconds|actualTimeInterval|
+    |**Order** :|1->|2->|3->|->4|
+    |**Virtual** :|❌|✅|❌|✅|
+    |**Parameter** :|frame|frame|timeIntervalInSeconds|actualTimeInterval|
 
     After knowing all of these, we can use **matplotlib.animation** to generate our first simulation in this book, which are balls and springs. It is such a classic problem in physics book. I was so  execited when i see it on my screen. Mp4 file is under *render_dir*.
 
@@ -214,7 +214,9 @@
 ## ToDo :
 
 <!-- #### 8. write someting here... -->
-#### ~~10. Complete the animation and physics_animation.~~
+#### 11. Complete the ParticalSystemData and its corresponding files.
+---
+#### ~~10. Complete the animation ,physics_animation and render first animation2D.~~
 ---
 #### ~~9. Complete the surface of sphere and plane ,while box and cylinder are not done.~~
 ---
