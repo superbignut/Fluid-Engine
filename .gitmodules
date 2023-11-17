@@ -7,3 +7,6 @@
 [submodule "external/pystring"]
 	path = external/pystring
 	url = https://github.com/imageworks/pystring
+[submodule "external/flatbuffers"]
+	path = external/flatbuffers
+	url = https://github.com/google/flatbuffers

@@ -1,0 +1,23 @@
+namespace big.fbs;
+
+struct Size2 {
+    x:ulong;
+    y:ulong;
+}
+
+struct Size3 {
+    x:ulong;
+    y:ulong;
+    z:ulong;
+}
+
+struct Vector2D {
+    x:double;
+    y:double;
+}
+
+struct Vector3D {
+    x:double;
+    y:double;
+    z:double;
+}
