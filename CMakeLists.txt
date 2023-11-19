@@ -16,11 +16,12 @@ include_directories(include)
 # aux_source_directory(src source_list)
 
 # add_executable(big ${source_list})
-add_subdirectory(src/big)
 add_subdirectory(external/gtest)
 add_subdirectory(external/cnpy)
 add_subdirectory(external/pystring)
 add_subdirectory(external/flatbuffers EXCLUDE_FROM_ALL)
+add_subdirectory(src/big)
+
 
 add_subdirectory(src/examples/async EXCLUDE_FROM_ALL)
 add_subdirectory(src/examples/CRTP EXCLUDE_FROM_ALL)

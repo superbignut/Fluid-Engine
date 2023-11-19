@@ -7,19 +7,19 @@
 #include <vector>
 
 /// @brief 为什么要有这些接口?
-namespace flatbuffers
-{
-    class FlatBufferBuilder;
-    template <typename T>
-    struct Offset;
-}
-namespace big
-{
-    namespace fbs
-    {
-        struct ParticleSystemData2;
-    }
-}
+// namespace flatbuffers
+// {
+//     class FlatBufferBuilder;
+//     template <typename T>
+//     struct Offset;
+// }
+// namespace big
+// {
+//     namespace fbs
+//     {
+//         struct ParticleSystemData2;
+//     }
+// }
 
 namespace big
 {
@@ -65,6 +65,8 @@ namespace big
 
         virtual void setMass(double newMass);
 
+        /// @brief Return the corresponding ArrayAccessor1/ConstArrayAccessor1
+        /// @return
         ConstArrayAccessor1<Vector2D> positions() const;
 
         ArrayAccessor1<Vector2D> positions();
@@ -82,14 +84,22 @@ namespace big
         ArrayAccessor1<double> scalarDataAt(std::size_t idx);
 
         ConstArrayAccessor1<double> vectorDataAt(std::size_t idx) const;
-        
+
         ArrayAccessor1<double> vectorDataAt(std::size_t idx);
-        
-        
+
+        /// @brief Add a particle to the data structure.
+        /// However, this function will invalidate neighbor seacher and neighbor lists; It is 
+        /// user's responsibility to call buildNeighborSearcher and buildNeighborLists to refresh.
         void addParticle(const Vector2D &newPosition,
                          const Vector2D &newVelocity = Vector2D(),
                          const Vector2D &newForce = Vector2D());
-        void addParticles();
+
+        /// @brief Add particles to the data structure.
+        /// However, this function will invalidate neighbor seacher and neighbor lists; It is 
+        /// user's responsibility to call buildNeighborSearcher and buildNeighborLists to refresh.
+        void addParticles(const ConstArrayAccessor1<Vector2D> &newPositions,
+                          const ConstArrayAccessor1<Vector2D> &newVelocities = ConstArrayAccessor1<Vector2D>(),
+                          const ConstArrayAccessor1<Vector2D> &newForces = ConstArrayAccessor1<Vector2D>());
 
     private:
         double _radius = 1e-3;
