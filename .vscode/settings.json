@@ -111,7 +111,8 @@
         "timer": "cpp",
         "bitset": "cpp",
         "csignal": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "codecvt": "cpp"
     },
     "cmake.configureOnOpen": true,
     "C_Cpp.errorSquiggles": "disabled"
