@@ -58,7 +58,7 @@ namespace big
     typedef std::shared_ptr<PointNeighborSearcher2> PointNeighborSearcher2Ptr;
 
     #define BIG_NEIGHBOR_SEARCHER2_TYPE_NAME(DerivedClassName) \
-        std::string typename() const override { \
+        std::string typeName() const override { \
             return #DerivedClassName; \
         }
 }

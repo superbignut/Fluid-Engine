@@ -4,6 +4,7 @@
 #include <vector>
 #include <type_traits>
 #include <future>
+#include <memory>
 //! small::async has the basical function as std::async
 namespace small
 {
@@ -23,16 +24,28 @@ namespace small
     {
         using package_t = std::packaged_task<operator_return_t<TASK_T>()>; // () means no params
 
-        auto task = new package_t(std::forward<TASK_T>(fcn)); // 封装成一个可调用对象, 可以通过getfuture获得结果
+        auto task = std::make_shared<package_t>(std::forward<TASK_T>(fcn)); // 封装成一个可调用对象, 可以通过getfuture获得结果
+        
         auto future = task->get_future();
 
         schedule([task = task]() { // 值传递
             (*task)();             // 开始执行
-            delete task;           // 删除new的空间
+            // delete task;           // 删除new的空间
         });
         return future;
     };
 }
+
+// double MyFunction(int a, char b)
+// {
+//     std::cout<< 100 <<std::endl;
+// }
+
+// double MyFunction2(int a, char b)
+// {
+//     std::cout<< 200 <<std::endl;
+// }
+
 int main(int argc, char **argv)
 {
     std::vector<std::future<void>> pool;

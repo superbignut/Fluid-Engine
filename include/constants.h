@@ -25,6 +25,14 @@ namespace big
     {
         return 0.0;
     }
+
+    constexpr std::size_t kOneSize = 1;
+
+    constexpr ssize_t kOneSSize = 1;
+
+
+
+
     constexpr float kEpsilonF = std::numeric_limits<float>::epsilon();
 
     constexpr double kEpsilonD = std::numeric_limits<double>::epsilon();

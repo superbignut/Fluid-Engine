@@ -2,6 +2,7 @@
 #include "parallel.h"
 #include "particle_system_data2.h"
 #include "timer.h"
+#include "macros.h"
 
 #include <algorithm>
 #include <vector>
@@ -14,11 +15,12 @@ ParticleSystemData2::ParticleSystemData2()
     : ParticleSystemData2(0)
 {
 }
-ParticleSystemData2
 
 ParticleSystemData2::ParticleSystemData2(std::size_t numberOfParticles)
 {
     _positionIdx = addVectorData();
+    _velocityIdx = addVectorData();
+    _forceIdx = addVectorData();
 }
 
 std::size_t ParticleSystemData2::numberOfParticles() const
@@ -101,26 +103,26 @@ ArrayAccessor1<Vector2D> ParticleSystemData2::forces()
 
 ConstArrayAccessor1<double> ParticleSystemData2::scalarDataAt(std::size_t idx) const
 {
-    return _scalarDataList(idx).constAccessor();
+    return _scalarDataList[idx].constAccessor();
 }
 
 ArrayAccessor1<double> ParticleSystemData2::scalarDataAt(std::size_t idx)
 {
-    return _scalarDataList(idx).accessor();
+    return _scalarDataList[idx].accessor();
 }
 
-ConstArrayAccessor1<double> ParticleSystemData2::vectorDataAt(std::size_t idx) const
+ConstArrayAccessor1<Vector2D> ParticleSystemData2::vectorDataAt(std::size_t idx) const
 {
-    return _vectorDataList(idx).constAccessor();
+    return _vectorDataList[idx].constAccessor();
 }
 
-ArrayAccessor1<double> ParticleSystemData2::vectorDataAt(std::size_t idx)
+ArrayAccessor1<Vector2D> ParticleSystemData2::vectorDataAt(std::size_t idx)
 {
-    return _vectorDataList(idx).accessor();
+    return _vectorDataList[idx].accessor();
 }
 void ParticleSystemData2::addParticle(const Vector2D &newPosition,
-                                      const Vector2D &newVelocity = Vector2D(),
-                                      const Vector2D &newForce = Vector2D())
+                                      const Vector2D &newVelocity,
+                                      const Vector2D &newForce)
 {
     Array1<Vector2D> newPositions = {newPosition};
     Array1<Vector2D> newVelocitys = {newVelocity};
@@ -128,7 +130,55 @@ void ParticleSystemData2::addParticle(const Vector2D &newPosition,
     addParticles(newPositions.constAccessor(), newVelocitys.constAccessor(), newForces.constAccessor());
 }
 void ParticleSystemData2::addParticles(const ConstArrayAccessor1<Vector2D> &newPositions,
-                  const ConstArrayAccessor1<Vector2D> &newVelocities = ConstArrayAccessor1<Vector2D>(),
-                  const ConstArrayAccessor1<Vector2D> &newForces = ConstArrayAccessor1<Vector2D>())
+                                       const ConstArrayAccessor1<Vector2D> &newVelocities,
+                                       const ConstArrayAccessor1<Vector2D> &newForces)
+{
+    // the three of them must have the same size, alought each can be 0.
+    BIG_THROW_INVALID_ARG_IF(newVelocities.size() > 0 && newVelocities.size() != newPositions.size());
+    BIG_THROW_INVALID_ARG_IF(newForces.size() > 0 && newForces.size() != newPositions.size());
+
+    std::size_t oldNumberOfParticles = numberOfParticles();
+    std::size_t newNumberOfParticles = oldNumberOfParticles + newPositions.size();
+
+    resize(newNumberOfParticles);
+
+    // Return the corresponding array_accessor.
+    auto pos_array_accessor = positions();
+    auto vel_array_accessor = velocities();
+    auto frc_array_accessor = forces();
+
+    parallelFor(kZeroSize,
+                newPositions.size(),
+                [&](std::size_t i)
+                {
+                    pos_array_accessor[oldNumberOfParticles + i] = newPositions[i];
+                });
+    parallelFor(kZeroSize,
+                newVelocities.size(),
+                [&](std::size_t i)
+                {
+                    vel_array_accessor[oldNumberOfParticles + i] = newVelocities[i];
+                });
+    parallelFor(kZeroSize,
+                newForces.size(),
+                [&](std::size_t i)
+                {
+                    frc_array_accessor[oldNumberOfParticles + i] = newForces[i];
+                });
+}
+
+const PointNeighborSearcher2Ptr &ParticleSystemData2::neighborSearcher() const
+{
+    return _neighborSearcher;
+}
+void ParticleSystemData2::setNeighborSearcher(const PointNeighborSearcher2Ptr &neighborSearcher)
+{
+    _neighborSearcher = neighborSearcher;
+}
+
+void ParticleSystemData2::serialize(std::vector<uint8_t> *buffer) const
+{
+}
+void ParticleSystemData2::deserialize(const std::vector<uint8_t> &buffer)
 {
 }

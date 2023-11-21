@@ -3,6 +3,8 @@
 #include <thread>
 #include <vector>
 #include <future>
+#include <cmath>
+#include <iostream>
 namespace big
 {
     namespace internal
@@ -72,7 +74,7 @@ namespace big
 
         // Creat pool and launch jobs
         std::vector<std::thread> pool;
-        pool.reserve(numThreads);
+        pool.reserve(numThreads); // does not change the size of the vector.because the pool may be not full.
 
         IndexType i1 = begin;
         IndexType i2 = begin + slice; // begin + slice <= end

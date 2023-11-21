@@ -7,7 +7,7 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/build/big",
+        "program": "${workspaceFolder}/build/bin/serialtest",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

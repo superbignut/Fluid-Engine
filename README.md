@@ -86,13 +86,47 @@
         inline auto async(TASK_T &&fcn) -> std::future<operator_return_t<TASK_T>>
         {
             using package_t = std::packaged_task<operator_return_t<TASK_T>()>;
-            auto task = new package_t(std::forward<TASK_T>(fcn));
+            auto task = std::make_shared<package_t>(std::forward<TASK_T>(fcn));
             auto future = task->get_future();
-            schedule([task=task]() { // <-- Todo
-                (*task)(); 
-                delete task;});
+            schedule([task=task]() { 
+                (*task)();});
             return future;
         }
+
+    Let's explain this code step by step. The first strange function is **std : : invoke_result**.
+    The usage of std::invoke_result is as follows:
+
+        template< class F, class... ArgTypes >
+        class invoke_result;
+
+    Which is used to duduce the return type of an INVOKE expression at compile time. Where confusion may arise is that F is not a object but a type，and the same for others. Besides, ArgTypes are just useful when you have overloaded operator() or overloaded functions.
+
+    We can also use **template** to get the type of a function object:
+        
+        template <typename TASK_T>
+        using operator_return_t = typename std::invoke_result<TASK_T>::type;
+
+    The second strange function is **std : : packaged_task**.
+
+        template< class R, class ...ArgTypes >
+        class packaged_task<R(ArgTypes...)>;
+    The class template std::packaged_task wraps any Callable target (function, lambda expression, bind expression, or another function object) so that it can be invoked asynchronously.[^5]
+
+        using package_t = std::packaged_task<operator_return_t<TASK_T>()>;
+        auto task = new package_t(std::forward<TASK_T>(fcn));
+        auto future = task->get_future();
+    Therefore, the code above wraps the function and define a std::future sothat you can get the answer through it.
+
+        std::thread thread(std::forward<TASK_T>(fcn));
+        thread.detach(); 
+    Finally, we create a thread to run the function and deteach it(do not wait for it to finish).
+
+        template<typename T>
+        void fwd(T&& param)             
+        {
+            f(std::forward<T>(param)); 
+        }
+    Perfect forwarding is used twice above, and i hope you can understand both reference collapsing and this.
 + ### CG
     Our interest in the conjugate gradient method is twofold. It is one of the most useful tecnniques for solving large linear systems  of equations, and it can also be adapted to solve nolinear optimization problems[^1].
 
@@ -273,6 +307,7 @@
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
 [4]: https://github.com/Krasjet/quaternion
+[5]: https://en.cppreference.com/w/cpp/thread/packaged_task
 <!-- paragraph-footnote -->
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm

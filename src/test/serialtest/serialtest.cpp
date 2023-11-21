@@ -1,14 +1,20 @@
 #include <gtest/gtest.h>
 #include "serialization.h"
+#include "particle_system_data2.h"
+#include <stdexcept>
+#include "parallel.h"
 
 TEST(Serialization, Try1)
 {
     EXPECT_EQ(1, 1);
 }
 
-TEST(Serialization, Try2)
+TEST(Particle_system_data2, Try1)
 {
-    std::vector<int> v;
+    big::ParticleSystemData2 a(5);
+}
 
-    std::cout << v.size() << v.capacity() << std::endl;
+TEST(Parallel, Try1)
+{
+    
 }

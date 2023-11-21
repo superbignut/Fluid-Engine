@@ -6,8 +6,13 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+message("CMake runtime output dir:   " ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 set(EXTERNAL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
+message("CMake external dir:   " ${EXTERNAL_DIR})
+
+set(CMAKE_BUILD_TYPE "Debug")
+message("CMake built type:  " ${CMAKE_BUILD_TYPE})
 
 include_directories(/usr/local/include)
 include_directories(include)
@@ -16,15 +21,17 @@ include_directories(include)
 # aux_source_directory(src source_list)
 
 # add_executable(big ${source_list})
-add_subdirectory(external/gtest)
-add_subdirectory(external/cnpy)
-add_subdirectory(external/pystring)
+add_subdirectory(external/gtest EXCLUDE_FROM_ALL)
+add_subdirectory(external/cnpy EXCLUDE_FROM_ALL)
+add_subdirectory(external/pystring EXCLUDE_FROM_ALL)
 add_subdirectory(external/flatbuffers EXCLUDE_FROM_ALL)
 add_subdirectory(src/big)
 
 
-add_subdirectory(src/examples/async EXCLUDE_FROM_ALL)
+add_subdirectory(src/examples/async)
 add_subdirectory(src/examples/CRTP EXCLUDE_FROM_ALL)
+add_subdirectory(src/examples/QA EXCLUDE_FROM_ALL)
+
 add_subdirectory(src/test/blastest EXCLUDE_FROM_ALL)
 add_subdirectory(src/test/cgtest EXCLUDE_FROM_ALL)
 add_subdirectory(src/test/raytest EXCLUDE_FROM_ALL)

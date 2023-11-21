@@ -6,20 +6,23 @@
 #include <memory>
 #include <vector>
 
-/// @brief 为什么要有这些接口?
-// namespace flatbuffers
-// {
-//     class FlatBufferBuilder;
-//     template <typename T>
-//     struct Offset;
-// }
-// namespace big
-// {
-//     namespace fbs
-//     {
-//         struct ParticleSystemData2;
-//     }
-// }
+namespace flatbuffers
+{
+    template <bool Is64Aware>
+    class FlatBufferBuilderImpl;
+
+    using FlatBufferBuilder = class flatbuffers::FlatBufferBuilderImpl<false>;
+
+    template <typename T>
+    struct Offset;
+}
+namespace big
+{
+    namespace fbs
+    {
+        struct ParticleSystemData2;
+    }
+}
 
 namespace big
 {
@@ -83,28 +86,68 @@ namespace big
 
         ArrayAccessor1<double> scalarDataAt(std::size_t idx);
 
-        ConstArrayAccessor1<double> vectorDataAt(std::size_t idx) const;
+        ConstArrayAccessor1<Vector2D> vectorDataAt(std::size_t idx) const;
 
-        ArrayAccessor1<double> vectorDataAt(std::size_t idx);
+        ArrayAccessor1<Vector2D> vectorDataAt(std::size_t idx);
 
         /// @brief Add a particle to the data structure.
-        /// However, this function will invalidate neighbor seacher and neighbor lists; It is 
+        /// However, this function will invalidate neighbor seacher and neighbor lists; It is
         /// user's responsibility to call buildNeighborSearcher and buildNeighborLists to refresh.
         void addParticle(const Vector2D &newPosition,
                          const Vector2D &newVelocity = Vector2D(),
                          const Vector2D &newForce = Vector2D());
 
         /// @brief Add particles to the data structure.
-        /// However, this function will invalidate neighbor seacher and neighbor lists; It is 
+        /// However, this function will invalidate neighbor seacher and neighbor lists; It is
         /// user's responsibility to call buildNeighborSearcher and buildNeighborLists to refresh.
         void addParticles(const ConstArrayAccessor1<Vector2D> &newPositions,
                           const ConstArrayAccessor1<Vector2D> &newVelocities = ConstArrayAccessor1<Vector2D>(),
                           const ConstArrayAccessor1<Vector2D> &newForces = ConstArrayAccessor1<Vector2D>());
 
+        /// @brief  Reaturns neighbor searcher.
+        /// @return
+        const PointNeighborSearcher2Ptr &neighborSearcher() const;
+
+        /// @brief Set neighbor searcher.
+        /// @param neighborSearcher
+        void setNeighborSearcher(const PointNeighborSearcher2Ptr &neighborSearcher);
+
+        /// @brief Return neighbor List.
+        /// @return
+        const std::vector<std::vector<std::size_t>> &neighborLists() const;
+
+        void buildNeighborSearcher(double maxSearchRadius);
+
+        void buildNeighborLists(double maxSearchRadius);
+
+        /// @brief
+        /// @param buffer
+        void serialize(std::vector<uint8_t> *buffer) const override;
+        /// @brief
+        /// @param buffer
+        void deserialize(const std::vector<uint8_t> &buffer) override;
+
+        void set(const ParticleSystemData2 &other);
+
+        ParticleSystemData2 &operator=(const ParticleSystemData2 &other);
+
+    protected:
+        /// @brief
+        /// @param builder
+        /// @param fbsParticleSystemData
+        void serializeParticleSystemData(
+            flatbuffers::FlatBufferBuilder *builder,
+            flatbuffers::Offset<fbs::ParticleSystemData2> *fbsParticleSystemData) const;
+
+        /// @brief
+        /// @param fbsParticleSystemData
+        void deserializeParticleSystemData(
+            const fbs::ParticleSystemData2 *fbsParticleSystemData);
+
     private:
         double _radius = 1e-3;
         double _mass = 1e-3;
-        std::size_t _numberOfParticles;
+        std::size_t _numberOfParticles = 0;
         std::size_t _positionIdx;
         std::size_t _velocityIdx;
         std::size_t _forceIdx;
