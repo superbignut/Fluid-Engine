@@ -16,5 +16,11 @@ TEST(Particle_system_data2, Try1)
 
 TEST(Parallel, Try1)
 {
-    
+    std::shared_ptr<int> ptr = std::make_shared<int>(43);
+    std::cout <<ptr.use_count() << std::endl;
+    auto lamb = [ptr](){;};
+    std::cout <<ptr.use_count() << std::endl;
+    lamb();
+    std::cout <<ptr.use_count() << std::endl;
+
 }

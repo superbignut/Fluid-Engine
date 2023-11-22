@@ -115,6 +115,7 @@
         "codecvt": "cpp"
     },
     "cmake.configureOnOpen": true,
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.intelliSenseCachePath": "/home/pann/.cache/vscode-cpptools/"
 
 }

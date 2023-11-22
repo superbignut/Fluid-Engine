@@ -9,11 +9,11 @@ namespace big
         kParallel
     };
 
-    /// @brief 
+    /// @brief Fill the container [begin, end).
     /// @tparam RandomIterator 
     /// @tparam T 
-    /// @param begin 
-    /// @param end 
+    /// @param begin The begin iterator of a container, which is different from the param in parallelFor and parallelReduce.
+    /// @param end The end iterator of a container, which is different from the param in parallelFor and parallelReduce.
     /// @param value 
     /// @param policy 
     template <typename RandomIterator, typename T>
@@ -50,6 +50,27 @@ namespace big
                          const Value& identity, const Function& func,
                          const Reduce& reduce,
                          ExecutionPolicy policy = ExecutionPolicy::kParallel);
+
+    /// @brief Sorts a containter in parallel with a custom compare function.
+    /// @tparam RandomIterator 
+    /// @tparam CompareFunction 
+    /// @param begin 
+    /// @param end 
+    /// @param compare 
+    /// @param policy 
+    template<typename RandomIterator, typename CompareFunction>
+    void parallelSort(RandomIterator begin, RandomIterator end,
+                      CompareFunction compare,
+                      ExecutionPolicy policy = ExecutionPolicy::kParallel);
+
+    /// @brief Sorts a containter in parallel with a default compare function.
+    /// @tparam RandomIterator 
+    /// @param begin 
+    /// @param end 
+    /// @param policy 
+    template<typename RandomIterator>
+    void parallelSort(RandomIterator begin, RandomIterator end,
+                      ExecutionPolicy policy = ExecutionPolicy::kParallel);
 }
 
 #include "detail/parallel-inl.h"

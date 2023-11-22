@@ -38,6 +38,16 @@ namespace big
         /// @param points 
         void build(const ConstArrayAccessor1<Vector2D> &points) override;
 
+        /// @brief Return the hash value for given 2-D bucket index.
+        /// @param bucketIndex 
+        /// @return 
+        std::size_t getHashKeyFromBucketIndex(const Point2I& bucketIndex) const;
+
+        /// @brief Get the bucket index of a point, just by divide _gridSpacing and std::floor
+        /// @param position 
+        /// @return 
+        Point2I getBucketIndex(const Vector2D& position) const;
+
 
     private:
         friend class PointParallelHashGridSearcher2Tests;
@@ -50,6 +60,9 @@ namespace big
         std::vector<std::size_t> _endIndexTable;
         std::vector<std::size_t> _sortedIndices;
 
+        /// @brief Return a hashkey for the given 2-D position.
+        /// @param position 
+        /// @return 
         std::size_t getHashKeyFromPosition(const Vector2D &position) const;
 
         void getNearbyKeys(const Vector2D &position, std::size_t *bucketIndices) const;

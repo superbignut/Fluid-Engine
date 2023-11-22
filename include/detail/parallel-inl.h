@@ -5,6 +5,9 @@
 #include <future>
 #include <cmath>
 #include <iostream>
+#include "constants.h"
+#include <memory>
+
 namespace big
 {
     namespace internal
@@ -12,28 +15,38 @@ namespace big
         template <typename TASK_T>
         inline void schedule(TASK_T &&fcn)
         {
-            std::thread thread(std::forward<TASK_T>(fcn)); // 执行线程
-            thread.detach(); // 与主线程分离
+            std::thread thread(std::forward<TASK_T>(fcn)); // run
+            thread.detach();                               // detach
         }
 
         template <typename TASK_T>
-        using operator_return_t = typename std::invoke_result<TASK_T>::type; // 返回可调用对象的 返回值类型
-
+        using operator_return_t = typename std::invoke_result<TASK_T>::type; 
+        
+        // lambda use *value* capturedvariables to ensure there is a "std::shared_ptr<package_t> task;" in generated lambda class and ++ ptr.use_count()
+        // otherwise, [&](){} will get std::shared_ptr<package_t> &task and ptr.use_count() is unchanged.
         template <typename TASK_T>
         inline auto async(TASK_T &&fcn) -> std::future<operator_return_t<TASK_T>>
         {
-            using package_t = std::packaged_task<operator_return_t<TASK_T>()>; // () means no params
+            using package_t = std::packaged_task<operator_return_t<TASK_T>()>; 
 
-            auto task = new package_t(std::forward<TASK_T>(fcn)); // 封装成一个可调用对象, 可以通过getfuture获得结果
+            auto task = std::make_shared<package_t>(std::forward<TASK_T>(fcn));
             auto future = task->get_future();
-            // add std::move(task)?
-            schedule([task=task]() 
-                     { //值传递 
-                (*task)(); // 开始执行
-                delete task; // 删除new的空间
-                });
+
+            schedule([task = task]() { 
+                (*task)();             // run()
+            });
             return future;
         }
+
+        template<typename RandomIterator, typename RandomIterator2, typename CompareFunction>
+        void merge(RandomIterator a, std::size_t size,
+                   RandomIterator2 temp, CompareFunction compareFunction)
+        {
+            std::size_t i1 = 0;
+            std::size_t i2 = size / 2;
+            std::size_t tempi = 0;
+        }
+
 
     }
 
@@ -41,6 +54,16 @@ namespace big
     void parallelFill(const RandomIterator &begin, const RandomIterator &end,
                       const T &value, ExecutionPolicy policy)
     {
+        if (begin >= end)
+        {
+            return;
+        }
+        auto diff = end - begin;
+        std::size_t size = static_cast<std::size_t>(diff);
+        parallelFor(
+            kZeroSize, size, [&](std::size_t k)
+            { begin[k] = value; },
+            policy);
     }
 
     template <typename IndexType, typename Function>
@@ -68,7 +91,6 @@ namespace big
             for (IndexType k = k1; k < k2; ++k)
             {
                 func(k);
-                std::cout << k << " ";
             }
         };
 

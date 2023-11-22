@@ -71,7 +71,7 @@
             IndexContainterType _rowPtr;
         }
 + ### ASYNC
-    A simplified version of [std::async][3] is wrappered by using std::thread and std::future. Later ,the use of 'new' and 'delete' will be changed to morden c++ syntax.
+    This is a simplified version of [std::async][3] is wrappered by using std::thread and std::future. The code concise below has a lot of modern c++ syntax, which is worth learning, alought the more convenient way is to use std::async.
         
         template <typename TASK_T>
         inline void schedule(TASK_T &&fcn)
@@ -126,7 +126,7 @@
         {
             f(std::forward<T>(param)); 
         }
-    Perfect forwarding is used twice above, and i hope you can understand both reference collapsing and this.
+    Perfect forwarding is used twice above, and i hope you can understand both reference collapsing and Perfect forwarding.
 + ### CG
     Our interest in the conjugate gradient method is twofold. It is one of the most useful tecnniques for solving large linear systems  of equations, and it can also be adapted to solve nolinear optimization problems[^1].
 
