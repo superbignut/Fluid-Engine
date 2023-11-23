@@ -1,7 +1,8 @@
 #include "point_parallel_hash_grid_searcher2.h"
 #include "constants.h"
 #include "parallel.h"
-
+#include "bout.h"
+#include "logging.h"
 namespace big
 {
 
@@ -48,11 +49,8 @@ namespace big
         std::size_t numberOfPoints = points.size();
         std::vector<std::size_t> tempKeys(numberOfPoints);
 
-        _startIndexTable.resize(_resolution.x * _resolution.y, kMaxSize);
+        _startIndexTable.resize(_resolution.x * _resolution.y, kMaxSize); // 为什么开这么大的空间呢？
         _endIndexTable.resize(_resolution.x * _resolution.y, kMaxSize);
-
-        // parallelFill(_startIndexTable.begin(), _startIndexTable.end(), kMaxSize); // use parallel instead of resize.
-        // parallelFill(_endIndexTable.begin(), _endIndexTable.end(), kMaxSize);
 
         _keys.resize(numberOfPoints);
         _sortedIndices.resize(numberOfPoints);
@@ -80,7 +78,9 @@ namespace big
                      {
                          return tempKeys[indexA] < tempKeys[indexB];
                      });
+
         // Re-order point and key arrays.
+        // Sothat the _points and _keys are sorted by the magnitude of hashkey from small to large.
         parallelFor(kZeroSize,
                     numberOfPoints,
                     [&](std::size_t i)
@@ -88,6 +88,47 @@ namespace big
                         _points[i] = points[_sortedIndices[i]];
                         _keys[i] = tempKeys[_sortedIndices[i]];
                     });
+        // bout(_keys);
+
+        _startIndexTable[_keys[0]] = 0;
+        _endIndexTable[_keys[numberOfPoints - 1]] = numberOfPoints;
+
+        parallelFor(kOneSize,
+                    numberOfPoints,
+                    [&](std::size_t i)
+                    {
+                        if (_keys[i] > _keys[i - 1])
+                        {
+                            _startIndexTable[_keys[i]] = i;
+                            _endIndexTable[_keys[i - 1]] = i;
+                        }
+                    });
+        ///  points : {{1, 2}, {2, 3}, {3, 4}, {-4,-3}, {5, 6}, {1, 3.0}, {2, 5}, {5, 1},{2, 7}}
+        ///  tempKeys: 100 101 201 9898 302 100 201 2 301
+
+        /// sorted:
+
+        /// _sortedIndices : 7 5 0 1 6 2 8 4 3
+        /// _keys : 2 100 100 101 201 201 301 302 9898
+
+        /// _startIndexTable: 0 1 1 3 4 4 6 7 8
+        /// _endIndexTable  : 1 3 3 4 6 6 7 8 9
+
+        std::size_t sumNumberOfPointsPerBucket = 0;
+        std::size_t maxNumberOfPointsPerBucket = 0;
+        std::size_t numberOfNonEmptyBucket = 0;
+
+        for (std::size_t i = 0; i < _startIndexTable.size(); ++i)
+        {
+            if (_startIndexTable[i] != kMaxSize)
+            {
+                std::size_t numberOfPointInBucket = _endIndexTable[i] - _startIndexTable[i];
+                sumNumberOfPointsPerBucket += numberOfPointInBucket;
+                maxNumberOfPointsPerBucket = std::max(maxNumberOfPointsPerBucket, numberOfPointInBucket);
+                ++numberOfNonEmptyBucket;
+            }
+        }
+        BIG_INFO << sumNumberOfPointsPerBucket << " "<< maxNumberOfPointsPerBucket <<" " << numberOfNonEmptyBucket;
     }
 
     std::size_t PointParallelHashGridSearcher2::getHashKeyFromPosition(const Vector2D &position) const
@@ -99,12 +140,12 @@ namespace big
     std::size_t PointParallelHashGridSearcher2::getHashKeyFromBucketIndex(const Point2I &bucketIndex) const
     {
         Point2I wrappedIndex = bucketIndex;
-        // -1 % 2 = -1 
-        // -2 % 2 = 0 
+        // -1 % 2 = -1
+        // -2 % 2 = 0
         // -3 % 2 = -1
         wrappedIndex.x = bucketIndex.x % _resolution.x;
         wrappedIndex.y = bucketIndex.y % _resolution.y;
-        // Therefore, it will get same return if they have the same wrappedIndex by mod.
+
         if (wrappedIndex.x < 0)
         {
             assert("there is a negative number!");

@@ -13,7 +13,6 @@
 #include <vector>
 #include <sys/stat.h>
 
-
 namespace big
 {
     class sdata
@@ -29,7 +28,6 @@ namespace big
                 partialDir = pystring::os::path::join(partialDir, token);
                 mkdir(partialDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
             }
-            
         }
 
         template <typename T>
@@ -42,7 +40,6 @@ namespace big
             std::vector<std::size_t> datashape = {static_cast<std::size_t>(data.size())};
             cnpy::npy_save(filename, data.data(), datashape, "w");
         }
-
     };
 
 }

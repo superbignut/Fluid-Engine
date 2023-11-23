@@ -39,11 +39,14 @@ namespace big
         void build(const ConstArrayAccessor1<Vector2D> &points) override;
 
         /// @brief Return the hash value for given 2-D bucket index.
+        /// Scatter the mapping spatially sothat the number of points 
+        /// inside the buckets is as similar as possible.
         /// @param bucketIndex 
         /// @return 
         std::size_t getHashKeyFromBucketIndex(const Point2I& bucketIndex) const;
 
         /// @brief Get the bucket index of a point, just by divide _gridSpacing and std::floor
+        /// Converts the input position to integer coordinate
         /// @param position 
         /// @return 
         Point2I getBucketIndex(const Vector2D& position) const;
@@ -64,12 +67,12 @@ namespace big
         double _gridSpacing = 1.0;
         Point2I _resolution = Point2I(1, 1);
 
-        std::vector<Vector2D> _points;
-        std::vector<std::size_t> _keys;
-        std::vector<std::size_t> _sortedIndices;
+        std::vector<Vector2D> _points; // 存储 points 容量取决于points
+        std::vector<std::size_t> _keys;  // 存储 points的hashkey 容量取决于points
+        std::vector<std::size_t> _sortedIndices; // 存储 从小到大 排序后 points的序号 容量取决于points
 
-        std::vector<std::size_t> _startIndexTable;
-        std::vector<std::size_t> _endIndexTable;
+        std::vector<std::size_t> _startIndexTable; // 容量取决于_resolution
+        std::vector<std::size_t> _endIndexTable;// 容量取决于_resolution
         
 
         /// @brief Return a hashkey for the given 2-D position.
