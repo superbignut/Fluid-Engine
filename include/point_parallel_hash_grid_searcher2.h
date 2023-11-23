@@ -48,17 +48,29 @@ namespace big
         /// @return 
         Point2I getBucketIndex(const Vector2D& position) const;
 
+        void forEachNearbyPoint(const Vector2D& origin, double radius, const ForEachNearbyPointFunc& callback) const override;
+
+        bool hasNearbyPoint(const Vector2D& origin, double radius) const override;
+
+        std::shared_ptr<PointNeighborSearcher2> clone() const override;
+
+        void serialize(std::vector<uint8_t> *buffer) const override;
+        
+        void deserialize(const std::vector<uint8_t> &buffer) override;         
 
     private:
         friend class PointParallelHashGridSearcher2Tests;
 
         double _gridSpacing = 1.0;
         Point2I _resolution = Point2I(1, 1);
+
         std::vector<Vector2D> _points;
         std::vector<std::size_t> _keys;
+        std::vector<std::size_t> _sortedIndices;
+
         std::vector<std::size_t> _startIndexTable;
         std::vector<std::size_t> _endIndexTable;
-        std::vector<std::size_t> _sortedIndices;
+        
 
         /// @brief Return a hashkey for the given 2-D position.
         /// @param position 

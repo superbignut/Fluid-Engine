@@ -23,4 +23,16 @@ TEST(Parallel, Try1)
     lamb();
     std::cout <<ptr.use_count() << std::endl;
 
+    std::vector<int> vec = {100,40,5,7,19,23,1,2,3,5,7,19,23,1,2,3};
+    std::vector<int> temp(vec);
+
+    std::sort(vec.begin(), vec.begin());
+    big::internal::parallelMergeSort(vec.begin(), vec.size(), temp.begin(), std::thread::hardware_concurrency(),[](int a, int b){return a < b;});
+    for(auto& ele : temp)
+    {
+        std::cout << ele <<" ";
+    }
+
+    std::cout<< std::less<int>()(10,11);
+
 }

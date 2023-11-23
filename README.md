@@ -110,7 +110,7 @@
 
         template< class R, class ...ArgTypes >
         class packaged_task<R(ArgTypes...)>;
-    The class template std::packaged_task wraps any Callable target (function, lambda expression, bind expression, or another function object) so that it can be invoked asynchronously.[^5]
+    The class template std::packaged_task wraps any Callable target (function, lambda expression, bind expression, or another function object) so that it can be invoked asynchronously.[^6]
 
         using package_t = std::packaged_task<operator_return_t<TASK_T>()>;
         auto task = new package_t(std::forward<TASK_T>(fcn));
@@ -243,7 +243,11 @@
     ![spring](https://github.com/superbignut/Fluid-Engine/blob/master/render_dir/bound_points_line.jpg)
     <!-- Thirdly, onAdvanceTimeStep's parameter is **actualTimeInterval** = **timeIntervalInSeconds** / **N**  where N is an unsigned int number. -->
 
-
+<!-- ## Git-Submodule:
++ #### cnpy
++ #### flatbuffers
++ #### googletest
++ #### pystring -->
 
 ## ToDo :
 
@@ -298,21 +302,22 @@
 ## Reference :
 ---
 <!-- github-reference -->
-### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
-### [https://github.com/mitsuba-renderer/mitsuba3](https://github.com/mitsuba-renderer/mitsuba3)
-### [https://github.com/Krasjet/quaternion](https://github.com/Krasjet/quaternion)
+#### [https://github.com/doyubkim/fluid-engine-dev](https://github.com/doyubkim/fluid-engine-dev)
+#### [https://github.com/mitsuba-renderer/mitsuba3](https://github.com/mitsuba-renderer/mitsuba3)
+#### [https://github.com/Krasjet/quaternion](https://github.com/Krasjet/quaternion)
 ---
 <!-- keyword-link -->
 [1]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
 [4]: https://github.com/Krasjet/quaternion
-[5]: https://en.cppreference.com/w/cpp/thread/packaged_task
+
 <!-- paragraph-footnote -->
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
 [^2]: https://education.siggraph.org/static/HyperGraph/raytrace/rtinter3.htm
 [^3]: https://en.wikipedia.org/wiki/Rotation_matrix
 [^4]: https://en.wikipedia.org/wiki/Quaternion
 [^5]: https://en.wikipedia.org/wiki/Builder_pattern
+[^6]: https://en.cppreference.com/w/cpp/thread/packaged_task
 
 <!-- 知我者谓我心忧，不知者谓我何求 -->

@@ -20,33 +20,113 @@ namespace big
         }
 
         template <typename TASK_T>
-        using operator_return_t = typename std::invoke_result<TASK_T>::type; 
-        
-        // lambda use *value* capturedvariables to ensure there is a "std::shared_ptr<package_t> task;" in generated lambda class and ++ ptr.use_count()
+        using operator_return_t = typename std::invoke_result<TASK_T>::type;
+
+        // lambda use *value* capturedvariables[=](){} will ++ ptr.use_count()
         // otherwise, [&](){} will get std::shared_ptr<package_t> &task and ptr.use_count() is unchanged.
+        //
         template <typename TASK_T>
         inline auto async(TASK_T &&fcn) -> std::future<operator_return_t<TASK_T>>
         {
-            using package_t = std::packaged_task<operator_return_t<TASK_T>()>; 
+            using package_t = std::packaged_task<operator_return_t<TASK_T>()>;
 
             auto task = std::make_shared<package_t>(std::forward<TASK_T>(fcn));
             auto future = task->get_future();
-
-            schedule([task = task]() { 
-                (*task)();             // run()
-            });
+            // std::thread thread([task = task](){(*task)();});
+            // thread.detach();
+            schedule([task = task]()
+                     {
+                         (*task)(); // run()
+                     });
             return future;
         }
 
-        template<typename RandomIterator, typename RandomIterator2, typename CompareFunction>
+        /// @brief A function used to perform the "merge" operation in merge sort.
+        /// @tparam RandomIterator
+        /// @tparam RandomIterator2
+        /// @tparam CompareFunction
+        /// @param a
+        /// @param size 
+        /// @param temp
+        /// @param compareFunction
+        template <typename RandomIterator, typename RandomIterator2, typename CompareFunction>
         void merge(RandomIterator a, std::size_t size,
                    RandomIterator2 temp, CompareFunction compareFunction)
         {
             std::size_t i1 = 0;
-            std::size_t i2 = size / 2;
+            std::size_t i2 = 0 + size / 2;
             std::size_t tempi = 0;
-        }
 
+            while (i1 < size / 2 && i2 < size)
+            {
+                if (compareFunction(a[i1], a[i2]))
+                {
+                    temp[tempi] = a[i1];
+                    i1++;
+                }
+                else
+                {
+                    temp[tempi] = a[i2];
+                    i2++;
+                }
+                tempi++;
+            }
+            while (i1 < size / 2)
+            {
+                temp[tempi] = a[i1];
+                i1++;
+                tempi++;
+            }
+            while (i2 < size)
+            {
+                temp[tempi] = a[i2];
+                i2++;
+                tempi++;
+            }
+            parallelFor(kZeroSize, size, [&](std::size_t i)
+                        { a[i] = temp[i]; });
+        }
+        
+        /// For smaller arrays it may be not be worth using multithreading.
+        template <typename RandomIterator, typename RandomIterator2, typename CompareFunction>
+        void parallelMergeSort(RandomIterator a, std::size_t size, RandomIterator2 temp,
+                               unsigned int numThreads,
+                               CompareFunction compareFunction)
+        {
+            if(size == 1)
+            {
+                return;
+            }
+            else if (numThreads == 1)
+            {
+                std::sort(a, a + size, compareFunction);
+            }
+            else if (numThreads > 1)
+            {
+                std::vector<std::future<void>> pool;
+                pool.reserve(2);
+                // use [=](){} to ensure no race.
+                auto launchRange = [compareFunction = compareFunction](RandomIterator begin, std::size_t k2,
+                                                                       RandomIterator2 temp,
+                                                                       unsigned int numThreads)
+                {
+                    parallelMergeSort(begin, k2, temp, numThreads, compareFunction);
+                };
+
+                pool.emplace_back(internal::async([=]()
+                                                  { launchRange(a, size / 2, temp, numThreads / 2); }));
+                pool.emplace_back(internal::async([=]()
+                                                  { launchRange(a + size / 2, size - size / 2, temp + size / 2, numThreads - numThreads / 2); }));
+                for(auto &f : pool)
+                {
+                    if(f.valid())
+                    {
+                        f.wait();
+                    }
+                }
+                merge(a, size, temp, compareFunction);
+            }
+        }
 
     }
 
@@ -85,7 +165,7 @@ namespace big
         IndexType slice =
             (IndexType)std::round(n / static_cast<double>(numThreads));
         slice = std::max(slice, IndexType(1));
-
+        // don't need to use [=](){}
         auto launchRange = [&func](IndexType k1, IndexType k2)
         {
             for (IndexType k = k1; k < k2; ++k)
@@ -142,7 +222,8 @@ namespace big
         slice = std::max(slice, IndexType(1));
 
         std::vector<Value> results(numThreads, identity);
-        auto launchRange = [&func, &results, &identity](IndexType k1, IndexType k2, unsigned int tid)
+        // don't need to use [=](){}
+        auto launchRange = [&](IndexType k1, IndexType k2, unsigned int tid)
         {
             results[tid] = func(k1, k2, identity);
             // std::cout << results[tid]<<" ";
@@ -155,16 +236,17 @@ namespace big
         IndexType i2 = begin + slice; // begin + slice <= end
 
         unsigned int tid = 0;
+        // Use [=](){} to ensure no race in asynchronous program.
         for (; tid < numThreads - 1 && i1 < end; ++tid)
         {
-            pool.emplace_back(internal::async([i1, i2, tid, &launchRange]()
+            pool.emplace_back(internal::async([=]()
                                               { launchRange(i1, i2, tid); }));
             i1 = i2;
             i2 = std::min(end, i2 + slice);
         }
         if (i1 < end)
         {
-            pool.emplace_back(internal::async([i1, end, tid, &launchRange]()
+            pool.emplace_back(internal::async([=]()
                                               { launchRange(i1, end, tid); }));
         }
         for (auto &f : pool)
@@ -180,6 +262,40 @@ namespace big
             finalResult = reduce(val, finalResult);
         }
         return finalResult;
+    }
+
+
+    template<typename RandomIterator, typename CompareFunction>
+    void parallelSort(RandomIterator begin, RandomIterator end,
+                      CompareFunction compareFunction,
+                      ExecutionPolicy policy)
+    {
+        if(begin >= end)
+        {
+            return;
+        }
+        std::size_t size = static_cast<std::size_t>(end - begin);
+
+        typedef typename std::iterator_traits<RandomIterator>::value_type value_type;
+
+        std::vector<value_type> temp(size);
+
+        unsigned int numThreadsHint = std::thread::hardware_concurrency();
+        const unsigned int numThreads =
+            (policy == ExecutionPolicy::kParallel)
+                ? (numThreadsHint == 0u ? 8u : numThreadsHint)
+                : 1;
+        internal::parallelMergeSort(begin, size, temp.begin(),numThreads,compareFunction);
+        
+    }
+
+    template<typename RandomIterator>
+    void parallelSort(RandomIterator begin, RandomIterator end,
+                      ExecutionPolicy policy)
+    {
+        parallelSort(begin, end,
+                     std::less<typename std::iterator_traits<RandomIterator>::value_type>(),
+                     policy);
     }
 }
 

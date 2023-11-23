@@ -64,14 +64,30 @@ namespace big
         }
 
         // Initialize indices array and generate hash key for each point.
-        parallelFor(kZeroSize, numberOfPoints, [&](std::size_t i){
-            _sortedIndices[i] = i;
-            _points[i] = points[i];
-            tempKeys[i] = this->getHashKeyFromPosition(points[i]); }); // get the hashKey of each point.
+        parallelFor(kZeroSize,
+                    numberOfPoints,
+                    [&](std::size_t i)
+                    {
+                        _sortedIndices[i] = i;
+                        _points[i] = points[i];
+                        tempKeys[i] = this->getHashKeyFromPosition(points[i]);
+                    }); // get the hashKey of each point.
 
-
-
-        
+        // Sort index based on hash key.
+        parallelSort(_sortedIndices.begin(),
+                     _sortedIndices.end(),
+                     [&tempKeys](std::size_t indexA, std::size_t indexB)
+                     {
+                         return tempKeys[indexA] < tempKeys[indexB];
+                     });
+        // Re-order point and key arrays.
+        parallelFor(kZeroSize,
+                    numberOfPoints,
+                    [&](std::size_t i)
+                    {
+                        _points[i] = points[_sortedIndices[i]];
+                        _keys[i] = tempKeys[_sortedIndices[i]];
+                    });
     }
 
     std::size_t PointParallelHashGridSearcher2::getHashKeyFromPosition(const Vector2D &position) const
@@ -83,6 +99,9 @@ namespace big
     std::size_t PointParallelHashGridSearcher2::getHashKeyFromBucketIndex(const Point2I &bucketIndex) const
     {
         Point2I wrappedIndex = bucketIndex;
+        // -1 % 2 = -1 
+        // -2 % 2 = 0 
+        // -3 % 2 = -1
         wrappedIndex.x = bucketIndex.x % _resolution.x;
         wrappedIndex.y = bucketIndex.y % _resolution.y;
         // Therefore, it will get same return if they have the same wrappedIndex by mod.
@@ -106,6 +125,26 @@ namespace big
         bucketIndex.x = static_cast<ssize_t>(std::floor(position.x / _gridSpacing));
         bucketIndex.y = static_cast<ssize_t>(std::floor(position.y / _gridSpacing));
         return bucketIndex;
+    }
+
+    void PointParallelHashGridSearcher2::forEachNearbyPoint(const Vector2D &origin, double radius, const ForEachNearbyPointFunc &callback) const
+    {
+    }
+
+    bool PointParallelHashGridSearcher2::hasNearbyPoint(const Vector2D &origin, double radius) const
+    {
+    }
+
+    std::shared_ptr<PointNeighborSearcher2> PointParallelHashGridSearcher2::clone() const
+    {
+    }
+
+    void PointParallelHashGridSearcher2::serialize(std::vector<uint8_t> *buffer) const
+    {
+    }
+
+    void PointParallelHashGridSearcher2::deserialize(const std::vector<uint8_t> &buffer)
+    {
     }
 
 }

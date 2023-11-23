@@ -60,10 +60,10 @@ namespace big
     /// @param policy 
     template<typename RandomIterator, typename CompareFunction>
     void parallelSort(RandomIterator begin, RandomIterator end,
-                      CompareFunction compare,
+                      CompareFunction compareFunction,
                       ExecutionPolicy policy = ExecutionPolicy::kParallel);
 
-    /// @brief Sorts a containter in parallel with a default compare function.
+    /// @brief Sorts a containter in parallel with a default compare function. std::less<T>()
     /// @tparam RandomIterator 
     /// @param begin 
     /// @param end 
