@@ -128,7 +128,7 @@ namespace big
                 ++numberOfNonEmptyBucket;
             }
         }
-        BIG_INFO << sumNumberOfPointsPerBucket << " "<< maxNumberOfPointsPerBucket <<" " << numberOfNonEmptyBucket;
+        BIG_INFO << sumNumberOfPointsPerBucket << " " << maxNumberOfPointsPerBucket << " " << numberOfNonEmptyBucket;
     }
 
     std::size_t PointParallelHashGridSearcher2::getHashKeyFromPosition(const Vector2D &position) const
@@ -170,22 +170,139 @@ namespace big
 
     void PointParallelHashGridSearcher2::forEachNearbyPoint(const Vector2D &origin, double radius, const ForEachNearbyPointFunc &callback) const
     {
+        std::size_t nearbyKeys[4];
+        getNearbyKeys(origin, nearbyKeys);
+
+        const double queryRadiusSquared = radius * radius;
+
+        for (int i = 0; i < 4; ++i)
+        {
+            std::size_t nearbyKey = nearbyKeys[i];
+            std::size_t start = _startIndexTable[nearbyKey];
+            std::size_t end = _endIndexTable[nearbyKey];
+
+            if (start == kMaxSize)
+            {
+                continue;
+            }
+
+            for (std::size_t j = start; j < end; ++j)
+            {
+                Vector2D direction = _points[j] - origin;
+                double distanceSquared = direction.lengthSquared();
+                if (distanceSquared <= queryRadiusSquared)
+                {
+                    callback(_sortedIndices[j], _points[j]); //? 传的参数为什么是这两个?
+                }
+            }
+        }
     }
 
     bool PointParallelHashGridSearcher2::hasNearbyPoint(const Vector2D &origin, double radius) const
     {
+        std::size_t nearbyKeys[4];
+        getNearbyKeys(origin, nearbyKeys);
+
+        const double queryRadiusSquared = radius * radius;
+
+        for (int i = 0; i < 4; ++i)
+        {
+            std::size_t nearbyKey = nearbyKeys[i];
+            std::size_t start = _startIndexTable[nearbyKey];
+            std::size_t end = _endIndexTable[nearbyKey];
+
+            if (start == kMaxSize)
+            {
+                continue;
+            }
+
+            for (std::size_t j = start; j < end; ++j)
+            {
+                Vector2D direction = _points[j] - origin;
+                double distanceSquared = direction.lengthSquared();
+                if (distanceSquared <= queryRadiusSquared)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    const std::vector<std::size_t> &PointParallelHashGridSearcher2::keys() const
+    {
+        return _keys;
+    }
+    const std::vector<std::size_t> &PointParallelHashGridSearcher2::startIndexTable() const
+    {
+        return _startIndexTable;
+    }
+    const std::vector<std::size_t> &PointParallelHashGridSearcher2::endIndexTable() const
+    {
+        return _endIndexTable;
+    }
+
+    const std::vector<std::size_t> &PointParallelHashGridSearcher2::sortedIndices() const
+    {
+        return _sortedIndices;
     }
 
     std::shared_ptr<PointNeighborSearcher2> PointParallelHashGridSearcher2::clone() const
     {
+        return std::make_shared<PointParallelHashGridSearcher2>(*this);
     }
 
+    PointParallelHashGridSearcher2 &PointParallelHashGridSearcher2::operator=(PointParallelHashGridSearcher2 &other) const
+    {
+        set(other);
+        return *this;
+    }
     void PointParallelHashGridSearcher2::serialize(std::vector<uint8_t> *buffer) const
     {
+
     }
 
     void PointParallelHashGridSearcher2::deserialize(const std::vector<uint8_t> &buffer)
     {
+        
+    }
+    void PointParallelHashGridSearcher2::getNearbyKeys(const Vector2D &position, std::size_t *nearbyKeys) const
+    {
+        ///  | 3 | 1 | 3 |
+        ///  | 2 | 0 | 2 |
+        ///  | 3 | 1 | 3 |
+        Point2I originIndex = getBucketIndex(position), nearbyBucketIndices[4];
+
+        for (int i = 0; i < 4; ++i)
+        {
+            nearbyBucketIndices[i] = originIndex;
+        }
+
+        if ((originIndex.x + 0.5f) * _gridSpacing <= position.x)
+        {
+            nearbyBucketIndices[2].x += 1;
+            nearbyBucketIndices[3].x += 1;
+        }
+        else
+        {
+            nearbyBucketIndices[2].x -= 1;
+            nearbyBucketIndices[3].x -= 1;
+        }
+
+        if ((originIndex.y + 0.5f) * _gridSpacing <= position.y)
+        {
+            nearbyBucketIndices[1].y += 1;
+            nearbyBucketIndices[3].y += 1;
+        }
+        else
+        {
+            nearbyBucketIndices[1].y -= 1;
+            nearbyBucketIndices[3].y -= 1;
+        }
+
+        for (int i = 0; i < 4; ++i)
+        {
+            nearbyKeys[i] = getHashKeyFromBucketIndex(nearbyBucketIndices[i]);
+        }
     }
 
 }
