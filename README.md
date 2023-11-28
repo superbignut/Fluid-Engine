@@ -267,12 +267,12 @@
     
 
     The following is a quick rundown of how to use this flatbuffer :[^7]
-    |Order:|Useage in brief|
+    |Order|Usage in brief|
     |:----:|:----:|
-    |**1** |Write a schema file that allows you to define the data structures you may want to serialize. |
-    |**2** |Use flatc to generate a C++/Python/C#  header file to access and construct serialized data.|
+    |**1** |Write a schema file . |
+    |**2** |Use flatc to generate a header file.|
     |*2.5*|*Include mydata_generated.h and modify CMakelists if used in c++.*|
-    |**3**|Use the FlatBufferBuilder class to construct a flat binary buffer. |
+    |**3**|Construct a flat binary buffer. |
     
     
     Simply put, by using flatbuffer, you can convert your special abstract data structure into the binary memory, therefore, other language can also recognize this serialized data.
