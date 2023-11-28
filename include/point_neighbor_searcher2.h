@@ -25,10 +25,6 @@ namespace big
         /// nearby point, and the second is the position of the point.
         typedef std::function<void(std::size_t, const Vector2D &)> ForEachNearbyPointFunc;
 
-        PointNeighborSearcher2() = default;
-
-        virtual ~PointNeighborSearcher2() = default;
-
         /// @brief Return the name of derived class;
         /// @return 
         virtual std::string typeName() const = 0;

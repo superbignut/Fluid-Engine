@@ -14,5 +14,10 @@ int main()
 
     ppp.build(pos.constAccessor());
 
+    std::vector<uint8_t> *buffer; //create a serialize buffer.
+    
+    ppp.show();
+    ppp.serialize(buffer);
+
     return 0;
 }

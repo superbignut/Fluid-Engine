@@ -77,11 +77,13 @@ namespace big
         /// @return
         std::shared_ptr<PointNeighborSearcher2> clone() const override;
 
-        PointParallelHashGridSearcher2 &operator=(PointParallelHashGridSearcher2 &other) const;
+        PointParallelHashGridSearcher2 &operator=(PointParallelHashGridSearcher2 &other);
 
         void serialize(std::vector<uint8_t> *buffer) const override;
 
         void deserialize(const std::vector<uint8_t> &buffer) override;
+
+        void show() const;
 
     private:
         friend class PointParallelHashGridSearcher2Tests;
@@ -103,9 +105,10 @@ namespace big
         std::size_t getHashKeyFromPosition(const Vector2D &position) const;
 
         /// @brief Return nearby bucketIndices's hashkeys for a given origin.
-        /// Because we use std::floor in getBucketIndex()function so we need wo check
-        /// which corner is the nearest one of the original positon, and then return the corresponding
-        /// four nearby keys. The index is as follows.
+        /// Because we use std::floor in getBucketIndex()function so we need 
+        /// to check which corner is the nearest one of the original positon,
+        /// and then return the corresponding four nearby keys. The index is 
+        /// as follows.
         /// @param position
         /// @param nearbyKeys
         ///  | 3 | 1 | 3 |
