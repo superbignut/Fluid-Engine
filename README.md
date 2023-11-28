@@ -23,6 +23,7 @@
 + 📌 [Quaternion and 3-D Rotation Matrix](#Quaternion-and-3-D-Rotation-Matrix)
 + 📌 [Builder Pattern](#Builder-Pattern)
 + 📌 [Animation and Physics Animation](#Animation-and-Physics-Animation)
++ 📌 [Flatbuffer](#Flatbuffer)
 
 🗓 [To Do:](#ToDO-)
 
@@ -225,7 +226,7 @@
             double _radius;
         };
 + ### Animation and Physics Animation
-    When I initially encountered the animation code, terms like subTimeSteps, update, onUpdate, advanceTimeStep and onAdvanceTimeStep perplexed me. However, upon scrutinizing the entire code with a global perspective, my comprehension improved. It dawned on me that I should document my insights to avoid forgetting them.
+    When i initially encountered the animation code, terms like subTimeSteps, update, onUpdate, advanceTimeStep and onAdvanceTimeStep perplexed me. However, upon scrutinizing the entire code with a global perspective, my comprehension improved. It dawned on me that I should document my insights to avoid forgetting them.
     
     First of all, subTimeSteps are **slices** that an original frame (_timeIntervalInSeconds = 1.0s / 60.0) are further divided into. Consequently, this allows for more precise computations and integrations.
 
@@ -242,7 +243,39 @@
 
     ![spring](https://github.com/superbignut/Fluid-Engine/blob/master/render_dir/bound_points_line.jpg)
     <!-- Thirdly, onAdvanceTimeStep's parameter is **actualTimeInterval** = **timeIntervalInSeconds** / **N**  where N is an unsigned int number. -->
++ ### Flatbuffer
+    [FlatBuffers][5] is a cross platform serialization library architected for maximum memory efficiency. It allows you to directly access serialized data without parsing/unpacking it first, while still having great forwards/backwards compatibility.
 
+    It is also my first time to hear about the word: "serialization", and i was puzzled about it at first. Expecially, when i see the Chinese translation for "serialization": 序列化,  i felt even more confused. 
+    
+    However, after about a  week, when i conbine "serialization" with the question from a long time ago, that how does c++ communicate with python, i guess all coder has thought about similar question, i begin to understand what does it means.
+
+        include "basic_types.fbs";
+        namespace big.fbs;
+
+        table PointParallelHashGridSearcher2 {
+            gridSpacing:double;
+            resolution:Size2;
+            points:[Vector2D];
+            keys:[ulong];
+            startIndexTable:[ulong];
+            endIndexTable:[ulong];
+            sortedIndices:[ulong];
+        }
+
+        root_type PointParallelHashGridSearcher2;
+    
+
+    The following is a quick rundown of how to use this flatbuffer :[^7]
+    |Order:|Useage in brief|
+    |:----:|:----:|
+    |**1** |Write a schema file that allows you to define the data structures you may want to serialize. |
+    |**2** |Use flatc to generate a C++/Python/C#  header file to access and construct serialized data.|
+    |*2.5*|*Include mydata_generated.h and modify CMakelists if used in c++.*|
+    |**3**|Use the FlatBufferBuilder class to construct a flat binary buffer. |
+    
+    
+    Simply put, by using flatbuffer, you can convert your special abstract data structure into the binary memory, therefore, other language can also recognize this serialized data.
 <!-- ## Git-Submodule:
 + #### cnpy
 + #### flatbuffers
@@ -311,6 +344,7 @@
 [2]: https://en.wikipedia.org/wiki/Sparse_matrix
 [3]: https://en.cppreference.com/w/cpp/thread/async
 [4]: https://github.com/Krasjet/quaternion
+[5]: https://github.com/google/flatbuffers
 
 <!-- paragraph-footnote -->
 [^1]: https://www.math.uci.edu/~qnie/Publications/NumericalOptimization.pdf
@@ -319,5 +353,6 @@
 [^4]: https://en.wikipedia.org/wiki/Quaternion
 [^5]: https://en.wikipedia.org/wiki/Builder_pattern
 [^6]: https://en.cppreference.com/w/cpp/thread/packaged_task
+[^7]: https://flatbuffers.dev/index.html#autotoc_md0
 
 <!-- 知我者谓我心忧，不知者谓我何求 -->

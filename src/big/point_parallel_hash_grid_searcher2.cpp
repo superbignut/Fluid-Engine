@@ -294,10 +294,12 @@ namespace big
             fbsStartIndexTable,
             fbsEndIndexTable,
             fbsSortedIndices);
+
         builder.Finish(fbsSearcher);
+
         uint8_t *buf = builder.GetBufferPointer();
         std::size_t size = builder.GetSize();
-
+        ;
         buffer->resize(size);
         memcpy(buffer->data(), buf, size);
     }

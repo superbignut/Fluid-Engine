@@ -4,7 +4,7 @@
 int main()
 {
 
-    big::Size2 size2(100, 100);
+    big::Size2 size2(20, 20);
     double gridspace = 2.0;
     big::PointParallelHashGridSearcher2 ppp(size2, gridspace);
 
@@ -14,10 +14,16 @@ int main()
 
     ppp.build(pos.constAccessor());
 
-    std::vector<uint8_t> *buffer; //create a serialize buffer.
+    //create a serialize buffer.
+    std::vector<uint8_t> buffer; 
     
     ppp.show();
-    ppp.serialize(buffer);
+    ppp.serialize(&buffer);
+    big::PointParallelHashGridSearcher2 qqq(size2, gridspace);
+    qqq.deserialize(buffer);
+    qqq.show();
 
+
+    std::cout << buffer.size() << std::endl;
     return 0;
 }
