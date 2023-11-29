@@ -1,4 +1,5 @@
 #include "generated/partical_system_data2_generated.h"
+#include "point_parallel_hash_grid_searcher2.h"
 #include "parallel.h"
 #include "particle_system_data2.h"
 #include "timer.h"
@@ -176,6 +177,36 @@ void ParticleSystemData2::setNeighborSearcher(const PointNeighborSearcher2Ptr &n
     _neighborSearcher = neighborSearcher;
 }
 
+void ParticleSystemData2::buildNeighborSearcher(double gridSpacing)
+{
+    _neighborSearcher = std::make_shared<PointParallelHashGridSearcher2>(kDefaultHashGridResolution,
+                                                                         kDefaultHashGridResolution,
+                                                                         gridSpacing);
+    _neighborSearcher->build(static_cast<ConstArrayAccessor1<Vector2D>>(positions()));
+}
+
+void ParticleSystemData2::buildNeighborLists(double maxSearchRadius)
+{
+    _neighborLists.resize(numberOfParticles());
+    auto position = positions();
+    for (std::size_t i = 0; i < numberOfParticles(); ++i)
+    {
+        Vector2D origin = position[i];
+        _neighborLists[i].clear();
+
+        _neighborSearcher->forEachNearbyPoint(
+            origin,
+            maxSearchRadius,
+            [&](std::size_t j, const Vector2D &) 
+            {
+                // Second parameter is not used.
+                if (i != j)
+                {
+                    _neighborLists[i].push_back(j);
+                }
+            });
+    }
+}
 void ParticleSystemData2::serialize(std::vector<uint8_t> *buffer) const
 {
 }

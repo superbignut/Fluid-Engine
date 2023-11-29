@@ -174,6 +174,7 @@ namespace big
 
     void PointParallelHashGridSearcher2::forEachNearbyPoint(const Vector2D &origin, double radius, const ForEachNearbyPointFunc &callback) const
     {
+        assert(radius >= _gridSpacing && "Search radius must be bigger than _gridSpacing of PointParallelHashGridSearcher2");
         std::size_t nearbyKeys[4];
         getNearbyKeys(origin, nearbyKeys);
 
@@ -196,7 +197,9 @@ namespace big
                 double distanceSquared = direction.lengthSquared();
                 if (distanceSquared <= queryRadiusSquared)
                 {
-                    callback(_sortedIndices[j], _points[j]); //? 传的参数为什么是这两个?
+                    callback(_sortedIndices[j], _points[j]); 
+                    // _sortedIndices[j] is the index of original point
+                    //  _points[j] is point's location.
                 }
             }
         }
@@ -400,5 +403,37 @@ namespace big
         bout(_sortedIndices);
         // bout(_startIndexTable);
         // bout(_endIndexTable);
+    }
+
+    PointParallelHashGridSearcher2::Builder PointParallelHashGridSearcher2::builder()
+    {
+        return Builder();
+    }
+
+    PointParallelHashGridSearcher2::Builder &PointParallelHashGridSearcher2::Builder::withResolution(const Size2 &resolution)
+    {
+        _resolution = resolution;
+        return *this;
+    }
+
+    PointParallelHashGridSearcher2::Builder &PointParallelHashGridSearcher2::Builder::withGridSpacing(double gridspacing)
+    {
+        _gridSpacing = gridspacing;
+        return *this;
+    }
+
+    PointParallelHashGridSearcher2 PointParallelHashGridSearcher2::Builder::build() const
+    {
+        return PointParallelHashGridSearcher2(_resolution, _gridSpacing);
+    }
+
+    PointParallelHashGridSearcher2Ptr PointParallelHashGridSearcher2::Builder::makeshared() const
+    {
+        return std::make_shared<PointParallelHashGridSearcher2>(_resolution, _gridSpacing);
+    }
+
+    PointNeighborSearcher2Ptr PointParallelHashGridSearcher2::Builder::buildPointNeighborSearcher() const
+    {
+        return makeshared(); // has a pointer convert.
     }
 }

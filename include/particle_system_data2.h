@@ -116,7 +116,9 @@ namespace big
         /// @return
         const std::vector<std::vector<std::size_t>> &neighborLists() const;
 
-        void buildNeighborSearcher(double maxSearchRadius);
+        /// @brief Build neighbor searcher with given search radius.
+        /// @param maxSearchRadius 
+        void buildNeighborSearcher(double gridSpacing);
 
         void buildNeighborLists(double maxSearchRadius);
 
@@ -152,10 +154,16 @@ namespace big
         std::size_t _velocityIdx;
         std::size_t _forceIdx;
 
+        /// @brief Useful vector and scalar data list:
+        /// _vectorDataList[_velocityIdx] is the velocity vector,
+        /// _vectorDataList[_positionIdx] is the position vector,
+        /// which can be expanded easily.
         std::vector<ScalarData> _scalarDataList;
         std::vector<VectorData> _vectorDataList;
 
+        /// @brief Build an internal acceleration structure for given points list.
         PointNeighborSearcher2Ptr _neighborSearcher;
+        /// @brief Use _neighborSearcher->fuction() to find out each NearbyPoints.
         std::vector<std::vector<std::size_t>> _neighborLists;
     };
 

@@ -52,6 +52,8 @@ namespace big
         Point2I getBucketIndex(const Vector2D &position) const;
 
         /// @brief Invokes the callback functions for each nearby point around the origin with given radius.
+        /// However i notice that if the radius is big enough such bigger than 2 * _gridSpacing, then, this
+        /// function just iterate the closest four spaces and ignore others. 
         /// @param origin
         /// @param radius
         /// @param callback
@@ -85,6 +87,8 @@ namespace big
 
         void show() const;
 
+        static Builder builder();
+
     private:
         friend class PointParallelHashGridSearcher2Tests;
 
@@ -105,9 +109,9 @@ namespace big
         std::size_t getHashKeyFromPosition(const Vector2D &position) const;
 
         /// @brief Return nearby bucketIndices's hashkeys for a given origin.
-        /// Because we use std::floor in getBucketIndex()function so we need 
+        /// Because we use std::floor in getBucketIndex()function so we need
         /// to check which corner is the nearest one of the original positon,
-        /// and then return the corresponding four nearby keys. The index is 
+        /// and then return the corresponding four nearby keys. The index is
         /// as follows.
         /// @param position
         /// @param nearbyKeys
@@ -117,6 +121,23 @@ namespace big
         void getNearbyKeys(const Vector2D &position, std::size_t *nearbyKeys) const;
     };
     typedef std::shared_ptr<PointParallelHashGridSearcher2> PointParallelHashGridSearcher2Ptr;
+
+    class PointParallelHashGridSearcher2::Builder final : public PointNeighborSearcherBuilder2
+    {
+    public:
+        Builder& withResolution(const Size2& resolution);
+
+        Builder& withGridSpacing(double gridspacing);
+
+        PointParallelHashGridSearcher2 build() const;
+
+        PointParallelHashGridSearcher2Ptr makeshared() const;
+
+        PointNeighborSearcher2Ptr buildPointNeighborSearcher() const override;
+    private:
+        Size2 _resolution = {64, 64};
+        double _gridSpacing = 1.0;
+    };
 }
 
 #endif

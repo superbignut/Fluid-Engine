@@ -248,7 +248,7 @@
 
     It is also my first time to hear about the word: "serialization", and i was puzzled about it at first. Expecially, when i see the Chinese translation for "serialization": 序列化,  i felt even more confused. 
     
-    However, after about a  week, when i conbine "serialization" with the question from a long time ago, that how does c++ communicate with python, i guess all coder has thought about similar question, i begin to understand what does it means.
+    However, after about a  week, when i conbine "serialization" with the question from a long time ago, that how does c++ communicate with python, i guess all programmer has thought about similar question, i begin to understand what does it means.
 
         include "basic_types.fbs";
         namespace big.fbs;
@@ -269,13 +269,16 @@
     The following is a quick rundown of how to use this flatbuffer :[^7]
     |Order|Usage in brief|
     |:----:|:----:|
-    |**1** |Write a schema file . |
-    |**2** |Use flatc to generate a header file.|
-    |*2.5*|*Include mydata_generated.h and modify CMakelists if used in c++.*|
-    |**3**|Construct a flat binary buffer. |
+    |**1** |Write a schema file likes above and compile source code.|
+    |**2** |Use flatc(Executable) to generate a header file.|
+    |**3**|Construct a flat binary buffer with the generated files. |
     
     
     Simply put, by using flatbuffer, you can convert your special abstract data structure into the binary memory, therefore, other language can also recognize this serialized data.
+
+ ### Particle-System-Data Structure
+
+
 <!-- ## Git-Submodule:
 + #### cnpy
 + #### flatbuffers
