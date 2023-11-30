@@ -197,7 +197,7 @@ void ParticleSystemData2::buildNeighborLists(double maxSearchRadius)
         _neighborSearcher->forEachNearbyPoint(
             origin,
             maxSearchRadius,
-            [&](std::size_t j, const Vector2D &) 
+            [&](std::size_t j, const Vector2D &)
             {
                 // Second parameter is not used.
                 if (i != j)
@@ -207,9 +207,28 @@ void ParticleSystemData2::buildNeighborLists(double maxSearchRadius)
             });
     }
 }
+
 void ParticleSystemData2::serialize(std::vector<uint8_t> *buffer) const
 {
+    flatbuffers::FlatBufferBuilder builder(1024);
+    flatbuffers::Offset<fbs::ParticleSystemData2> fbsParticleSystemData;
+    serializeParticleSystemData(&builder, &fbsParticleSystemData);
 }
 void ParticleSystemData2::deserialize(const std::vector<uint8_t> &buffer)
 {
+}
+
+void ParticleSystemData2::serializeParticleSystemData(
+    flatbuffers::FlatBufferBuilder *builder,
+    flatbuffers::Offset<fbs::ParticleSystemData2> *fbsParticleSystemData) const
+{
+    std::vector<flatbuffers::Offset<fbs::ScalarParticleData2>> scalarDataList;
+    for(const auto &scalarData : _scalarDataList)
+    {
+        auto fbsScalarData = fbs::CreateScalarParticleData2(
+            *builder,
+            builder->CreateVector(scalarData.data(), scalarData.size()));
+        scalarDataList.push_back(fbsScalarData);
+    }
+    auto fbsScalarDataList = builder->CreateVector(scalarDataList);
 }

@@ -122,10 +122,11 @@ namespace big
 
         void buildNeighborLists(double maxSearchRadius);
 
-        /// @brief
+        /// @brief Break down the whole job into two pieces, main job is taken by serializeParticleSystemData()
         /// @param buffer
         void serialize(std::vector<uint8_t> *buffer) const override;
-        /// @brief
+
+        /// @brief Break down the whole job into two pieces, main job is taken by deserializeParticleSystemData()
         /// @param buffer
         void deserialize(const std::vector<uint8_t> &buffer) override;
 
@@ -134,8 +135,8 @@ namespace big
         ParticleSystemData2 &operator=(const ParticleSystemData2 &other);
 
     protected:
-        /// @brief
-        /// @param builder
+        /// @brief Main task of serialization.
+        /// @param builder 
         /// @param fbsParticleSystemData
         void serializeParticleSystemData(
             flatbuffers::FlatBufferBuilder *builder,

@@ -7,7 +7,7 @@ table ScalarParticleData2 {
 }
 
 table VectorParticleData2 {
-    data:[double];
+    data:[Vector2D];
 }
 
 table PointNeighborSearcherSerialized2 {

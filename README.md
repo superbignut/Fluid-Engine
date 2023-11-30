@@ -246,7 +246,7 @@
 + ### Flatbuffer
     [FlatBuffers][5] is a cross platform serialization library architected for maximum memory efficiency. It allows you to directly access serialized data without parsing/unpacking it first, while still having great forwards/backwards compatibility.
 
-    It is also my first time to hear about the word: "serialization", and i was puzzled about it at first. Expecially, when i see the Chinese translation for "serialization": 序列化,  i felt even more confused. 
+    It is also my first time to hear about the word: "serialization", and i was puzzled about it at first. Expecially, when i see the Chinese translation for "serialization": 序列化,  i felt even more confused. 😰
     
     However, after about a  week, when i conbine "serialization" with the question from a long time ago, that how does c++ communicate with python, i guess all programmer has thought about similar question, i begin to understand what does it means.
 
@@ -269,9 +269,9 @@
     The following is a quick rundown of how to use this flatbuffer :[^7]
     |Order|Usage in brief|
     |:----:|:----:|
-    |**1** |Write a schema file likes above and compile source code.|
+    |**1** |Write a schema file likes above🔑 and compile source code.|
     |**2** |Use flatc(Executable) to generate a header file.|
-    |**3**|Construct a flat binary buffer with the generated files. |
+    |**3**|Construct a flat binary buffer🔒 with the generated files. |
     
     
     Simply put, by using flatbuffer, you can convert your special abstract data structure into the binary memory, therefore, other language can also recognize this serialized data.

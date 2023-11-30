@@ -1,5 +1,6 @@
 #include <iostream>
 #include "point_parallel_hash_grid_searcher2.h"
+#include "particle_system_data2.h"
 
 int main()
 {
@@ -22,8 +23,9 @@ int main()
     big::PointParallelHashGridSearcher2 qqq(size2, gridspace);
     qqq.deserialize(buffer);
     qqq.show();
-
-
     std::cout << buffer.size() << std::endl;
+
+
+    // big::ParticleSystemData2 psd;
     return 0;
 }

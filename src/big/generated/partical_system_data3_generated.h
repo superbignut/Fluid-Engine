@@ -89,8 +89,8 @@ struct VectorParticleData3 FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DATA = 4
   };
-  const ::flatbuffers::Vector<double> *data() const {
-    return GetPointer<const ::flatbuffers::Vector<double> *>(VT_DATA);
+  const ::flatbuffers::Vector<const big::fbs::Vector3D *> *data() const {
+    return GetPointer<const ::flatbuffers::Vector<const big::fbs::Vector3D *> *>(VT_DATA);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -104,7 +104,7 @@ struct VectorParticleData3Builder {
   typedef VectorParticleData3 Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_data(::flatbuffers::Offset<::flatbuffers::Vector<double>> data) {
+  void add_data(::flatbuffers::Offset<::flatbuffers::Vector<const big::fbs::Vector3D *>> data) {
     fbb_.AddOffset(VectorParticleData3::VT_DATA, data);
   }
   explicit VectorParticleData3Builder(::flatbuffers::FlatBufferBuilder &_fbb)
@@ -120,7 +120,7 @@ struct VectorParticleData3Builder {
 
 inline ::flatbuffers::Offset<VectorParticleData3> CreateVectorParticleData3(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<double>> data = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<const big::fbs::Vector3D *>> data = 0) {
   VectorParticleData3Builder builder_(_fbb);
   builder_.add_data(data);
   return builder_.Finish();
@@ -128,8 +128,8 @@ inline ::flatbuffers::Offset<VectorParticleData3> CreateVectorParticleData3(
 
 inline ::flatbuffers::Offset<VectorParticleData3> CreateVectorParticleData3Direct(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<double> *data = nullptr) {
-  auto data__ = data ? _fbb.CreateVector<double>(*data) : 0;
+    const std::vector<big::fbs::Vector3D> *data = nullptr) {
+  auto data__ = data ? _fbb.CreateVectorOfStructs<big::fbs::Vector3D>(*data) : 0;
   return big::fbs::CreateVectorParticleData3(
       _fbb,
       data__);

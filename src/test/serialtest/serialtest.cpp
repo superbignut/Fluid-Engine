@@ -34,5 +34,5 @@ TEST(Parallel, Try1)
     }
 
     std::cout<< std::less<int>()(10,11);
-
+    
 }
