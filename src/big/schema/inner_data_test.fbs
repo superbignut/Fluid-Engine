@@ -1,0 +1,13 @@
+include "basic_types.fbs";
+
+namespace big.fbs;
+
+table MyData {
+    name:string;
+    age:double;
+    heightAndWeight:Vector2D;
+    usedHAW:[Vector2D];
+    fiends:[int];
+}
+
+root_type MyData;

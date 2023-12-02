@@ -4,6 +4,7 @@
 #include "particle_system_data2.h"
 #include "timer.h"
 #include "macros.h"
+#include "fbs_helper.h"
 
 #include <algorithm>
 #include <vector>
@@ -213,22 +214,106 @@ void ParticleSystemData2::serialize(std::vector<uint8_t> *buffer) const
     flatbuffers::FlatBufferBuilder builder(1024);
     flatbuffers::Offset<fbs::ParticleSystemData2> fbsParticleSystemData;
     serializeParticleSystemData(&builder, &fbsParticleSystemData);
-}
-void ParticleSystemData2::deserialize(const std::vector<uint8_t> &buffer)
-{
+
+    builder.Finish(fbsParticleSystemData);
+    uint8_t *buf = builder.GetBufferPointer();
+    std::size_t size = builder.GetSize();
+
+    buffer->resize(size);
+    memcpy(buffer->data(), buf, size);
 }
 
 void ParticleSystemData2::serializeParticleSystemData(
     flatbuffers::FlatBufferBuilder *builder,
     flatbuffers::Offset<fbs::ParticleSystemData2> *fbsParticleSystemData) const
 {
-    std::vector<flatbuffers::Offset<fbs::ScalarParticleData2>> scalarDataList;
-    for(const auto &scalarData : _scalarDataList)
+    std::vector<flatbuffers::Offset<fbs::ScalarParticleData2>> scalarDataList; // similar to std::vector<flatbuffers::Offset<Weapon>> weapons_vector;
+    for (const auto &scalarData : _scalarDataList)
     {
-        auto fbsScalarData = fbs::CreateScalarParticleData2(
+        auto fbsScalarData = fbs::CreateScalarParticleData2( // similar to auto sword = CreateWeapon(builder, weapon_one_name, weapon_one_damage);
             *builder,
             builder->CreateVector(scalarData.data(), scalarData.size()));
-        scalarDataList.push_back(fbsScalarData);
+        scalarDataList.push_back(fbsScalarData); // similar to weapons_vector.push_back(sword);
     }
-    auto fbsScalarDataList = builder->CreateVector(scalarDataList);
+    auto fbsScalarDataList = builder->CreateVector(scalarDataList); // similar to auto weapons = builder.CreateVector(weapons_vector);
+
+    std::vector<flatbuffers::Offset<fbs::VectorParticleData2>> vectorDataList;
+    for (const auto &vectorData : _vectorDataList)
+    {
+        std::vector<fbs::Vector2D> newVectorData;
+        for (const auto &v : vectorData)
+        {
+            newVectorData.push_back(bigToFbs(v));
+        }
+
+        auto fbsVecorData = fbs::CreateVectorParticleData2(
+            *builder,
+            builder->CreateVectorOfStructs(newVectorData.data(), newVectorData.size()));
+        vectorDataList.push_back(fbsVecorData);
+    }
+    auto fbsVectorDataList = builder->CreateVector(vectorDataList);
+
+    // call _neighborSearcher->serialize() function
+    auto neighborSeacherType = builder->CreateString(_neighborSearcher->typeName());
+    std::vector<uint8_t> neighborSeacherSerialized;
+    _neighborSearcher->serialize(&neighborSeacherSerialized);
+    auto fbsNeighborSearcher = fbs::CreatePointNeighborSearcherSerialized2(
+        *builder,
+        neighborSeacherType,
+        builder->CreateVector(
+            neighborSeacherSerialized.data(),
+            neighborSeacherSerialized.size()));
+
+    std::vector<flatbuffers::Offset<fbs::ParticleNeighborList2>> neighborLists;
+    for (const auto &neighbors : _neighborLists)
+    {
+        std::vector<uint64_t> neighbors64(neighbors.begin(), neighbors.end()); // static_cast
+        auto fbsNeighborList = fbs::CreateParticleNeighborList2(
+            *builder,
+            builder->CreateVector(neighbors64.data(), neighbors64.size()));
+        neighborLists.push_back(fbsNeighborList);
+    }
+    auto fbsNeighborLists = builder->CreateVector(neighborLists);
+
+    *fbsParticleSystemData = fbs::CreateParticleSystemData2(
+        *builder,
+        _radius,
+        _mass,
+        _positionIdx,
+        _velocityIdx,
+        _forceIdx,
+        fbsScalarDataList,
+        fbsVectorDataList,
+        fbsNeighborSearcher,
+        fbsNeighborLists);
+}
+void ParticleSystemData2::deserialize(const std::vector<uint8_t> &buffer)
+{
+    auto fbsParticleSystemData = fbs::GetParticleSystemData2(buffer.data());
+    deserializeParticleSystemData(fbsParticleSystemData);
+}
+void ParticleSystemData2::deserializeParticleSystemData(const fbs::ParticleSystemData2 *fbsParticleSystemData)
+{
+    _scalarDataList.clear();
+    _vectorDataList.clear();
+
+    _radius = fbsParticleSystemData->radius();
+    _mass = fbsParticleSystemData->mass();
+    _positionIdx = fbsParticleSystemData->positionIdx();
+    _velocityIdx = fbsParticleSystemData->velocityIdx();
+    _forceIdx = fbsParticleSystemData->forceIdx();
+
+    auto fbsScalarDataList = fbsParticleSystemData->scalarDataList();
+    for(const auto& fbsScalarData : (*fbsScalarDataList))
+    {
+        auto data = fbsScalarData->data();
+        _scalarDataList.push_back(ScalarData(data->size()));
+        auto& newData = *(_scalarDataList.rbegin());
+        for(uint32_t i = 0; i < data->size(); ++i)
+        {
+            newData[i] = data->Get(i);
+        }
+    }
+    
+
 }
